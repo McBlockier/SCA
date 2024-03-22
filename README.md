@@ -20,3 +20,6 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 
    ```bash
    git clone https://github.com/tu_usuario/sistema-administracion-academica.git
+
+   *.py linguist-language=Python
+

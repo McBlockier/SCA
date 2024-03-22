@@ -6,14 +6,588 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
-    <height>493</height>
+    <width>830</width>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <property name="styleSheet">
+   <string notr="true">border-radius:10px;
+background-color:transparent;
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="root">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>811</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius: 10px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="images">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>160</y>
+       <width>271</width>
+       <height>261</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Resources/iniciar-sesion.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="userName">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>200</y>
+       <width>341</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Nombre de usuario</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid black;
+border-radius: 10px;
+padding-left: 50px;</string>
+     </property>
+     <property name="placeholderText">
+      <string>Usuario</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="password">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>280</y>
+       <width>341</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Contraseña</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid black;
+border-radius: 10px;
+padding-left: 50px;</string>
+     </property>
+     <property name="placeholderText">
+      <string>Contraseña</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>200</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">padding-top: -10px;
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Resources/user.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>280</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: transparent;
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Resources/password.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="remember">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>360</y>
+       <width>121</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Mantener la sesión</string>
+     </property>
+     <property name="text">
+      <string>Recordar</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>../Resources/approval.png</normalon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>120</y>
+       <width>311</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>INICIO DE SESIÓN</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="buttonLogin">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>430</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Iniciar sesión</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#f43071;
+border: 1px solid transparent;
+border-radius: 10px;
+color: #f5deed;</string>
+     </property>
+     <property name="text">
+      <string>INICIAR</string>
+     </property>
+    </widget>
+    <widget class="QCommandLinkButton" name="forgotPassword">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>350</y>
+       <width>171</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Reiniciar contraseña</string>
+     </property>
+     <property name="text">
+      <string>Olvidó contraseña?</string>
+     </property>
+    </widget>
+    <widget class="QFrame" name="header">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>811</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;
+border-radius: 15px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QRadioButton" name="buttonExit">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>0</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Salir</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="buttonMinimize">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>0</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>Minimizar</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoExclusive">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="singIn">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>10</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Crear cuenta</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#27338e;
+border-radius: 10px;
+color: #f5deed;
+padding-left:20px;</string>
+      </property>
+      <property name="text">
+       <string> Registrarse</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="services">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>10</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Extensiones</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Servicios</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="aboutUs">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>10</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Información del programa</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-top: -5px;</string>
+      </property>
+      <property name="text">
+       <string>Sobre nosotros</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="home">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>10</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Volver al inicio</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-top: -5px;</string>
+      </property>
+      <property name="text">
+       <string>Inicio</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="timeShow">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>51</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>20</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/reloj.gif</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="setTime">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>10</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::WheelFocus</enum>
+      </property>
+      <property name="text">
+       <string>3:15 PM</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QFrame" name="frame">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>490</y>
+       <width>811</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;
+border-radius: 15px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Continuar con Google</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../Resources/google.png</normaloff>../Resources/google.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>710</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Continuar con X</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../Resources/twitter.png</normaloff>../Resources/twitter.png</iconset>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>

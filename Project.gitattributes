@@ -1,0 +1,9 @@
+# Archivos de código Python
+*.py linguist-language=Python
+
+# Archivos de interfaz de usuario de QtDesigner
+*.ui linguist-language=XML
+
+# Archivos relacionados con PyQt6
+*.py linguist-language=Python
+*.ui linguist-language=XML

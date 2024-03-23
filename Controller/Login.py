@@ -1,9 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit
 from PyQt5.QtCore import QTimer, QRect, QPropertyAnimation, QDateTime
-from PyQt5.QtGui import QPixmap, QMovie
+from PyQt5.QtGui import QPixmap, QMovie, QIcon
 from PyQt5.uic import loadUi
 from Controller.Implements import RoundedWindow, MotionFrame, MethodsWindow
+from Controller.Message import MessageBox
 
 class ControllerLogin(QMainWindow, MethodsWindow):
     def __init__(self):
@@ -32,6 +33,12 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.buttonMinimize.clicked.connect(self._minimizeWindow)#Minimizar ventana
             self.buttonLogin.clicked.connect(self._validateLogin)#Botón de logeo
             self.buttonRegister.clicked.connect(self._showRegister)  # Botón de registro
+            self.buttonView.clicked.connect(self._viewPassword) #Boton de ver contraseña
+
+            self.services.clicked.connect(self.__services)  # Boton de servicios
+            self.aboutUs.clicked.connect(self.__aboutUs)  # Boton de acerca de nosotros
+            self.home.clicked.connect(self.__home)  # Boton de inicio
+
 
             self.timeShow.setGeometry(10, 10, 48, 48)
         except Exception as ex:
@@ -65,6 +72,9 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         # Llamar a update_time() inicialmente para mostrar la hora actual
         self.update_time()
+
+        self.isPasswordVisible = False
+        self.message = MessageBox() #variable para invocar un mensaje
 
     def initializeStyles(self):
         pass
@@ -117,6 +127,25 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.close()
         except Exception as ex:
             print(f"Error {ex}")
+
+    def _viewPassword(self):
+        self.isPasswordVisible = not self.isPasswordVisible
+        echo_mode = QLineEdit.Normal if self.isPasswordVisible else QLineEdit.Password
+        icon_path = "../Resources/view_on.png" if self.isPasswordVisible else "../Resources/view_off.png"
+
+        self.password.setEchoMode(echo_mode)
+        self.buttonView.setIcon(QIcon(icon_path))
+
+
+    #Botones complementarios(servicios, acerca de nosotros y inicio)
+    def __services(self):
+        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
+        self.message.question_msgbox("Pregunta", "Weba?")
+        self.message.not_found_msgbox("No se encontro", "Weba?")
+    def __aboutUs(self):
+        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
+    def __home(self):
+        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
 
     #Funciones raíz de la ventana
     def _closeWindow(self):

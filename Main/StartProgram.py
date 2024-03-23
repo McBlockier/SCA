@@ -11,4 +11,3 @@ if __name__ == '__main__':
     except Exception as e:
         print("Se ha producido una excepción:", e)
         input("Presiona cualquier tecla para salir...")
-

@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QMessageBox, QApplication
-from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import QTimer
+from PyQt5.QtWidgets import QMessageBox, QApplication
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QTimer
 
 # Definición de la clase MsgBox, que hereda de QMessageBox
 class MsgBox(QMessageBox):
@@ -57,6 +57,7 @@ class MessageBox:
         msg_box = MsgBox(title, text)  # Crear un objeto MsgBox con el título y el texto proporcionados
         icon = '../Resources/warning.png'  # Ruta del icono "advertencia"
         msg_box.set_custom_icon(icon)  # Establecer el icono personalizado en el cuadro de mensaje
+        msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.buttonClicked.connect(msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
         msg_box.exec_()  # Ejecutar el cuadro de mensaje
 
@@ -66,6 +67,27 @@ class MessageBox:
         msg_box = MsgBox(title, text)  # Crear un objeto MsgBox con el título y el texto proporcionados
         icon = '../Resources/information.png'  # Ruta del icono "información"
         msg_box.set_custom_icon(icon)  # Establecer el icono personalizado en el cuadro de mensaje
-        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)  # Establecer los botones estándar del cuadro de mensaje
+        msg_box.setStandardButtons(QMessageBox.Ok)  # Establecer los botones estándar del cuadro de mensaje
         msg_box.buttonClicked.connect(msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
+        msg_box.exec_()  # Ejecutar el cuadro de mensaje
+
+    @staticmethod
+    def question_msgbox(title, text):
+        msg_box = MsgBox(title, text)  # Crear un objeto MsgBox con el título y el texto proporcionados
+        icon = '../Resources/question.png'  # Ruta del icono "información"
+        msg_box.set_custom_icon(icon)  # Establecer el icono personalizado en el cuadro de mensaje
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)  # Establecer los botones estándar del cuadro de mensaje
+        msg_box.buttonClicked.connect(
+            msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
+        msg_box.exec_()  # Ejecutar el cuadro de mensaje
+
+    @staticmethod
+    def not_found_msgbox(title, text):
+        msg_box = MsgBox(title, text)  # Crear un objeto MsgBox con el título y el texto proporcionados
+        icon = '../Resources/notFound.png'  # Ruta del icono "información"
+        msg_box.set_custom_icon(icon)  # Establecer el icono personalizado en el cuadro de mensaje
+        msg_box.setStandardButtons(
+            QMessageBox.Ok)  # Establecer los botones estándar del cuadro de mensaje
+        msg_box.buttonClicked.connect(
+            msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
         msg_box.exec_()  # Ejecutar el cuadro de mensaje

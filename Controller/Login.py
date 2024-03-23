@@ -92,7 +92,12 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         pixmap = QPixmap(self.image_paths[self.current_image_index])
         self.images.setPixmap(pixmap.scaled(self.images.size(), aspectRatioMode=True))
 
+        # Función para cambiar la imagen
+
     def change_image(self):
+        """
+        Cambia la imagen mostrada en un QLabel con una animación de desplazamiento.
+        """
         try:
             # Crear animación de desplazamiento hacia la posición final
             animation = QPropertyAnimation(self.images, b"geometry")
@@ -118,7 +123,12 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+        # Función para mostrar la ventana de registro
+
     def _showRegister(self):
+        """
+        Muestra la ventana de registro.
+        """
         try:
             from Controller.Register import ControllerRegister
             InstaceRegister = ControllerRegister()
@@ -128,7 +138,12 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+        # Función para alternar la visibilidad de la contraseña
+
     def _viewPassword(self):
+        """
+        Alterna la visibilidad de la contraseña en un QLineEdit y cambia el ícono del botón según sea necesario.
+        """
         self.isPasswordVisible = not self.isPasswordVisible
         echo_mode = QLineEdit.Normal if self.isPasswordVisible else QLineEdit.Password
         icon_path = "../Resources/view_on.png" if self.isPasswordVisible else "../Resources/view_off.png"
@@ -147,13 +162,29 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def __home(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
 
-    #Funciones raíz de la ventana
-    def _closeWindow(self):
-        self.close()
-    def _minimizeWindow(self):
-        self.showMinimized()
+    class MiVentana(QtWidgets.QMainWindow):
+        def __init__(self):
+            super().__init__()
 
-    def update_time(self):
-        current_time = QDateTime.currentDateTime()
-        time_string = current_time.toString("hh:mm AP")
-        self.setTime.setText(time_string)
+        # Función para cerrar la ventana
+        def _closeWindow(self):
+            """
+            Cierra la ventana.
+            """
+            self.close()
+
+        # Función para minimizar la ventana
+        def _minimizeWindow(self):
+            """
+            Minimiza la ventana.
+            """
+            self.showMinimized()
+
+        # Función para actualizar el tiempo en un widget de la interfaz
+        def update_time(self):
+            """
+            Actualiza el tiempo en un widget de la interfaz.
+            """
+            current_time = QDateTime.currentDateTime()
+            time_string = current_time.toString("hh:mm AP")
+            self.setTime.setText(time_string)

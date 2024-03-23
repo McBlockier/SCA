@@ -167,29 +167,19 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def __home(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
 
-    class MiVentana(QtWidgets.QMainWindow):
-        def __init__(self):
-            super().__init__()
 
         # Función para cerrar la ventana
-        def _closeWindow(self):
-            """
-            Cierra la ventana.
-            """
-            self.close()
+    def _closeWindow(self):
+        self.close()
 
         # Función para minimizar la ventana
-        def _minimizeWindow(self):
-            """
-            Minimiza la ventana.
-            """
-            self.showMinimized()
+    def _minimizeWindow(self):
+
+        self.showMinimized()
 
         # Función para actualizar el tiempo en un widget de la interfaz
-        def update_time(self):
-            """
-            Actualiza el tiempo en un widget de la interfaz.
-            """
-            current_time = QDateTime.currentDateTime()
-            time_string = current_time.toString("hh:mm AP")
-            self.setTime.setText(time_string)
+    def update_time(self):
+
+        current_time = QDateTime.currentDateTime()
+        time_string = current_time.toString("hh:mm AP")
+        self.setTime.setText(time_string)

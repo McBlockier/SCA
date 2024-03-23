@@ -31,6 +31,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.buttonExit.clicked.connect(self._closeWindow)#Cerrar ventana
             self.buttonMinimize.clicked.connect(self._minimizeWindow)#Minimizar ventana
             self.buttonLogin.clicked.connect(self._validateLogin)#Botón de logeo
+            self.buttonRegister.clicked.connect(self._showRegister)  # Botón de registro
 
             self.timeShow.setGeometry(10, 10, 48, 48)
         except Exception as ex:
@@ -104,6 +105,16 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
             # Iniciar la animación
             animation.start()
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def _showRegister(self):
+        try:
+            from Controller.Register import ControllerRegister
+            InstaceRegister = ControllerRegister()
+            InstaceRegister.show()
+            self.hide()
+            self.close()
         except Exception as ex:
             print(f"Error {ex}")
 

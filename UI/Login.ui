@@ -291,7 +291,7 @@ border-radius: 15px;</string>
      <widget class="QRadioButton" name="buttonExit">
       <property name="geometry">
        <rect>
-        <x>780</x>
+        <x>790</x>
         <y>0</y>
         <width>16</width>
         <height>21</height>
@@ -310,7 +310,7 @@ border-radius: 15px;</string>
      <widget class="QRadioButton" name="buttonMinimize">
       <property name="geometry">
        <rect>
-        <x>760</x>
+        <x>770</x>
         <y>0</y>
         <width>16</width>
         <height>21</height>
@@ -332,7 +332,7 @@ border-radius: 15px;</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QCommandLinkButton" name="singIn">
+     <widget class="QCommandLinkButton" name="buttonRegister">
       <property name="geometry">
        <rect>
         <x>600</x>

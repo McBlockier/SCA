@@ -27,7 +27,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
             self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
 
-
             #Botones del formulario LOGIN
             self.buttonExit.clicked.connect(self._closeWindow)#Cerrar ventana
             self.buttonMinimize.clicked.connect(self._minimizeWindow)#Minimizar ventana
@@ -82,10 +81,16 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def hideComponents(self):
         pass
 
-
     #Función para validar el inicio de sesión
     def _validateLogin(self):
-        pass
+        try:
+            from Controller.MainWindow import WindowADM
+            InstanceWindow = WindowADM()
+            InstanceWindow.show()
+            self.hide()
+            self.close()
+        except Exception as ex:
+            print(f"Error {ex}")
 
     #Funcion para transición de imagenes
     def show_image(self):

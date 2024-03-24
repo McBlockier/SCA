@@ -1,3 +1,4 @@
+
 /* Estilo inicial para los botones */
 QPushButton#buttonHome,
 QPushButton#buttonProfile,
@@ -20,6 +21,7 @@ QPushButton#buttonPayments:hover,
 QPushButton#buttonCredits:hover,
 QPushButton#buttonSettings:hover {
     background-color: #ebeffd;
+
 }
 
 QFrame#siderBar{

@@ -29,7 +29,7 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         self.InstanceWindow = RoundedWindow(self)
         self.InstanceWindow.startRound()
-        self.setFixedSize(1137, 839)
+        self.setFixedSize(1227, 856)
 
     def initializeStyles(self):
         try:

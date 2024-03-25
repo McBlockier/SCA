@@ -11,10 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Alumno</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: transparent;</string>
+   <string notr="true">border-radius:10px;
+background-color:transparent;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="root">
@@ -724,7 +725,7 @@ background-color:transparent;</string>
 software</string>
           </property>
          </widget>
-         <widget class="QProgressBar" name="progressBar_2">
+         <widget class="QProgressBar" name="p1">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -2010,7 +2011,10 @@ border-radius:1px;
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QFrame{
+    background-color: rgb(255, 255, 255);
+    border-radius:10px;
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -2018,11 +2022,11 @@ border-radius:1px;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="buttonHome">
+    <widget class="QPushButton" name="buttonLoggOut">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>220</y>
+       <y>660</y>
        <width>221</width>
        <height>41</height>
       </rect>
@@ -2037,16 +2041,23 @@ border-radius:1px;
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="toolTip">
-      <string>Inicio</string>
+      <string>Volver al login</string>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QPushButton{
+    background-color: white;
+    color: #848cba;
+    border-radius:10px;
+}
+QPushButton:hover{
+    background-color: #ebeffd;
+}</string>
      </property>
      <property name="text">
-      <string>Inicio</string>
+      <string>            Cerrar sesión</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -2074,13 +2085,15 @@ border-radius:1px;
        <x>110</x>
        <y>70</y>
        <width>131</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
        <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
@@ -2127,12 +2140,57 @@ border-radius:1px;
       <string>100%</string>
      </property>
     </widget>
+    <widget class="QLabel" name="lbSemester">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>100</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Semestre:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_43">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>100</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:blue;</string>
+     </property>
+     <property name="text">
+      <string>6to</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>230</y>
+      <y>670</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -2147,14 +2205,14 @@ border-radius:1px;
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Resources/home.png</pixmap>
+     <pixmap>../Resources/cerrar-sesion.png</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="buttonProfile">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>340</y>
+      <y>220</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -2172,7 +2230,14 @@ border-radius:1px;
      <string>Ver perfil</string>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QPushButton{
+    background-color: white;
+    color: #848cba;
+    border-radius:10px;
+}
+QPushButton:hover{
+    background-color: #ebeffd;
+}</string>
     </property>
     <property name="text">
      <string>Perfil</string>
@@ -2182,7 +2247,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>340</y>
+      <y>220</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -2276,7 +2341,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>450</y>
+      <y>330</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -2294,7 +2359,14 @@ border-radius:1px;
      <string>Ver documentación</string>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QPushButton{
+    background-color: white;
+    color: #848cba;
+    border-radius:10px;
+}
+QPushButton:hover{
+    background-color: #ebeffd;
+}</string>
     </property>
     <property name="text">
      <string>  Boleta</string>
@@ -2304,7 +2376,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>560</y>
+      <y>440</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -2322,7 +2394,14 @@ border-radius:1px;
      <string>Ver pagos</string>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QPushButton{
+    background-color: white;
+    color: #848cba;
+    border-radius:10px;
+}
+QPushButton:hover{
+    background-color: #ebeffd;
+}</string>
     </property>
     <property name="text">
      <string> Pagos</string>
@@ -2332,7 +2411,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>560</y>
+      <y>440</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -2354,7 +2433,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>450</y>
+      <y>330</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -2376,7 +2455,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>670</y>
+      <y>550</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -2394,7 +2473,14 @@ border-radius:1px;
      <string>Configuración</string>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QPushButton{
+    background-color: white;
+    color: #848cba;
+    border-radius:10px;
+}
+QPushButton:hover{
+    background-color: #ebeffd;
+}</string>
     </property>
     <property name="text">
      <string>              Configuración</string>
@@ -2404,7 +2490,7 @@ border-radius:1px;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>670</y>
+      <y>550</y>
       <width>41</width>
       <height>41</height>
      </rect>

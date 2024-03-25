@@ -18,8 +18,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def initializeComponents(self):
         try:
             InstanceWindow = RoundedWindow(self)
-            InstanceWindow.startRound()
-
+            InstanceWindow.startRound(830, 665)
             InstanceMotion = MotionFrame(self)
 
             # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
@@ -71,7 +70,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         # Llamar a update_time() inicialmente para mostrar la hora actual
         self.update_time()
-
         self.isPasswordVisible = False
         self.message = MessageBox() #variable para invocar un mensaje
 

@@ -1,5 +1,6 @@
 from PyQt5.QtCore import Qt, QPoint, QTimer
 from PyQt5.QtWidgets import QWidget
+from abc import ABC, abstractmethod
 class RoundedWindow:
     """
     Clase para hacer ventanas con bordes redondeados.
@@ -25,7 +26,7 @@ class RoundedWindow:
         """
         self.window = window
 
-    def startRound(self):
+    def startRound(self, width, height):
         """
         Configura la ventana con bordes redondeados.
 
@@ -36,8 +37,8 @@ class RoundedWindow:
             None
         """
         self.window.setWindowFlags(self.window.windowFlags() | Qt.FramelessWindowHint)
-        self.window.setFixedSize(830, 665)
         self.window.setAttribute(Qt.WA_TranslucentBackground)
+        self.window.setFixedSize(width, height)
         # Establecer activados los botones (Esto puede requerir ajustes dependiendo de la implementación)
         self.window.buttonExit.setChecked(True)  # Botón salir
         self.window.buttonMinimize.setChecked(True)  # Botón minimizar
@@ -129,6 +130,9 @@ class MotionFrame(QWidget):
             self.dragging = False
             self.offset = None
 
+
+
+#Clase abstracta para implementar sus métodos ya predefinidos y no estar recreando a cada momento
 class MethodsWindow:
     """
     Clase base para definir métodos abstractos para la configuración de ventanas.
@@ -149,6 +153,7 @@ class MethodsWindow:
         initializeStyles(self):
             Método abstracto para aplicar estilos a los componentes de la interfaz de usuario.
     """
+
     def initializeComponents(self):
         """
         Inicializa los componentes de la interfaz de usuario.
@@ -160,6 +165,7 @@ class MethodsWindow:
             None
         """
         pass
+
     def initializeVariables(self):
         """
         Inicializa las variables necesarias para la ventana.
@@ -171,6 +177,7 @@ class MethodsWindow:
             None
         """
         pass
+
     def initializeStyles(self):
         """
         Aplica estilos a los componentes de la interfaz de usuario.
@@ -184,4 +191,22 @@ class MethodsWindow:
         pass
 
     def hideComponents(self):
+        """
+        Oculta los componentes específicos de la ventana Ticket.
+
+        """
+        pass
+
+    def _closeWindow(self):
+        """
+        Cierra la ventana Ticket y habilita la ventana anterior.
+
+        """
+        pass
+
+    def _minimizeWindow(self):
+        """
+        Minimiza la ventana Ticket y habilita la ventana anterior.
+
+        """
         pass

@@ -1,6 +1,6 @@
 
 /* Estilo inicial para los botones */
-QPushButton#buttonHome,
+QPushButton#buttonLoggOut,
 QPushButton#buttonProfile,
 QPushButton#buttonTopics,
 QPushButton#buttonTicket,
@@ -13,7 +13,7 @@ QPushButton#buttonSettings {
 }
 
 /* Efecto hover para los botones */
-QPushButton#buttonHome:hover,
+QPushButton#buttonLoggOut:hover,
 QPushButton#buttonProfile:hover,
 QPushButton#buttonTopics:hover,
 QPushButton#buttonTicket:hover,
@@ -23,7 +23,6 @@ QPushButton#buttonSettings:hover {
     background-color: #ebeffd;
 
 }
-
 QFrame#siderBar{
     background-color: rgb(255, 255, 255);
     border-radius:10px;

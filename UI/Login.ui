@@ -10,8 +10,13 @@
     <height>665</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <stylestrategy>PreferAntialias</stylestrategy>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Inicio de sesión</string>
   </property>
   <property name="styleSheet">
    <string notr="true">border-radius:10px;

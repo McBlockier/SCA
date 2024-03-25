@@ -46,9 +46,6 @@ class WindowADM(QMainWindow, MethodsWindow):
         # Conectar el botón de ticket a la función _showTicketUI
         self.buttonTicket.clicked.connect(self._showTicketUI)
 
-        # Conectar el botón de pagos a la función _showPaymentsUI
-        self.buttonPayments.clicked.connect(self._showPaymentsUI)
-
         # Conectar el botón de perfil a la función _showProfileUI
         self.buttonProfile.clicked.connect(self._showProfileUI)
 
@@ -57,6 +54,10 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         #Conectar el botón de cerrar sesión a la funcion _closeSesion
         self.buttonLoggOut.clicked.connect(self._closeSesion)
+
+        self.buttonNext_2.clicked.connect(self._nextOption)
+
+        self.buttonBack_2.clicked.connect(self._oldOption)
 
     def initializeVariables(self):
 
@@ -99,6 +100,15 @@ class WindowADM(QMainWindow, MethodsWindow):
         current_time = QDateTime.currentDateTime()
         time_string = current_time.toString("hh:mm AP")
         self.lbTime.setText(time_string)
+
+
+    def _nextOption(self):
+        self.lbIconText.setText("         Pagos")
+        self.lbIconSide.setIcon(QIcon('../Resources/factura-punto-de-venta.png'))
+
+    def _oldOption(self):
+        self.lbIconText.setText("         Créditos")
+        self.lbIconSide.setIcon(QIcon('../Resources/revision-de-comentarios.png'))
 
     def monitor_battery(self):
         try:
@@ -227,13 +237,6 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
-    def _showPaymentsUI(self):
-        try:
-            pass
-
-        except Exception as ex:
-            print(f"Error {ex}")
-
     def _closeSesion(self):
         from Controller.Login import ControllerLogin
         InstanceLogin = ControllerLogin()
@@ -285,6 +288,9 @@ class Ticket(QMainWindow, MethodsWindow):
     def initializeStyles(self):
         pass
 
+    def hideComponents(self):
+        self.buttonMinimize.setVisible(False)
+
     def _closeWindow(self):
         self.previous_window.setEnabled(True)
         self.hide()
@@ -293,5 +299,51 @@ class Ticket(QMainWindow, MethodsWindow):
     def _minimizeWindow(self):
         self.previous_window.setEnabled(True)
         self.showMinimized()
+
+
+
+class Payments(QMainWindow, MethodsWindow):
+    def __init__(self, windowMain):
+        super().__init__()
+        loadUi('../UI/Payments.ui', self)
+
+        self.previous_window = windowMain #Tomamos la ventana anterior para manipular
+
+        self.initializeComponents()
+        self.initializeVariables()
+        self.initializeStyles()
+
+
+
+    def initializeComponents(self):
+        self.InstanceWindow = RoundedWindow(self)
+        self.InstanceWindow.startRound(1103, 654)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+
+        # Conectar el botón de salida a la función _closeWindow
+        self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
+
+
+
+    def initializeVariables(self):
+        pass
+
+    def initializeStyles(self):
+        pass
+
+    def hideComponents(self):
+        self.buttonMinimize.setVisible(False)
+
+
+    def _closeWindow(self):
+        self.previous_window.setEnabled(True)
+        self.hide()
+        self.close()
 
 

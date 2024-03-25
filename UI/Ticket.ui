@@ -69,6 +69,9 @@ background-color:#ebeaea;</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="buttonMinimize">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -131,7 +134,7 @@ QScrollBar::sub-line:vertical {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-67</y>
         <width>770</width>
         <height>291</height>
        </rect>

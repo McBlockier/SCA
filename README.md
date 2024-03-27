@@ -1,3 +1,6 @@
+![Github Banner](https://github.com/Jaydeep-Yadav/Jaydeep-Yadav/blob/main/banner.png)
+
+
 # Sistema de Administración Académica (SAA)
 
 El Sistema de Administración Académica (SAA) es una aplicación diseñada para gestionar diversos aspectos relacionados con la vida académica de los estudiantes en una institución educativa. Proporciona herramientas para administrar créditos obtenidos en la carrera, boletas de calificaciones, reinscripción, pagos institucionales y facilita la planificación de la titulación y obtención de la cédula profesional.
@@ -35,3 +38,12 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 5. Descargar las actualizaciones o cambios realizados por los demás:
    ```bash
    git pull origin master
+
+
+<h4> Operating System </h4>
+<span>
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
+  <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
+  <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white">
+  <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white">
+</span>

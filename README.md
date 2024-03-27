@@ -21,5 +21,22 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
    ```bash
    git clone https://github.com/tu_usuario/sistema-administracion-academica.git
 
-   *.py linguist-language=Python
+2. Hacer cambios y subirlos:
+   ```bash
+   git add .
+   
+3. Luego, realiza el commit de los cambios utilizando el siguiente comando:
+   ```bash
+   git commit -m "Mensaje descriptivo del commit"
+   
+4. Una vez que hayas confirmado tus cambios con un commit, puedes subirlos al repositorio remoto utilizando el comando push:
+   ```bash
+   git push origin master
+   
+5. Descargar las actualizaciones o cambios realizados por los demás:
+   ```bash
+   git pull origin master
+
+
+
 

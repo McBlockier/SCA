@@ -17,7 +17,6 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 ## Instalación
 
 1. Clona este repositorio en tu máquina local utilizando Git:
-
    ```bash
    git clone https://github.com/tu_usuario/sistema-administracion-academica.git
 
@@ -36,7 +35,3 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 5. Descargar las actualizaciones o cambios realizados por los demás:
    ```bash
    git pull origin master
-
-
-
-

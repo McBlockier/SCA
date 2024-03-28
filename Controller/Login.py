@@ -1,5 +1,4 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit
+from PyQt5.QtWidgets import QMainWindow,  QLineEdit
 from PyQt5.QtCore import QTimer, QRect, QPropertyAnimation, QDateTime
 from PyQt5.QtGui import QPixmap, QMovie, QIcon
 from PyQt5.uic import loadUi
@@ -39,6 +38,8 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
 
             self.timeShow.setGeometry(10, 10, 48, 48)
+
+            self.__checkDataBase()
         except Exception as ex:
             print(f"Error initializeComponents -> {ex}")
 
@@ -72,6 +73,10 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         self.update_time()
         self.isPasswordVisible = False
         self.message = MessageBox() #variable para invocar un mensaje
+
+        self.buttonDB.setVisible(False)
+
+
 
     def initializeStyles(self):
         pass
@@ -126,8 +131,18 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
-        # Función para mostrar la ventana de registro
 
+    def __checkDataBase(self):
+        try:
+            from DB.Requests import Inquiries
+            if Inquiries.isAvailable:
+                self.buttonDB.setVisible(False)
+            else:
+                self.buttonDB.setVisible(True)
+        except Exception as ex:
+            print(f"Error {ex}")
+
+        # Función para mostrar la ventana de registro
     def _showRegister(self):
         """
         Muestra la ventana de registro.
@@ -158,8 +173,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     #Botones complementarios(servicios, acerca de nosotros y inicio)
     def __services(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
-        self.message.question_msgbox("Pregunta", "Weba?")
-        self.message.not_found_msgbox("No se encontro", "Weba?")
     def __aboutUs(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
     def __home(self):

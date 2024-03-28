@@ -1,6 +1,59 @@
-from PyQt5.QtCore import Qt, QPoint, QTimer
+from PyQt5.QtCore import Qt, QPoint, QTimer, QObject
 from PyQt5.QtWidgets import QWidget
 from abc import ABC, abstractmethod
+from threading import Thread
+import json
+
+class ThreadWorker(Thread):
+    def __init__(self):
+        """
+        Constructor de la clase ThreadWorker.
+        """
+        super().__init__()  # Llama al constructor de la clase padre Thread
+        self.running = False  # Bandera para indicar si el hilo está corriendo
+        self.archivo_json = "../Files/settings.json"  # Ruta del archivo JSON
+        self.information = None  # Almacenará la información leída del archivo JSON
+
+    def run(self):
+        """
+        Método run() que será ejecutado cuando se inicie el hilo.
+        """
+        self.running = True  # Marca el hilo como corriendo
+
+    def saveSettings(self, info_to_save):
+        """
+        Método para guardar la información en un archivo JSON.
+
+        Args:
+            info_to_save: Información a guardar en el archivo JSON.
+        """
+        try:
+            # Abre el archivo JSON en modo escritura
+            with open(self.archivo_json, "w") as archivo:
+                # Escribe la información en el archivo JSON con formato legible
+                json.dump(info_to_save, archivo, indent=4)
+        except Exception as ex:
+            # Captura cualquier excepción que ocurra durante el proceso de guardado
+            print(f"Error {ex}")
+
+    def readSettings(self):
+        """
+        Método para leer la información desde un archivo JSON.
+
+        Returns:
+            La información leída del archivo JSON.
+        """
+        try:
+            # Abre el archivo JSON en modo lectura
+            with open(self.archivo_json, "r") as archivo:
+                # Carga la información desde el archivo JSON
+                self.information = json.load(archivo)
+            # Retorna la información leída
+            return self.information
+        except Exception as ex:
+            # Captura cualquier excepción que ocurra durante el proceso de lectura
+            print(f"Error {ex}")
+
 class RoundedWindow:
     """
     Clase para hacer ventanas con bordes redondeados.
@@ -14,6 +67,7 @@ class RoundedWindow:
         startRound(self):
             Configura la ventana con bordes redondeados.
     """
+
     def __init__(self, window):
         """
         Inicializa la clase RoundedWindow.
@@ -42,6 +96,7 @@ class RoundedWindow:
         # Establecer activados los botones (Esto puede requerir ajustes dependiendo de la implementación)
         self.window.buttonExit.setChecked(True)  # Botón salir
         self.window.buttonMinimize.setChecked(True)  # Botón minimizar
+
 
 class MotionFrame(QWidget):
     """
@@ -131,8 +186,7 @@ class MotionFrame(QWidget):
             self.offset = None
 
 
-
-#Clase abstracta para implementar sus métodos ya predefinidos y no estar recreando a cada momento
+# Clase abstracta para implementar sus métodos ya predefinidos y no estar recreando a cada momento
 class MethodsWindow:
     """
     Clase base para definir métodos abstractos para la configuración de ventanas.

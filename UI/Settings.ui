@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1121</width>
+    <height>1192</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:transparent;
+border-radius:10px;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>19</x>
+      <y>9</y>
+      <width>861</width>
+      <height>571</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius:10px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QFrame" name="frame_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>-1</y>
+       <width>861</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#fbfbfa;
+border-radius:10px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="buttonProfile">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>30</y>
+        <width>101</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string>Perfil</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../Resources/equipo-de-usuario.png</normaloff>../Resources/equipo-de-usuario.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonProcess">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>121</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string>Procesos</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../Resources/configuracion-del-flujo-de-trabajo.png</normaloff>../Resources/configuracion-del-flujo-de-trabajo.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="buttonExit">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Salir</string>
+      </property>
+      <property name="styleSheet">
+       <string>background-color:transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="buttonMinimize">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>10</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>Minimizar</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoExclusive">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QFrame" name="root">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>99</y>
+       <width>841</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;
+border-radius:10px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QFrame" name="frameUser">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>801</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QTextEdit" name="textEdit">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>70</y>
+         <width>111</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #dddcdc;</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>#FFFF</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>130</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Ocultar semestre</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #141514;</string>
+       </property>
+       <property name="text">
+        <string>Color lateral</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_9">
+       <property name="geometry">
+        <rect>
+         <x>700</x>
+         <y>70</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#088bb2;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="geometry">
+        <rect>
+         <x>500</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#1f1f21;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>80</y>
+         <width>111</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#848486;</string>
+       </property>
+       <property name="text">
+        <string>Personalizado</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_8">
+       <property name="geometry">
+        <rect>
+         <x>700</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#088bb2;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#7939ef;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_7">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#2f90fa;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#424ce6;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>60</y>
+         <width>241</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#848486;</string>
+       </property>
+       <property name="text">
+        <string>Selecciona o costumiza el color</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideName">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>190</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Ocultar nombre</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_6">
+       <property name="geometry">
+        <rect>
+         <x>620</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#155fef;
+border-radius:15px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="frameProcess">
+      <property name="geometry">
+       <rect>
+        <x>19</x>
+        <y>10</y>
+        <width>801</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QCheckBox" name="checkHideSemester_2">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>130</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Multidifusión</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>30</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #141514;</string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Multitarea&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>60</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#848486;
+</string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Procesos de segundo plano&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester_3">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>190</y>
+         <width>231</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Guardado automático</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>30</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #141514;</string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Molang&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>60</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#848486;
+</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Procesos con la BD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester_4">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>120</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Ocultar iP</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester_5">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>180</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Hash de usuario</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>240</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #141514;</string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encriptador&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>270</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#848486;
+</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecciona tu encriptación&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester_6">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>320</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Seguro</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkHideSemester_7">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>370</y>
+         <width>251</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 5px; /* Espacio entre el cuadro de verificación y el texto */
+}
+
+QCheckBox::indicator {
+    width: 20px; /* Ancho del cuadro de verificación */
+    height: 20px; /* Altura del cuadro de verificación */
+    border-radius: 10px; /* Asegura que el cuadro de verificación sea circular */
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #aaa; /* Borde del cuadro de verificación cuando no está seleccionado */
+    background-color: #fff; /* Color de fondo del cuadro de verificación cuando no está seleccionado */
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado */
+    background-color: #007bff; /* Color de fondo del cuadro de verificación cuando está seleccionado */
+}
+
+QCheckBox::indicator:checked:hover {
+    border: 2px solid #0056b3; /* Borde del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+    background-color: #0056b3; /* Color de fondo del cuadro de verificación cuando está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y el cursor está sobre él */
+}
+
+QCheckBox::indicator:checked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando está seleccionado y desactivado */
+    background-color: #ccc; /* Color de fondo del cuadro de verificación cuando está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:disabled {
+    border: 2px solid #999; /* Borde del cuadro de verificación cuando no está seleccionado y desactivado */
+    background-color: #f3f3f3; /* Color de fondo del cuadro de verificación cuando no está seleccionado y desactivado */
+}
+
+QCheckBox::indicator:unchecked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando no está seleccionado y tiene el enfoque */
+}
+
+QCheckBox::indicator:checked:focus {
+    border: 2px solid #007bff; /* Borde del cuadro de verificación cuando está seleccionado y tiene el enfoque */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Muy seguro (Experimental)</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

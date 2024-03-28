@@ -260,7 +260,7 @@ QDateEdit::drop-down::down-arrow {
        </size>
       </property>
      </widget>
-     <widget class="QPlainTextEdit" name="plainTextEdit_5">
+     <widget class="QPlainTextEdit" name="numCard">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -329,14 +329,34 @@ border-radius:15px;</string>
        <string>Guardar tarjeta</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>310</y>
+        <width>191</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/tarjeta-bancaria.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+     </widget>
      <zorder>pushButton_5</zorder>
      <zorder>plainTextEdit_3</zorder>
      <zorder>plainTextEdit_4</zorder>
      <zorder>pushButton_4</zorder>
      <zorder>dateEdit</zorder>
-     <zorder>plainTextEdit_5</zorder>
+     <zorder>numCard</zorder>
      <zorder>plainTextEdit_6</zorder>
      <zorder>checkBox</zorder>
+     <zorder>label</zorder>
     </widget>
     <widget class="QRadioButton" name="buttonMinimize">
      <property name="enabled">

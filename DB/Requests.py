@@ -84,3 +84,15 @@ class Inquiries:
             db.connection.close()
 
         return success, message
+
+    def isAvailable(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT 1")
+                cursor.close()
+                return True
+
+        except Exception as ex:
+            print(f"Error en isAvailable {ex}")
+            return False

@@ -1,16 +1,10 @@
-import sys
-import os
-import time
 import psutil
-from PyQt5.QtWidgets import (QLabel, QLineEdit, QPushButton, QWidget, QFrame,
-                             QFileDialog, QApplication, QMainWindow)
-from PyQt5.QtCore import QTimer, QRect, QPropertyAnimation, QDateTime, QFile, Qt
-from PyQt5.QtGui import QPixmap, QMovie, QIcon, QImage
+from PyQt5.QtWidgets import QFileDialog, QMainWindow
+from PyQt5.QtCore import QTimer, QDateTime
+from PyQt5.QtGui import QMovie, QIcon
 from PyQt5.uic import loadUi
 from Controller.Implements import RoundedWindow, MotionFrame, MethodsWindow
 from Controller.Message import MessageBox
-from PIL import Image
-
 
 class WindowADM(QMainWindow, MethodsWindow):
     def __init__(self):
@@ -186,25 +180,6 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as e:
             print(f"Error al subir archivos Acad: {e}")
 
-            if charging:
-                self.battery.setIcon(QIcon('../Resources/perno-de-bateria.png'))
-            else:
-                if percent == 100:
-                    self.battery.setIcon(QIcon('../Resources/bateria-llena.png'))
-                elif percent >= 70:
-                    self.battery.setIcon(QIcon('../Resources/bateria-tres-cuartos.png'))
-                elif percent >= 50:
-                    self.battery.setIcon(QIcon('../Resources/la-mitad-de-la-bateria.png'))
-                elif percent >= 30:
-                    self.battery.setIcon(QIcon('../Resources/cuarto-de-bateria.png'))
-                elif percent <= 20:
-                    self.battery.setIcon(QIcon('../Resources/exclamacion-de-bateria.png'))
-
-            self.lbCharge.setText(str(percent) + '%')
-
-        except Exception as ex:
-            print(f"Error {ex}")
-
             """
            Sección para la vista del estudiante, botones que corresponden a las vistas
            de estudiante, es decir al menu lateral, que son configuración, perfil,
@@ -227,7 +202,10 @@ class WindowADM(QMainWindow, MethodsWindow):
 
     def _showSettingsUI(self):
        try:
-           self.message.information_msgbox("INFORMACIÓN", "Opción no disponible por el momento")
+           self.ticket_window = SettingsUI(self)
+           self.ticket_window.show()
+           self.setEnabled(False)
+
        except Exception as ex:
             print(f"Error {ex}")
 
@@ -302,6 +280,10 @@ class Ticket(QMainWindow, MethodsWindow):
 
 
 
+"""
+Clase encargada de cargar la UI de los pagos
+"""
+
 class Payments(QMainWindow, MethodsWindow):
     def __init__(self, windowMain):
         super().__init__()
@@ -312,8 +294,6 @@ class Payments(QMainWindow, MethodsWindow):
         self.initializeComponents()
         self.initializeVariables()
         self.initializeStyles()
-
-
 
     def initializeComponents(self):
         self.InstanceWindow = RoundedWindow(self)
@@ -328,8 +308,6 @@ class Payments(QMainWindow, MethodsWindow):
 
         # Conectar el botón de salida a la función _closeWindow
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
-
-
 
     def initializeVariables(self):
         pass
@@ -347,3 +325,73 @@ class Payments(QMainWindow, MethodsWindow):
         self.close()
 
 
+"""
+Clase encargada de cargar la UI de las configuraciones
+la funcionalidad se encuentra en el Controller/Config.py
+en la clase Settings, aqui solo carga la UI y se asignan los eventos
+a los botones.
+"""
+
+class SettingsUI(QMainWindow, MethodsWindow):
+    def __init__(self, windowMain):
+        super().__init__()
+        loadUi('../UI/Settings.ui', self)
+
+        self.previous_window = windowMain #Tomamos la ventana anterior para manipular
+
+        self.initializeComponents()
+        self.initializeVariables()
+        self.initializeStyles()
+
+
+    def initializeComponents(self):
+        self.InstanceWindow = RoundedWindow(self)
+        self.InstanceWindow.startRound(896, 619)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+        self.buttonMinimize.setVisible(False)
+        # Conectar el botón de salida a la función _closeWindow
+        self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
+        self.buttonProfile.clicked.connect(self._showProfileSettings)
+        self.buttonProcess.clicked.connect(self._showProcessSettings)
+
+
+    def initializeVariables(self):
+        pass
+
+    def initializeStyles(self):
+        pass
+
+    def hideComponents(self):
+        pass
+
+
+    def _showProfileSettings(self):
+        try:
+            self.frameUser.raise_()
+            self.frameProcess.lower()
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
+    def _showProcessSettings(self):
+        try:
+            self.frameUser.lower()
+            self.frameProcess.raise_()
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
+    def save(self):
+        from Controller.Config import Settings
+        settings = Settings(self)
+
+    def _closeWindow(self):
+        self.previous_window.setEnabled(True)
+        self.hide()
+        self.close()

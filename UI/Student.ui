@@ -112,6 +112,9 @@ border-radius: 10px;
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Solicitar curso</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
                 background-color: #0068ff;
@@ -292,7 +295,7 @@ QScrollBar::sub-line:vertical {
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-301</y>
+          <y>0</y>
           <width>401</width>
           <height>981</height>
          </rect>

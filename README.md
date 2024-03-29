@@ -21,7 +21,7 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 
 1. Clona este repositorio en tu máquina local utilizando Git:
    ```bash
-   git clone https://github.com/tu_usuario/sistema-administracion-academica.git
+   git clone https://github.com/tu_usuario/https://github.com/McBlockier/SCA.git
 
 2. Hacer cambios y subirlos:
    ```bash

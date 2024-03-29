@@ -43,6 +43,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error initializeComponents -> {ex}")
 
+
     def initializeVariables(self):
         self.image_paths = ['../Resources/iniciar-sesion.png',
                             '../Resources/presentacion.png', '../Resources/reclutamiento.png']
@@ -87,6 +88,8 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     #Función para validar el inicio de sesión
     def _validateLogin(self):
         try:
+            print(str(self.userName.toPlainText())) #Obtener texto de campos
+
             from Controller.MainWindow import WindowADM
             InstanceWindow = WindowADM()
             InstanceWindow.show()

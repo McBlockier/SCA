@@ -846,7 +846,7 @@ QCheckBox::indicator:checked:focus {
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Procesos con la BD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkHideSemester_4">
+      <widget class="QCheckBox" name="weba">
        <property name="geometry">
         <rect>
          <x>520</x>

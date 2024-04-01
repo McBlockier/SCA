@@ -78,7 +78,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         self.buttonDB.setVisible(False)
 
 
-
     def initializeStyles(self):
         pass
 
@@ -88,13 +87,27 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     #Función para validar el inicio de sesión
     def _validateLogin(self):
         try:
-            print(str(self.userName.toPlainText())) #Obtener texto de campos
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
 
-            from Controller.MainWindow import WindowADM
-            InstanceWindow = WindowADM()
-            InstanceWindow.show()
-            self.hide()
-            self.close()
+            username = self.userName.toPlainText().strip()
+            password = self.password.text().strip()
+
+            success = InstanceInquiries.validate_login(username, password)
+            if success:
+                getRank = InstanceInquiries.get_user_details_by_id(username)
+                if getRank[0]['rankId'] == 1:
+                    #Admin
+                    pass
+
+                elif getRank[0]['rankId'] == 2:
+                    from Controller.MainWindow import WindowADM
+                    window = WindowADM(getRank)
+                    window.show()
+                    self.hide()
+                    self.close()
+
+
         except Exception as ex:
             print(f"Error {ex}")
 

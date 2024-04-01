@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from Controller.Implements import MethodsWindow, MotionFrame, RoundedWindow
+from Controller.MainWindow import MessageBox
 class ControllerRegister(QMainWindow, MethodsWindow):
     def __init__(self):
         super().__init__()
@@ -13,6 +14,8 @@ class ControllerRegister(QMainWindow, MethodsWindow):
         self.InitializeStyles()
 
     def InitializeVariables(self):
+        InstanceWindow = RoundedWindow(self)
+        InstanceWindow.startRound(830, 665)
         InstanceMotion = MotionFrame(self)
 
         # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
@@ -20,8 +23,8 @@ class ControllerRegister(QMainWindow, MethodsWindow):
         self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
         self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
 
-        self.InstanceWindow = RoundedWindow(self)
-        self.InstanceWindow.startRound()
+        self.message = MessageBox()
+
 
     def InitializeComponents(self):
         # Botones del formulario REGISTER
@@ -34,12 +37,42 @@ class ControllerRegister(QMainWindow, MethodsWindow):
         pass
 
     def _registerUser(self):
-        """
-        Aqui se valida los campos ingresados y se registra el usuario con su información en la base de datos
-        :return:
-        """
-        pass
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
 
+            # Obtener los datos del usuario desde los campos de entrada
+            userName = self.userName.toPlainText().strip()
+            password = self.password.text().strip()
+            confirmPass = self.confirmPassword.text().strip()
+            names = self.name.toPlainText().strip()
+            lastNames = self.lastName.toPlainText().strip()
+            controlNum = self.controlNumber.toPlainText().strip()
+
+            # Verificar si las contraseñas coinciden
+            if password != confirmPass:
+                self.message.warning_msgbox("ADVERTENCIA!", "Las contraseñas ingresadas no coinciden")
+                return
+
+            # Realizar el registro del usuario
+            success, message = InstanceInquiries.register_user(userName, password, names, lastNames,
+                                                                    controlNum, 2)
+            if success:
+                self.message.information_msgbox("Éxito", "Usuario registrado correctamente.")
+                self._backToLogin()
+            else:
+                self.message.information_msgbox("ADVERTENCIA", "No se pudo hacer el registro")
+
+            # Limpiar los campos de entrada
+            self.userName.setPlainText("")
+            self.password.setText("")
+            self.confirmPassword.setText("")
+            self.name.setPlainText("")
+            self.lastName.setPlainText("")
+            self.controlNumber.setPlainText()
+
+        except Exception as ex:
+            print(f"Error {ex}")
 
     #Funciones raíz de la ventana
     def _closeWindow(self):

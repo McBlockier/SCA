@@ -101,66 +101,6 @@ padding-left: 50px;</string>
       <string>Usuario</string>
      </property>
     </widget>
-    <widget class="QPlainTextEdit" name="password">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>210</y>
-       <width>341</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="cursor" stdset="0">
-      <cursorShape>IBeamCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Ingresar contraseña</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid black;
-border-radius: 10px;
-padding-left: 50px;</string>
-     </property>
-     <property name="placeholderText">
-      <string>Contraseña</string>
-     </property>
-    </widget>
-    <widget class="QPlainTextEdit" name="confirmPassword">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>320</y>
-       <width>341</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="cursor" stdset="0">
-      <cursorShape>IBeamCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Confirmar contraseña</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid black;
-border-radius: 10px;
-padding-left: 50px;</string>
-     </property>
-     <property name="placeholderText">
-      <string>Confirmar contraseña</string>
-     </property>
-    </widget>
     <widget class="QPlainTextEdit" name="name">
      <property name="geometry">
       <rect>
@@ -478,6 +418,80 @@ padding-left:20px;</string>
       </property>
      </widget>
     </widget>
+    <widget class="QLineEdit" name="password">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>210</y>
+       <width>341</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid black;
+border-radius: 10px;
+padding-left: 50px;</string>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Contraseña</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="confirmPassword">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>320</y>
+       <width>341</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid black;
+border-radius: 10px;
+padding-left: 50px;</string>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Contraseña</string>
+     </property>
+    </widget>
+    <zorder>confirmPassword</zorder>
+    <zorder>password</zorder>
+    <zorder>buttonRegister</zorder>
+    <zorder>userName</zorder>
+    <zorder>name</zorder>
+    <zorder>controlNumber</zorder>
+    <zorder>lastName</zorder>
+    <zorder>label_3</zorder>
+    <zorder>label_2</zorder>
+    <zorder>label_4</zorder>
+    <zorder>label_5</zorder>
+    <zorder>label_6</zorder>
+    <zorder>label_7</zorder>
+    <zorder>frame_2</zorder>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

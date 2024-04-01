@@ -7,9 +7,11 @@ from Controller.Implements import RoundedWindow, MotionFrame, MethodsWindow
 from Controller.Message import MessageBox
 
 class WindowADM(QMainWindow, MethodsWindow):
-    def __init__(self):
+    def __init__(self, information):
         super().__init__()
         loadUi('../UI/Student.ui', self)
+
+        self.information = information
 
         self.initializeComponents()
         self.initializeVariables()
@@ -52,6 +54,11 @@ class WindowADM(QMainWindow, MethodsWindow):
         self.buttonNext_2.clicked.connect(self._nextOption)
 
         self.buttonBack_2.clicked.connect(self._oldOption)
+
+
+        #QLabels
+
+        self.setUserName.setText(self.information[0]['name'])
 
     def initializeVariables(self):
 

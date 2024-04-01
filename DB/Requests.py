@@ -3,24 +3,10 @@ class Inquiries:
     """
     Clase para realizar consultas y operaciones en la base de datos.
     """
-
     def __init__(self):
-        """
-        Constructor de la clase.
-        Inicializa los parámetros de conexión a la base de datos.
-        """
-        self.host = ""
-        self.user = ""
-        self.password = ""
-        self.database = ""
-
-    def start_to_connection(self):
-        """
-        Método para establecer los datos de conexión a la base de datos.
-        """
-        # Datos de conexión
-        self.host = "localhost"
-        self.user = "McBlockier"
+        "Datos para la conexión a la base de datos"
+        self.host = "127.0.0.1"
+        self.user = "root"
         self.password = "root"
         self.database = "sca_database"
 
@@ -35,16 +21,17 @@ class Inquiries:
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-                cursor.callproc('ValidateLoginWithRank', (userName, password))
-                result = cursor.fetchone()
 
-                cursor.close()
-                return result
+                sql_query = "SELECT ValidateLogin(%s, %s)"
+                cursor.execute(sql_query, (userName, password))
+                result = cursor.fetchone()[0]
+                return bool(result)
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error: {ex}")
+            return False, "Error al conectar a la base de datos."
 
-    def register_user(self, idUser, password, name, lastName, nControl, rankId):
+    def register_user(self, idUser, password, name, lastName, nControl, rank):
         """
         Método para registrar un nuevo usuario en la base de datos.
 
@@ -57,33 +44,37 @@ class Inquiries:
         :return: Resultado del registro y mensaje descriptivo.
         """
         try:
-            # Parámetros de salida
-            success = None
-            message = None
-
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
 
-                cursor.callproc('RegisterUser', (idUser, password, name, lastName,
-                                                 nControl, rankId, success, message))
-                cursor.execute('SELECT @_RegisterUser_6, @_RegisterUser_7')
-                result = cursor.fetchone()
-                success = result[0]
-                message = result[1]
-
-                # Confirmar los cambios si la transacción fue exitosa
+                sql_query = "SELECT RegisterUser(%s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql_query, (idUser, password, name, lastName, nControl, rank))
+                result = cursor.fetchone()[0]
                 db.connection.commit()
+
+                return bool(result), "Usuario registrado correctamente."
 
         except Exception as ex:
             print(f"Error {ex}")
-            success = False
-            message = "Error al registrar usuario."
 
-        finally:
-            cursor.close()
-            db.connection.close()
+    def get_user_details_by_id(self, idUser):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor(dictionary=True)
 
-        return success, message
+                query = """
+                            SELECT rankId, name, lastName, nControl
+                            FROM user
+                            WHERE idUser = %s
+                        """
+                cursor.execute(query, (idUser,))
+                results = cursor.fetchall()
+
+                return results
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return []
 
     def isAvailable(self):
         try:

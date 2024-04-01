@@ -19,9 +19,13 @@ El Sistema de Administración Académica (SAA) es una aplicación diseñada para
 
 ## Instalación
 
+Pirmero crea una carpeta donde tu quieras, despues le das click derecho sobre la carpeta y le das en propiedades, copias la ruta completa de la carpeta
+ahora abres la terminal de windows o el cmd, le das cd pegasTuRutaCompleta, una vez que este dentro ahora si usar el git clone, para clonar este proyecto
+en tu computadora, recuerda tener primero instalado el gitHub en tu computadora desde este link lo puedes descargar: https://desktop.github.com/
+
 1. Clona este repositorio en tu máquina local utilizando Git:
    ```bash
-   git clone https://github.com/tu_usuario/sistema-administracion-academica.git
+   git clone https://github.com/McBlockier/SCA.git
 
 2. Hacer cambios y subirlos:
    ```bash

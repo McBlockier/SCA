@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1121</width>
-    <height>1192</height>
+    <width>895</width>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/logo.jpeg</normaloff>../Resources/logo.jpeg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color:transparent;
@@ -28,8 +32,19 @@ border-radius:10px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:white;
-border-radius:10px;
+     <string notr="true">
+
+/* Estilo base del QFrame */
+QFrame {
+    background-color: #fbfbfa;
+    border-radius: 10px;
+    transition: background-image 0.5s; /* Transición suave para el cambio del degradado */
+}
+
+/* Estilo del QFrame al hacer hover */
+QFrame:hover {
+    background-image: linear-gradient(to right, rgba(251, 251, 250, 1), rgba(251, 251, 250, 0)); /* Degradado de color al hacer hover */
+}
 </string>
     </property>
     <property name="frameShape">
@@ -51,8 +66,20 @@ border-radius:10px;
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:#fbfbfa;
-border-radius:10px;</string>
+      <string notr="true">
+
+/* Estilo base del QFrame */
+QFrame {
+    background-color: #fbfbfa;
+    border-radius: 10px;
+    transition: background-image 0.5s; /* Transición suave para el cambio del degradado */
+}
+
+/* Estilo del QFrame al hacer hover */
+QFrame:hover {
+    background-image: linear-gradient(to right, rgba(251, 251, 250, 1), rgba(251, 251, 250, 0)); /* Degradado de color al hacer hover */
+}
+</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -188,8 +215,20 @@ border-radius:10px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:white;
-border-radius:10px;</string>
+      <string notr="true">
+
+/* Estilo base del QFrame */
+QFrame {
+    background-color: #fbfbfa;
+    border-radius: 10px;
+    transition: background-image 0.5s; /* Transición suave para el cambio del degradado */
+}
+
+/* Estilo del QFrame al hacer hover */
+QFrame:hover {
+    background-image: linear-gradient(to right, rgba(251, 251, 250, 1), rgba(251, 251, 250, 0)); /* Degradado de color al hacer hover */
+}
+</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -598,6 +637,22 @@ border-radius:15px;</string>
         <width>801</width>
         <height>411</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+
+/* Estilo base del QFrame */
+QFrame {
+    background-color: #fbfbfa;
+    border-radius: 10px;
+    transition: background-image 0.5s; /* Transición suave para el cambio del degradado */
+}
+
+/* Estilo del QFrame al hacer hover */
+QFrame:hover {
+    background-image: linear-gradient(to right, rgba(251, 251, 250, 1), rgba(251, 251, 250, 0)); /* Degradado de color al hacer hover */
+}
+</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>

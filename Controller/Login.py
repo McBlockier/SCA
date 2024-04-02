@@ -54,38 +54,41 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
 
     def initializeVariables(self):
-        self.image_paths = ['../Resources/iniciar-sesion.png',
-                            '../Resources/presentacion.png', '../Resources/reclutamiento.png']
-        self.current_image_index = 0
-        # Mostrar la primera imagen
-        self.show_image()
+        try:
+            self.image_paths = ['../Resources/iniciar-sesion.png',
+                                '../Resources/presentacion.png', '../Resources/reclutamiento.png']
+            self.current_image_index = 0
+            # Mostrar la primera imagen
+            self.show_image()
 
-        # Configurar temporizador para cambiar las imágenes
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.change_image)
-        self.timer.start(6500)  # Cambiar cada 6.5 segundos
+            # Configurar temporizador para cambiar las imágenes
+            self.timer = QTimer(self)
+            self.timer.timeout.connect(self.change_image)
+            self.timer.start(6500)  # Cambiar cada 6.5 segundos
 
-        # Cargar el GIF usando QMovie
-        movie = QMovie('../Resources/reloj.gif')
-        self.timeShow.setMovie(movie)
-        # Escalar el GIF al tamaño deseado
-        movie.setScaledSize(self.timeShow.size())
+            # Cargar el GIF usando QMovie
+            movie = QMovie('../Resources/reloj.gif')
+            self.timeShow.setMovie(movie)
+            # Escalar el GIF al tamaño deseado
+            movie.setScaledSize(self.timeShow.size())
 
-        # Iniciar la reproducción del GIF
-        movie.start()
+            # Iniciar la reproducción del GIF
+            movie.start()
 
-        # Configurar un QTimer para ejecutar la función update_time() cada 1 segundo
-        self.timerT = QTimer(self)
-        self.timerT.timeout.connect(self.update_time)
-        self.timerT.start(1000)  # Ejecutar cada 1000 ms (1 segundo)
+            # Configurar un QTimer para ejecutar la función update_time() cada 1 segundo
+            self.timerT = QTimer(self)
+            self.timerT.timeout.connect(self.update_time)
+            self.timerT.start(1000)  # Ejecutar cada 1000 ms (1 segundo)
 
-        # Llamar a update_time() inicialmente para mostrar la hora actual
-        self.update_time()
-        self.isPasswordVisible = False
-        self.message = MessageBox() #variable para invocar un mensaje
+            # Llamar a update_time() inicialmente para mostrar la hora actual
+            self.update_time()
+            self.isPasswordVisible = False
+            self.message = MessageBox() #variable para invocar un mensaje
 
-        self.buttonDB.setVisible(False)
-        self.saved_password = ""
+            self.buttonDB.setVisible(False)
+            self.saved_password = ""
+        except Exception as ex:
+            print(f"Error initializeVariables -> {ex}")
 
     #Función para validar el inicio de sesión
     def _validateLogin(self):
@@ -124,7 +127,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                                               "Por favor ingrese tanto el nombre de usuario como la contraseña.")
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error _validateLogin -> {ex}")
 
 
     def _readLogged(self):
@@ -154,7 +157,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                 return None
 
         except Exception as ex:
-            print(f"Error: {ex}")  # Aquí se imprime la descripción completa del error
+            print(f"Error _readLogged -> {ex}")  # Aquí se imprime la descripción completa del error
             return None
 
         # Función para leer el contenido del archivo JSON
@@ -173,7 +176,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             InstanceForgot = ResetPasswordUI(self)
             InstanceForgot.show()
         except Exception as ex:
-            print(f"Error{ex}")
+            print(f"Error _forgotPassword -> {ex}")
 
     #Funcion para transición de imagenes
     def show_image(self):
@@ -209,7 +212,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             # Iniciar la animación
             animation.start()
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error change_image -> {ex}")
 
 
     def __checkDataBase(self):
@@ -220,7 +223,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             else:
                 self.buttonDB.setVisible(True)
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error __checkDataBase -> {ex}")
 
         # Función para mostrar la ventana de registro
     def _showRegister(self):
@@ -234,7 +237,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.hide()
             self.close()
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error _showRegister -> {ex}")
 
         # Función para alternar la visibilidad de la contraseña
 
@@ -243,10 +246,11 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             if state == 2:  # 2 corresponde a seleccionado, 0 a deseleccionado
                 userName = self.userName.toPlainText().strip()
                 password = self.password.text().strip()
+
                 self._saveInfo(userName, password)
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error _on_checkbox_state_changed -> {ex}")
 
     def _saveInfo(self, userName, password):
         try:
@@ -276,15 +280,13 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                 with open(file_path, "w") as file:
                     json.dump(json_data, file, indent=4)
 
-                self.message.information_msgbox("INFORMACIÓN",
-                                                "Auto inicio activado")
             else:
-                self.message.information_msgbox("INFORMACIÓN",
+                MessageBox.information_msgbox("INFORMACIÓN",
                                                 "Debes primero ingresar los datos como nombre de usuario y contraseña")
                 self.remember.setChecked(False)
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error _saveInfo -> {ex}")
 
 
 
@@ -339,7 +341,7 @@ class ResetPasswordUI(QMainWindow, MethodsWindow):
     def initializeComponents(self):
 
         InstanceWindow = RoundedWindow(self)
-        InstanceWindow.startRound(497, 365)
+        InstanceWindow.startRound(553, 501)
         InstanceMotion = MotionFrame(self)
 
         # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame

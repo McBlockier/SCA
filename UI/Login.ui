@@ -18,6 +18,10 @@
   <property name="windowTitle">
    <string>Inicio de sesión</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/logo.jpeg</normaloff>../Resources/logo.jpeg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">border-radius:10px;
 background-color:transparent;
@@ -174,7 +178,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>100</y>
+       <y>90</y>
        <width>331</width>
        <height>51</height>
       </rect>
@@ -270,8 +274,12 @@ background-color: transparent;</string>
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:white;
-border-radius: 15px;</string>
+      <string notr="true">
+    background-color: white;
+    border-radius: 15px;
+
+
+</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -421,7 +429,8 @@ border-radius: 15px;</string>
        <string>Información del programa</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">padding-top: -5px;</string>
+       <string notr="true">padding-top: -5px;
+</string>
       </property>
       <property name="text">
        <string>Sobre nosotros</string>
@@ -483,6 +492,9 @@ border-radius: 15px;</string>
         <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:transparent;</string>
       </property>
       <property name="text">
        <string/>

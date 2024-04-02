@@ -402,3 +402,6 @@ class SettingsUI(QMainWindow, MethodsWindow):
         self.previous_window.setEnabled(True)
         self.hide()
         self.close()
+
+
+

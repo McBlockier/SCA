@@ -42,10 +42,10 @@ border-radius: 10px;
     <widget class="QPushButton" name="buttonRegister">
      <property name="geometry">
       <rect>
-       <x>680</x>
-       <y>500</y>
-       <width>121</width>
-       <height>41</height>
+       <x>670</x>
+       <y>490</y>
+       <width>131</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -61,11 +61,17 @@ border-radius: 10px;
       <string>Registrar usuario</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:#f43071;
-border: 1px solid transparent;
-border-radius: 10px;
-color: #f5deed;
-</string>
+      <string notr="true"> QPushButton {
+                background-color: #f43071;
+                border: 1px solid transparent;
+                border-radius: 10px;
+                color: #f5deed;
+                padding: 8px 16px; /* Agregamos un padding para que el botón tenga un tamaño adecuado */
+            }
+            QPushButton:hover {
+                background-color: #ff69b4; /* Cambia el color al pasar el mouse */
+                border: 1px solid #ff69b4; /* Cambia el borde al pasar el mouse */
+            }</string>
      </property>
      <property name="text">
       <string>Registrarse</string>
@@ -358,10 +364,15 @@ border-radius: 10px;
        <string>Regresar al login</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:#27338e;
-border-radius: 10px;
-color: #f5deed;
-padding-left:20px;</string>
+       <string notr="true">QPushButton {
+                background-color: #27338e;
+                border-radius: 10px;
+                color: #f5deed;
+                padding-left: 20px;
+            }
+            QPushButton:hover {
+                background-color: #3949ab; /* Cambia el color al pasar el mouse */
+            }</string>
       </property>
       <property name="text">
        <string>Iniciar sesión</string>

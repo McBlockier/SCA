@@ -18,6 +18,10 @@
   <property name="windowTitle">
    <string>Boleta</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/logo.jpeg</normaloff>../Resources/logo.jpeg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">border-radius:10px;
 background-color:transparent;
@@ -40,8 +44,12 @@ background-color:transparent;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius:15px;
-background-color:#ebeaea;</string>
+     <string notr="true">QFrame {
+    border-radius: 15px;
+    background-color: #ebeaea;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75); /* Sombra 3D con degradado de color */
+}
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -134,7 +142,7 @@ QScrollBar::sub-line:vertical {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-67</y>
+        <y>0</y>
         <width>770</width>
         <height>291</height>
        </rect>
@@ -594,8 +602,18 @@ background-color:transparent;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(187, 170, 223);
-border-radius:10px;</string>
+      <string notr="true">/* Estilo base del QFrame */
+QFrame {
+    background-color: rgb(187, 170, 223);
+    border-radius: 10px;
+    transition: background-image 0.5s; /* Transición suave para el cambio del degradado */
+}
+
+/* Estilo del QFrame al hacer hover */
+QFrame:hover {
+    background-image: linear-gradient(to right, rgba(187, 170, 223, 1), rgba(187, 170, 223, 0)); /* Degradado de color al hacer hover */
+}
+</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -653,6 +671,9 @@ background-color:white;</string>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Descargar constancia</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color:transparent;
@@ -922,6 +943,9 @@ background-color:white;</string>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Descargar constancia</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color:transparent;
 border-radius:10px;</string>
@@ -1190,6 +1214,9 @@ background-color:white;</string>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Descargar constancia</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color:transparent;
 border-radius:10px;</string>
@@ -1406,10 +1433,25 @@ background-color:transparent;
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="toolTip">
+      <string>Enviar mensaje</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #161d38;
-border-radius:10px;
-color:white;</string>
+      <string notr="true">/* Estilo base del QPushButton */
+QPushButton {
+    background-color: #161d38;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+    border: none; /* Quita el borde */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el color de fondo y el color del texto */
+}
+
+/* Estilo del QPushButton al hacer hover */
+QPushButton:hover {
+    background-color: #2a355c; /* Cambia el color de fondo al hacer hover */
+}
+</string>
      </property>
      <property name="text">
       <string>Enviar</string>
@@ -1429,6 +1471,12 @@ color:white;</string>
        <family>Segoe UI</family>
        <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Escribir un mensaje adicional</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:#e2e2e3;

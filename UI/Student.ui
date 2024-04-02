@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>1221</width>
-    <height>895</height>
+    <height>892</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Alumno</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/logo.jpeg</normaloff>../Resources/logo.jpeg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">border-radius:10px;
@@ -48,7 +52,14 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #ffffff;
+      <string notr="true">QFrame {
+    background-color: rgb(255, 255, 255);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0px; /* Sin borde redondeado en el lado izquierdo */
+    border-bottom-left-radius: 0px; /* Sin borde redondeado en el lado izquierdo */
+}
+
 </string>
      </property>
      <property name="frameShape">
@@ -258,7 +269,7 @@ QPushButton:hover {
          <x>10</x>
          <y>190</y>
          <width>401</width>
-         <height>621</height>
+         <height>601</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -310,8 +321,19 @@ QScrollBar::sub-line:vertical {
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true"> background-color: #ce74ff;
-    border-radius: 15px;</string>
+          <string notr="true">QFrame {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #ce74ff,
+                                 stop:1 #ce74ff);
+    border-radius: 15px;
+}
+
+QFrame:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #a55cff,
+                                 stop:1 #ce74ff);
+}
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -416,15 +438,28 @@ diferenciales</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">QProgressBar{
-background-color: #e0abff;
-height: 2px;
-border-radius:1px;
+           <string notr="true">/* Estilo base del QProgressBar */
+QProgressBar {
+    background-color: #e0abff;
+    height: 5px; /* Incrementa el tamaño vertical para una mejor apariencia */
+    border-radius: 3px; /* Ajusta el radio de borde para una apariencia más suave */
 }
+
+/* Estilo del chunk (parte de progreso) */
 QProgressBar::chunk {
-background-color: #fefeff; 
-border-radius:1px;
-}</string>
+    background-color: white; /* Cambia el color del chunk */
+    border-radius: 3px; /* Ajusta el radio de borde del chunk */
+}
+
+/* Añade transiciones para hacer los cambios de estilo más suaves */
+QProgressBar {
+    transition: background-color 0.3s ease;
+}
+
+QProgressBar::chunk {
+    transition: background-color 0.3s ease;
+}
+</string>
           </property>
           <property name="value">
            <number>70</number>
@@ -471,8 +506,36 @@ background-color:transparent;
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: #fada38;
-border-radius: 15px;</string>
+          <string notr="true">QFrame {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #fada38,
+                                 stop:0.5 #ffd700,
+                                 stop:1 #fada38);
+    border-radius: 15px;
+    position: relative; /* Asegura que el seudoelemento se posicione correctamente */
+    overflow: hidden; /* Evita que el degradado se desborde fuera del QFrame */
+}
+
+QFrame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #fada38,
+                                 stop:0.5 #ffd700,
+                                 stop:1 #fada38);
+    border-radius: inherit; /* Hereda el radio de borde del QFrame */
+    transition: opacity 0.3s ease; /* Transición suave para la opacidad */
+    opacity: 0; /* Inicialmente oculta el degradado */
+}
+
+QFrame:hover::before {
+    opacity: 1; /* Muestra el degradado al hacer hover */
+}
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -577,15 +640,28 @@ web</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">QProgressBar{
-background-color: #e0abff;
-height: 2px;
-border-radius:1px;
+           <string notr="true">/* Estilo base del QProgressBar */
+QProgressBar {
+    background-color: #e0abff;
+    height: 5px; /* Incrementa el tamaño vertical para una mejor apariencia */
+    border-radius: 3px; /* Ajusta el radio de borde para una apariencia más suave */
 }
+
+/* Estilo del chunk (parte de progreso) */
 QProgressBar::chunk {
-background-color: #fefeff; 
-border-radius:1px;
-}</string>
+    background-color: white; /* Cambia el color del chunk */
+    border-radius: 3px; /* Ajusta el radio de borde del chunk */
+}
+
+/* Añade transiciones para hacer los cambios de estilo más suaves */
+QProgressBar {
+    transition: background-color 0.3s ease;
+}
+
+QProgressBar::chunk {
+    transition: background-color 0.3s ease;
+}
+</string>
           </property>
           <property name="value">
            <number>90</number>
@@ -632,8 +708,19 @@ background-color:transparent;
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: #0068ff;
-border-radius: 15px;</string>
+          <string notr="true">QFrame {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #0068ff,
+                                 stop:1 #0068ff);
+    border-radius: 15px;
+}
+
+QFrame:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #4287f5,
+                                 stop:1 #0068ff);
+}
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -738,15 +825,28 @@ software</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">QProgressBar{
-background-color: #e0abff;
-height: 2px;
-border-radius:1px;
+           <string notr="true">/* Estilo base del QProgressBar */
+QProgressBar {
+    background-color: #e0abff;
+    height: 5px; /* Incrementa el tamaño vertical para una mejor apariencia */
+    border-radius: 3px; /* Ajusta el radio de borde para una apariencia más suave */
 }
+
+/* Estilo del chunk (parte de progreso) */
 QProgressBar::chunk {
-background-color: #fefeff; 
-border-radius:1px;
-}</string>
+    background-color: white; /* Cambia el color del chunk */
+    border-radius: 3px; /* Ajusta el radio de borde del chunk */
+}
+
+/* Añade transiciones para hacer los cambios de estilo más suaves */
+QProgressBar {
+    transition: background-color 0.3s ease;
+}
+
+QProgressBar::chunk {
+    transition: background-color 0.3s ease;
+}
+</string>
           </property>
           <property name="value">
            <number>10</number>
@@ -899,8 +999,27 @@ web</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #ed7071;
-    border-radius: 15px;</string>
+           <string notr="true">QFrame {
+    background-color: #ed7071;
+    border-radius: 15px;
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+QFrame:hover {
+    background: qradialgradient(
+        cx: 0.5,
+        cy: 0.5,
+        radius: 1,
+        fx: 0.5,
+        fy: 0.0, /* Cambia fy a 0 para que el degradado comience desde la parte superior */
+        stop: 0 #ed7071,
+        stop: 0.5 #ed7071, /* Cambia la posición de parada para un degradado más pronunciado en la parte superior */
+        stop: 1 #ffcd53
+    ); /* Degradado de color al hacer hover */
+}
+
+
+</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -1005,15 +1124,28 @@ base de datos</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">QProgressBar{
-background-color: #e0abff;
-height: 2px;
-border-radius:1px;
+            <string notr="true">/* Estilo base del QProgressBar */
+QProgressBar {
+    background-color: #e0abff;
+    height: 5px; /* Incrementa el tamaño vertical para una mejor apariencia */
+    border-radius: 3px; /* Ajusta el radio de borde para una apariencia más suave */
 }
+
+/* Estilo del chunk (parte de progreso) */
 QProgressBar::chunk {
-background-color: #fefeff; 
-border-radius:1px;
-}</string>
+    background-color: white; /* Cambia el color del chunk */
+    border-radius: 3px; /* Ajusta el radio de borde del chunk */
+}
+
+/* Añade transiciones para hacer los cambios de estilo más suaves */
+QProgressBar {
+    transition: background-color 0.3s ease;
+}
+
+QProgressBar::chunk {
+    transition: background-color 0.3s ease;
+}
+</string>
            </property>
            <property name="value">
             <number>50</number>
@@ -1061,8 +1193,25 @@ background-color:transparent;
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: #f0a4ab;
-    border-radius: 15px;</string>
+          <string notr="true">QFrame {
+    background-color: #f0a4ab;
+    border-radius: 15px;
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+QFrame:hover {
+    background: qradialgradient(
+        cx: 0.5,
+        cy: 0.5,
+        radius: 1,
+        fx: 0.5,
+        fy: 0.0, /* Cambia fy a 0 para que el degradado comience desde la parte superior */
+        stop: 0 #f0a4ab,
+        stop: 0.5 #f0a4ab, /* Cambia la posición de parada para un degradado más pronunciado en la parte superior */
+        stop: 1 #ffb94e
+    ); /* Degradado de color al hacer hover */
+}
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -1491,8 +1640,15 @@ background-color:transparent;</string>
        <string>Atrás</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:#f2f6ff;
-border-radius:30px;</string>
+       <string notr="true"> QPushButton {
+                background-color: #f2f6ff;
+                border-radius: 20px;
+                color: #0068ff; /* Color del texto */
+            }
+QPushButton:hover {
+                background-color: gainsboro;
+                border-radius: 20px;
+            }</string>
       </property>
       <property name="text">
        <string/>
@@ -1518,8 +1674,15 @@ border-radius:30px;</string>
        <string>Siguiente</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:#f2f6ff;
-border-radius:30px;</string>
+       <string notr="true"> QPushButton {
+                background-color: #f2f6ff;
+                border-radius: 20px;
+                color: #0068ff; /* Color del texto */
+            }
+QPushButton:hover {
+                background-color: gainsboro;
+                border-radius: 20px;
+            }</string>
       </property>
       <property name="text">
        <string/>
@@ -2069,7 +2232,7 @@ border-radius:1px;
      <rect>
       <x>19</x>
       <y>10</y>
-      <width>251</width>
+      <width>261</width>
       <height>841</height>
      </rect>
     </property>
@@ -2077,10 +2240,14 @@ border-radius:1px;
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">QFrame{
+     <string notr="true">QFrame {
     background-color: rgb(255, 255, 255);
-    border-radius:10px;
-}</string>
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0px; /* Sin borde redondeado en el lado derecho */
+    border-bottom-right-radius: 0px; /* Sin borde redondeado en el lado derecho */
+}
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -2092,8 +2259,8 @@ border-radius:1px;
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>590</y>
-       <width>221</width>
+       <y>600</y>
+       <width>231</width>
        <height>41</height>
       </rect>
      </property>
@@ -2113,14 +2280,21 @@ border-radius:1px;
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton{
+      <string notr="true">/* Estilo base del QPushButton */
+QPushButton {
     background-color: white;
     color: #848cba;
-    border-radius:10px;
+    border-radius: 10px;
+    padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el color de fondo y el color del texto */
 }
-QPushButton:hover{
-    background-color: #ebeffd;
-}</string>
+
+/* Estilo para el QPushButton al hacer hover */
+QPushButton:hover {
+    background: qradialgradient(cx:0.5, cy:0.5, radius:1, fx:0.5, fy:0.5, stop:0 #ebeffd, stop:1 white); /* Degradado de color para el fondo al hacer hover */
+    color: #6b76a3; /* Cambia el color del texto al hacer hover */
+}
+</string>
      </property>
      <property name="text">
       <string>            Cerrar sesión</string>
@@ -2142,7 +2316,7 @@ QPushButton:hover{
       </font>
      </property>
      <property name="text">
-      <string>v1.0 Beta</string>
+      <string>v1.0 Beta 2</string>
      </property>
     </widget>
     <widget class="QLabel" name="setUserName">
@@ -2256,7 +2430,7 @@ QPushButton:hover{
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>600</y>
+      <y>610</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -2279,7 +2453,7 @@ QPushButton:hover{
      <rect>
       <x>40</x>
       <y>280</y>
-      <width>221</width>
+      <width>231</width>
       <height>41</height>
      </rect>
     </property>
@@ -2296,14 +2470,21 @@ QPushButton:hover{
      <string>Ver perfil</string>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
+     <string notr="true">/* Estilo base del QPushButton */
+QPushButton {
     background-color: white;
     color: #848cba;
-    border-radius:10px;
+    border-radius: 10px;
+    padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el color de fondo y el color del texto */
 }
-QPushButton:hover{
-    background-color: #ebeffd;
-}</string>
+
+/* Estilo para el QPushButton al hacer hover */
+QPushButton:hover {
+    background: qradialgradient(cx:0.5, cy:0.5, radius:1, fx:0.5, fy:0.5, stop:0 #ebeffd, stop:1 white); /* Degradado de color para el fondo al hacer hover */
+    color: #6b76a3; /* Cambia el color del texto al hacer hover */
+}
+</string>
     </property>
     <property name="text">
      <string>Perfil</string>
@@ -2408,7 +2589,7 @@ QPushButton:hover{
      <rect>
       <x>40</x>
       <y>390</y>
-      <width>221</width>
+      <width>231</width>
       <height>41</height>
      </rect>
     </property>
@@ -2425,14 +2606,21 @@ QPushButton:hover{
      <string>Ver documentación</string>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
+     <string notr="true">/* Estilo base del QPushButton */
+QPushButton {
     background-color: white;
     color: #848cba;
-    border-radius:10px;
+    border-radius: 10px;
+    padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el color de fondo y el color del texto */
 }
-QPushButton:hover{
-    background-color: #ebeffd;
-}</string>
+
+/* Estilo para el QPushButton al hacer hover */
+QPushButton:hover {
+    background: qradialgradient(cx:0.5, cy:0.5, radius:1, fx:0.5, fy:0.5, stop:0 #ebeffd, stop:1 white); /* Degradado de color para el fondo al hacer hover */
+    color: #6b76a3; /* Cambia el color del texto al hacer hover */
+}
+</string>
     </property>
     <property name="text">
      <string>  Boleta</string>
@@ -2464,8 +2652,8 @@ QPushButton:hover{
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>490</y>
-      <width>221</width>
+      <y>500</y>
+      <width>231</width>
       <height>41</height>
      </rect>
     </property>
@@ -2482,14 +2670,21 @@ QPushButton:hover{
      <string>Configuración</string>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
+     <string notr="true">/* Estilo base del QPushButton */
+QPushButton {
     background-color: white;
     color: #848cba;
-    border-radius:10px;
+    border-radius: 10px;
+    padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el color de fondo y el color del texto */
 }
-QPushButton:hover{
-    background-color: #ebeffd;
-}</string>
+
+/* Estilo para el QPushButton al hacer hover */
+QPushButton:hover {
+    background: qradialgradient(cx:0.5, cy:0.5, radius:1, fx:0.5, fy:0.5, stop:0 #ebeffd, stop:1 white); /* Degradado de color para el fondo al hacer hover */
+    color: #6b76a3; /* Cambia el color del texto al hacer hover */
+}
+</string>
     </property>
     <property name="text">
      <string>              Configuración</string>
@@ -2499,7 +2694,7 @@ QPushButton:hover{
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>490</y>
+      <y>500</y>
       <width>41</width>
       <height>41</height>
      </rect>

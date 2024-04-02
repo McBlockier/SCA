@@ -1,14 +1,20 @@
 from DB.Connection import ConnectionDB
+
 class Inquiries:
     """
     Clase para realizar consultas y operaciones en la base de datos.
+
+    Attributes:
+        host (str): El nombre del host donde se encuentra la base de datos.
+        user (str): El nombre de usuario para acceder a la base de datos.
+        password (str): La contraseña del usuario para acceder a la base de datos.
+        database (str): El nombre de la base de datos a la que se quiere conectar.
     """
+
     def __init__(self):
 
         """
-        Datos para la conexión de la base de datos (Modifique con su información de la
-        base de datos para conectarse de forma local, no deje la información que esta en
-        default.
+        Constructor de la clase.
         """
         self.host = "127.0.0.1"
         self.user = "root"
@@ -19,9 +25,13 @@ class Inquiries:
         """
         Método para validar el inicio de sesión de un usuario.
 
-        :param userName: Nombre de usuario.
-        :param password: Contraseña del usuario.
-        :return: Resultado de la validación.
+        Args:
+            userName (str): Nombre de usuario.
+            password (str): Contraseña del usuario.
+
+        Returns:
+            bool: Resultado de la validación.
+            str: Mensaje descriptivo en caso de error.
         """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
@@ -30,7 +40,7 @@ class Inquiries:
                 sql_query = "SELECT ValidateLogin(%s, %s)"
                 cursor.execute(sql_query, (userName, password))
                 result = cursor.fetchone()[0]
-                return bool(result)
+                return bool(result), "Inicio de sesión exitoso."
 
         except Exception as ex:
             print(f"Error: {ex}")
@@ -40,13 +50,17 @@ class Inquiries:
         """
         Método para registrar un nuevo usuario en la base de datos.
 
-        :param idUser: Identificador del usuario.
-        :param password: Contraseña del usuario.
-        :param name: Nombre del usuario.
-        :param lastName: Apellido del usuario.
-        :param nControl: Número de control del usuario.
-        :param rankId: ID del rango de usuario.
-        :return: Resultado del registro y mensaje descriptivo.
+        Args:
+            idUser (str): Identificador del usuario.
+            password (str): Contraseña del usuario.
+            name (str): Nombre del usuario.
+            lastName (str): Apellido del usuario.
+            nControl (int): Número de control del usuario.
+            rankId (int): ID del rango de usuario.
+
+        Returns:
+            bool: Resultado del registro.
+            str: Mensaje descriptivo del resultado del registro.
         """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
@@ -63,6 +77,15 @@ class Inquiries:
             print(f"Error {ex}")
 
     def get_user_details_by_id(self, idUser):
+        """
+        Método para obtener los detalles de un usuario por su ID.
+
+        Args:
+            idUser (str): Identificador del usuario.
+
+        Returns:
+            list: Lista de diccionarios con los detalles del usuario.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor(dictionary=True)
@@ -82,6 +105,16 @@ class Inquiries:
             return []
 
     def reset_password(self, newPassword, idUser):
+        """
+        Método para restablecer la contraseña de un usuario.
+
+        Args:
+            newPassword (str): Nueva contraseña del usuario.
+            idUser (str): Identificador del usuario.
+
+        Returns:
+            bool: True si se realizó la actualización correctamente, False si no.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
@@ -94,25 +127,30 @@ class Inquiries:
                 cursor.close()
                 db.connection.close()
 
-                # Si la ejecución se realizó sin errores, retornar True
                 return True
 
         except Exception as ex:
             print(f"Error en reset {ex}")
-            # Si ocurrió algún error, retornar False
             return False
 
     def isAvailable(self):
+        """
+        Método para verificar si la base de datos está disponible.
+
+        Returns:
+            bool: True si la base de datos está disponible, False si no.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-                cursor.execute("SELECT idUser FROM user LIMIT 1")  # Seleccionar el primer idUser de la tabla user
-                result = cursor.fetchone()  # Leer el resultado de la consulta
+                cursor.execute("SELECT idUser FROM user LIMIT 1")
+                result = cursor.fetchone()
                 cursor.close()
-                return result is not None  # Devuelve True si se encontró al menos una fila, False si no
+                return result is not None
 
         except Exception as ex:
             print(f"Error {ex}")
             print("\nLa base de datos no se encuentra, por favor configure la información\n"
                   "de la base de datos en DB/Requests -> Inquiries en el método __init__\n"
                   "allí se debe poner la información para la conexión con la base de datos.")
+

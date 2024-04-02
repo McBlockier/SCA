@@ -76,6 +76,27 @@ class Inquiries:
             print(f"Error {ex}")
             return []
 
+    def reset_password(self, newPassword, idUser):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                consulta = "UPDATE user SET password = %s WHERE idUser = %s"
+                valores = (newPassword, idUser)
+                cursor.execute(consulta, valores)
+                db.connection.commit()
+
+                cursor.close()
+                db.connection.close()
+
+                # Si la ejecución se realizó sin errores, retornar True
+                return True
+
+        except Exception as ex:
+            print(f"Error en reset {ex}")
+            # Si ocurrió algún error, retornar False
+            return False
+
     def isAvailable(self):
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:

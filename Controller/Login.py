@@ -4,6 +4,10 @@ from PyQt5.QtGui import QPixmap, QMovie, QIcon
 from PyQt5.uic import loadUi
 from Controller.Implements import RoundedWindow, MotionFrame, MethodsWindow
 from Controller.Message import MessageBox
+import json
+import os
+from concurrent.futures import ThreadPoolExecutor
+from threading import Thread
 
 class ControllerLogin(QMainWindow, MethodsWindow):
     def __init__(self):
@@ -31,15 +35,20 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.buttonLogin.clicked.connect(self._validateLogin)#Botón de logeo
             self.buttonRegister.clicked.connect(self._showRegister)  # Botón de registro
             self.buttonView.clicked.connect(self._viewPassword) #Boton de ver contraseña
+            self.remember.stateChanged.connect(self._on_checkbox_state_changed)
 
             self.services.clicked.connect(self.__services)  # Boton de servicios
             self.aboutUs.clicked.connect(self.__aboutUs)  # Boton de acerca de nosotros
             self.home.clicked.connect(self.__home)  # Boton de inicio
+            self.forgotPassword.clicked.connect(self._forgotPassword)
 
 
             self.timeShow.setGeometry(10, 10, 48, 48)
 
-            self.__checkDataBase()
+            self.__checkDataBase()#Checamos la base de datos, para ver si esta bien
+            self._readLogged() #Leemos el historial por si puso mantener sesion
+
+
         except Exception as ex:
             print(f"Error initializeComponents -> {ex}")
 
@@ -76,6 +85,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         self.message = MessageBox() #variable para invocar un mensaje
 
         self.buttonDB.setVisible(False)
+        self.saved_password = ""
 
 
     def initializeStyles(self):
@@ -84,32 +94,91 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def hideComponents(self):
         pass
 
-    #Función para validar el inicio de sesión
     def _validateLogin(self):
         try:
             from DB.Requests import Inquiries
             InstanceInquiries = Inquiries()
 
+            # Obtener los valores de usuario y contraseña del formulario y limpiarlos
             username = self.userName.toPlainText().strip()
             password = self.password.text().strip()
 
-            success = InstanceInquiries.validate_login(username, password)
-            if success:
-                getRank = InstanceInquiries.get_user_details_by_id(username)
-                if getRank[0]['rankId'] == 1:
-                    #Admin
-                    pass
-
-                elif getRank[0]['rankId'] == 2:
-                    from Controller.MainWindow import WindowADM
-                    window = WindowADM(getRank)
-                    window.show()
-                    self.hide()
-                    self.close()
-
+            # Verificar que tanto el nombre de usuario como la contraseña no estén vacíos
+            if username and password:
+                # Si ambos campos tienen valores, continuar con la validación del inicio de sesión
+                success = InstanceInquiries.validate_login(username, password)
+                if success:
+                    getRank = InstanceInquiries.get_user_details_by_id(username)
+                    if getRank[0]['rankId'] == 1:
+                        # Admin
+                        pass
+                    elif getRank[0]['rankId'] == 2:
+                        from Controller.MainWindow import WindowADM
+                        window = WindowADM(getRank)
+                        window.show()
+                        self.hide()
+                        self.close()
+                else:
+                    self.message.information_msgbox("INFORMACIÓN", "El usuario o contraseña no son correctos")
+                    self.userName.setPlainText("")
+                    self.password.setText("")
+                    self.remember.setChecked(False)
+            else:
+                # Si alguno de los campos está vacío, mostrar un mensaje de advertencia
+                self.message.information_msgbox("ADVERTENCIA",
+                                              "Por favor ingrese tanto el nombre de usuario como la contraseña.")
 
         except Exception as ex:
             print(f"Error {ex}")
+
+
+    def _readLogged(self):
+        try:
+            file_path = "../Files/loggedHistroy.json"
+
+            if os.path.exists(file_path):
+                with open(file_path, "r") as file:
+                    # Utilizamos ThreadPoolExecutor para ejecutar la lectura del archivo en un hilo separado
+                    with ThreadPoolExecutor() as executor:
+                        # La función read_json se ejecutará en otro hilo y retornará el resultado
+                        future = executor.submit(self.read_json, file)
+                        # Obtenemos el resultado cuando esté disponible
+                        data = future.result()
+
+                        # Si hay datos en el archivo, puedes hacer lo que necesites con ellos
+                        if data:
+                            self.userName.setPlainText(data['userName'])
+                            self.password.setText(data['password'])
+                            self.saved_password = data['password']
+                            self.remember.setChecked(True)
+                        else:
+                            self.remember.setChecked(False)
+                            return None
+            else:
+                print("El archivo JSON no existe")
+                return None
+
+        except Exception as ex:
+            print(f"Error: {ex}")  # Aquí se imprime la descripción completa del error
+            return None
+
+        # Función para leer el contenido del archivo JSON
+
+    def read_json(self, file):
+        try:
+            # Intenta cargar el archivo JSON y devuelve los datos si tiene un formato válido
+            return json.load(file)
+        except json.JSONDecodeError as e:
+            # Si el archivo JSON no tiene un formato válido, devuelve None
+            print(f"Error al decodificar el JSON: {e}")
+            return None
+
+    def _forgotPassword(self):
+        try:
+            InstanceForgot = ResetPasswordUI(self)
+            InstanceForgot.show()
+        except Exception as ex:
+            print(f"Error{ex}")
 
     #Funcion para transición de imagenes
     def show_image(self):
@@ -174,6 +243,56 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         # Función para alternar la visibilidad de la contraseña
 
+    def _on_checkbox_state_changed(self, state):
+        try:
+            if state == 2:  # 2 corresponde a seleccionado, 0 a deseleccionado
+                userName = self.userName.toPlainText().strip()
+                password = self.password.text().strip()
+                self._saveInfo(userName, password)
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def _saveInfo(self, userName, password):
+        try:
+            file_path = "../Files/loggedHistroy.json"
+
+            if userName != "" and password != "":
+                # Crear un diccionario con los datos
+                data = {
+                    "userName": userName,
+                    "password": password
+                }
+
+                # Verificar si el archivo existe
+                if os.path.exists(file_path):
+                    # Leer los datos existentes si el archivo no está vacío
+                    if os.stat(file_path).st_size > 0:
+                        with open(file_path, "r") as file:
+                            json_data = json.load(file)
+                    else:
+                        json_data = {}  # Crear un diccionario vacío si el archivo está vacío
+                    # Actualizar los datos existentes con los nuevos datos
+                    json_data.update(data)
+                else:
+                    json_data = data  # Usar solo los nuevos datos si el archivo no existe
+
+                # Escribir los datos actualizados en el archivo JSON
+                with open(file_path, "w") as file:
+                    json.dump(json_data, file, indent=4)
+
+                self.message.information_msgbox("INFORMACIÓN",
+                                                "Auto inicio activado")
+            else:
+                self.message.information_msgbox("INFORMACIÓN",
+                                                "Debes primero ingresar los datos como nombre de usuario y contraseña")
+                self.remember.setChecked(False)
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
+
     def _viewPassword(self):
         """
         Alterna la visibilidad de la contraseña en un QLineEdit y cambia el ícono del botón según sea necesario.
@@ -210,3 +329,67 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         current_time = QDateTime.currentDateTime()
         time_string = current_time.toString("hh:mm AP")
         self.setTime.setText(time_string)
+
+
+
+
+class ResetPasswordUI(QMainWindow, MethodsWindow):
+    def __init__(self, window):
+        super().__init__()
+        loadUi('../UI/ResetPassword.ui', self)
+        self.window = window
+
+        self.initializeComponents()
+
+    def initializeComponents(self):
+
+        InstanceWindow = RoundedWindow(self)
+        InstanceWindow.startRound(497, 365)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+        self.buttonAccept.clicked.connect(self.accept)
+        self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
+        self.buttonMinimize.clicked.connect(self._minimizeWindow)  # Minimizar ventana
+
+
+        self.window.setEnabled(False)
+        self.buttonMinimize.setVisible(False)
+
+    def _closeWindow(self):
+        self.window.setEnabled(True)
+        self.hide()
+        self.close()
+
+    def _minimizeWindow(self):
+        super()._minimizeWindow()
+
+    def accept(self):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            password = self.password.text().strip()
+            password_2 = self.password_2.text().strip()
+
+            if password and password_2:
+                if password == password_2:
+                    value = InstanceInquiries.reset_password(password, self.window.userName.toPlainText())
+                    print(value)
+                    if value:
+                        MessageBox.information_msgbox("INFORMACIÓN", "Contraseña actualizada correctamente")
+                        self.window.setEnabled(True)
+                        self._closeWindow()
+                    else:
+                        MessageBox.information_msgbox("ADVERTENCIA", "No se pudo actualizar la contraseña")
+                else:
+                    MessageBox.information_msgbox("ADVERTENCIA", "Las contraseñas no coinciden")
+            else:
+                MessageBox.information_msgbox("ADVERTENCIA", "Debe llenar ambos campos para cambiar la contraseña")
+
+        except Exception as ex:
+            print(f"Error {ex}")

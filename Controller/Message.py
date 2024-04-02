@@ -91,3 +91,6 @@ class MessageBox:
         msg_box.buttonClicked.connect(
             msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
         msg_box.exec_()  # Ejecutar el cuadro de mensaje
+
+
+

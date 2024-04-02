@@ -4,7 +4,12 @@ class Inquiries:
     Clase para realizar consultas y operaciones en la base de datos.
     """
     def __init__(self):
-        "Datos para la conexión a la base de datos"
+
+        """
+        Datos para la conexión de la base de datos (Modifique con su información de la
+        base de datos para conectarse de forma local, no deje la información que esta en
+        default.
+        """
         self.host = "127.0.0.1"
         self.user = "root"
         self.password = "root"
@@ -101,10 +106,13 @@ class Inquiries:
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-                cursor.execute("SELECT 1")
+                cursor.execute("SELECT idUser FROM user LIMIT 1")  # Seleccionar el primer idUser de la tabla user
+                result = cursor.fetchone()  # Leer el resultado de la consulta
                 cursor.close()
-                return True
+                return result is not None  # Devuelve True si se encontró al menos una fila, False si no
 
         except Exception as ex:
-            print(f"Error en isAvailable {ex}")
-            return False
+            print(f"Error {ex}")
+            print("\nLa base de datos no se encuentra, por favor configure la información\n"
+                  "de la base de datos en DB/Requests -> Inquiries en el método __init__\n"
+                  "allí se debe poner la información para la conexión con la base de datos.")

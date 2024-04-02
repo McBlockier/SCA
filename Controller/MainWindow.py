@@ -11,7 +11,7 @@ class WindowADM(QMainWindow, MethodsWindow):
         super().__init__()
         loadUi('../UI/Student.ui', self)
 
-        self.information = information
+        self.information = information #Obtenemos la información del estudiante
 
         self.initializeComponents()
         self.initializeVariables()
@@ -58,7 +58,7 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         #QLabels
 
-        self.setUserName.setText(self.information[0]['name'])
+        self.setUserName.setText(self.information[0]['name'])#Ponemos el nombre en el label
 
     def initializeVariables(self):
 

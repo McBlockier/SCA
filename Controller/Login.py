@@ -16,7 +16,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         self.initializeComponents()
         self.initializeVariables()
-        self.initializeStyles()
+
 
     def initializeComponents(self):
         try:
@@ -35,7 +35,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.buttonLogin.clicked.connect(self._validateLogin)#Botón de logeo
             self.buttonRegister.clicked.connect(self._showRegister)  # Botón de registro
             self.buttonView.clicked.connect(self._viewPassword) #Boton de ver contraseña
-            self.remember.stateChanged.connect(self._on_checkbox_state_changed)
+            self.remember.stateChanged.connect(self._on_checkbox_state_changed) #Link de reinicio de contraseña
 
             self.services.clicked.connect(self.__services)  # Boton de servicios
             self.aboutUs.clicked.connect(self.__aboutUs)  # Boton de acerca de nosotros
@@ -87,32 +87,27 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         self.buttonDB.setVisible(False)
         self.saved_password = ""
 
-
-    def initializeStyles(self):
-        pass
-
-    def hideComponents(self):
-        pass
-
+    #Función para validar el inicio de sesión
     def _validateLogin(self):
         try:
             from DB.Requests import Inquiries
             InstanceInquiries = Inquiries()
 
             # Obtener los valores de usuario y contraseña del formulario y limpiarlos
-            username = self.userName.toPlainText().strip()
-            password = self.password.text().strip()
+            username = self.userName.toPlainText().strip() #QPlainTextEdit
+            password = self.password.text().strip()         #QLineEdit
 
             # Verificar que tanto el nombre de usuario como la contraseña no estén vacíos
             if username and password:
                 # Si ambos campos tienen valores, continuar con la validación del inicio de sesión
                 success = InstanceInquiries.validate_login(username, password)
                 if success:
-                    getRank = InstanceInquiries.get_user_details_by_id(username)
+                    getRank = InstanceInquiries.get_user_details_by_id(username) #Obtenemos información del estudiante desde la BD
                     if getRank[0]['rankId'] == 1:
-                        # Admin
+                        # Aqui se deben cargar las vistas del administrador
                         pass
                     elif getRank[0]['rankId'] == 2:
+                        #Aqui se cargan las vistas para el alumno
                         from Controller.MainWindow import WindowADM
                         window = WindowADM(getRank)
                         window.show()
@@ -393,3 +388,6 @@ class ResetPasswordUI(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error {ex}")
+
+
+

@@ -192,36 +192,35 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
-    def get_icon_name(percent, charging):
-        if charging:
-            return 'perno-de-bateria.png'
-        else:
-            if percent == 100:
-                return 'bateria-llena.png'
-            elif percent >= 70:
-                return 'bateria-tres-cuartos.png'
-            elif percent >= 50:
-                return 'la-mitad-de-la-bateria.png'
-            elif percent >= 30:
-                return 'cuarto-de-bateria.png'
-            elif percent <= 20:
-                return 'exclamacion-de-bateria.png'
-        return None
-
     def change_icon_battery(self, percent, charging):
         try:
             icon_path = '../Resources/'
+            icon_name = ''
 
-            icon_name = self.get_icon_name(percent, charging)
+            if charging:
+                icon_name = 'perno-de-bateria.png'
+            else:
+                if percent == 100:
+                    icon_name = 'bateria-llena.png'
+                elif percent >= 70:
+                    icon_name = 'bateria-tres-cuartos.png'
+                elif percent >= 50:
+                    icon_name = 'la-mitad-de-la-bateria.png'
+                elif percent >= 30:
+                    icon_name = 'cuarto-de-bateria.png'
+                elif percent <= 20:
+                    icon_name = 'exclamacion-de-bateria.png'
+
             if icon_name:
                 icon = QIcon(icon_path + icon_name)
                 self.battery.setIcon(icon)
                 self.lbCharge.setText(str(percent) + '%')
             else:
-                print("La batería está muy baja en energía")
+                print("La batería esta muy baja en energía")
 
         except Exception as ex:
             print(f"Error {ex}")
+
 
     def _upload_file(self):
         try:

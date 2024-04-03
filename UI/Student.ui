@@ -306,7 +306,7 @@ QScrollBar::sub-line:vertical {
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-380</y>
           <width>401</width>
           <height>981</height>
          </rect>
@@ -402,7 +402,7 @@ QFrame:hover {
            </size>
           </property>
          </widget>
-         <widget class="QLabel" name="label_23">
+         <widget class="QLabel" name="lb2">
           <property name="geometry">
            <rect>
             <x>100</x>
@@ -604,7 +604,7 @@ QFrame:hover::before {
            </size>
           </property>
          </widget>
-         <widget class="QLabel" name="label_24">
+         <widget class="QLabel" name="lb3">
           <property name="geometry">
            <rect>
             <x>100</x>
@@ -789,7 +789,7 @@ QFrame:hover {
            </size>
           </property>
          </widget>
-         <widget class="QLabel" name="label_22">
+         <widget class="QLabel" name="lb1">
           <property name="geometry">
            <rect>
             <x>100</x>
@@ -1088,7 +1088,7 @@ QFrame:hover {
             </size>
            </property>
           </widget>
-          <widget class="QLabel" name="label_30">
+          <widget class="QLabel" name="lb4">
            <property name="geometry">
             <rect>
              <x>100</x>
@@ -1280,7 +1280,7 @@ QFrame:hover {
            </size>
           </property>
          </widget>
-         <widget class="QLabel" name="label_33">
+         <widget class="QLabel" name="lb5">
           <property name="geometry">
            <rect>
             <x>100</x>
@@ -2401,7 +2401,7 @@ QPushButton:hover {
       <string>Semestre:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_43">
+    <widget class="QLabel" name="lbSemester_2">
      <property name="geometry">
       <rect>
        <x>180</x>

@@ -65,7 +65,7 @@ class Inquiries:
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-
+                #Llamamos a la función RegisterUser()
                 sql_query = "SELECT RegisterUser(%s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql_query, (idUser, password, name, lastName, nControl, rank))
                 result = cursor.fetchone()[0]
@@ -91,7 +91,7 @@ class Inquiries:
                 cursor = db.connection.cursor(dictionary=True)
 
                 query = """
-                            SELECT rankId, name, lastName, nControl
+                            SELECT rankId, name, lastName, nControl, semester, regular, score, idUser
                             FROM user
                             WHERE idUser = %s
                         """
@@ -153,4 +153,47 @@ class Inquiries:
             print("\nLa base de datos no se encuentra, por favor configure la información\n"
                   "de la base de datos en DB/Requests -> Inquiries en el método __init__\n"
                   "allí se debe poner la información para la conexión con la base de datos.")
+
+    def get_subject_by_user(self, idUser):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                # Llamar al procedimiento almacenado
+                cursor.callproc('ObtenerAsignaturasPorUsuario', [idUser])
+
+                # Obtener los resultados
+                resultados = {}
+                for result in cursor.stored_results():
+                    for row in result.fetchall():
+                        usuario = row[0]
+                        asignaturas = row[1].split(',')  # Convertir la cadena de asignaturas en una lista
+                        resultados[usuario] = asignaturas
+
+                # Cerrar cursor y conexión
+                cursor.close()
+                db.connection.close()
+
+                return resultados
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
+
+
+
+
+"""
+Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados
+que requieras, solo quita el pass y alli mismo escribe tu lógica o pegala allí
+
+ def metodoBase(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                pass
+        except Exception as ex:
+            print(f"Error {ex}")
+
+"""
 

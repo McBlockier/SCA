@@ -58,7 +58,7 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         #QLabels
 
-        self.setUserName.setText(self.information[0]['name'])#Ponemos el nombre en el label
+        self._setInformation()
 
     def initializeVariables(self):
 
@@ -102,6 +102,75 @@ class WindowADM(QMainWindow, MethodsWindow):
         time_string = current_time.toString("hh:mm AP")
         self.lbTime.setText(time_string)
 
+    def _setInformation(self):
+        try:
+            self.setUserName.setText(self.information[0]['name'])  # Ponemos el nombre en el label
+
+            # Mapeo de números de semestre a su equivalente en texto
+            semester_mapping = {
+                1: "1er",
+                2: "2do",
+                3: "3er",
+                4: "4to",
+                5: "5to",
+                6: "6to",
+                7: "7mo",
+                8: "8vo"
+            }
+
+            # Obtener el número de semestre del usuario
+            semester = self.information[0]['semester']
+
+            # Verificar si el número de semestre está en el mapeo
+            if semester in semester_mapping:
+                # Establecer el texto del QLabel con el equivalente en texto del semestre
+                self.lbSemester_2.setText(semester_mapping[semester])
+            else:
+                # Si el número de semestre no está en el mapeo, establecer un texto por defecto
+                self.lbSemester_2.setText("Semestre Desconocido")
+
+            self._subjects()  # Llamamos la función para establecer las asignaturas
+
+        except KeyError as ex:
+            print(f"Error: La clave no existe -> {ex}")
+        except IndexError as ex:
+            print(f"Error: El índice está fuera de rango -> {ex}")
+        except Exception as ex:
+            print(f"Error _setInformation -> {ex}")
+
+    def _subjects(self):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            subjects = InstanceInquiries.get_subject_by_user(self.information[0]['idUser'])
+
+            # Verificar si hay asignaturas asociadas al usuario
+            if subjects:
+                first_user = next(iter(subjects))  # Obtener el primer usuario en el diccionario
+                subjects_of_first_user = subjects[first_user]  # Obtener las asignaturas del primer usuario
+                if subjects_of_first_user:
+                    # Obtener los primeros cinco sujetos del primer usuario
+                    first_five_subjects_of_first_user = subjects_of_first_user[:5]
+                    # Establecer los textos de los QLabel y habilitar wordWrap
+                    for index, subject in enumerate(first_five_subjects_of_first_user, start=1):
+                        label = getattr(self, f"lb{index}")
+                        label.setText(subject)
+                        label.setWordWrap(True)
+                        self._change_icon_subject(subject)
+                else:
+                    self.message.information_msgbox("INFORMACIÓN", "No se encontraron asignaturas para el usuario")
+            else:
+                self.message.information_msgbox("INFORMACIÓN", "No se encontraron asignaturas para ningún usuario")
+
+        except Exception as ex:
+            print(f"Error _subjects -> {ex}")
+
+    def _change_icon_subject(self, subject):
+        try:
+            pass
+        except Exception as ex:
+            print(f"Error {ex}")
 
     def _nextOption(self):
         self.lbIconText.setText("         Pagos")
@@ -123,35 +192,36 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+    def get_icon_name(percent, charging):
+        if charging:
+            return 'perno-de-bateria.png'
+        else:
+            if percent == 100:
+                return 'bateria-llena.png'
+            elif percent >= 70:
+                return 'bateria-tres-cuartos.png'
+            elif percent >= 50:
+                return 'la-mitad-de-la-bateria.png'
+            elif percent >= 30:
+                return 'cuarto-de-bateria.png'
+            elif percent <= 20:
+                return 'exclamacion-de-bateria.png'
+        return None
+
     def change_icon_battery(self, percent, charging):
         try:
             icon_path = '../Resources/'
-            icon_name = ''
 
-            if charging:
-                icon_name = 'perno-de-bateria.png'
-            else:
-                if percent == 100:
-                    icon_name = 'bateria-llena.png'
-                elif percent >= 70:
-                    icon_name = 'bateria-tres-cuartos.png'
-                elif percent >= 50:
-                    icon_name = 'la-mitad-de-la-bateria.png'
-                elif percent >= 30:
-                    icon_name = 'cuarto-de-bateria.png'
-                elif percent <= 20:
-                    icon_name = 'exclamacion-de-bateria.png'
-
+            icon_name = self.get_icon_name(percent, charging)
             if icon_name:
                 icon = QIcon(icon_path + icon_name)
                 self.battery.setIcon(icon)
                 self.lbCharge.setText(str(percent) + '%')
             else:
-                print("No se pudo encontrar el icono adecuado para el porcentaje de la batería.")
+                print("La batería está muy baja en energía")
 
         except Exception as ex:
             print(f"Error {ex}")
-
 
     def _upload_file(self):
         try:

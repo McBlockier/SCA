@@ -107,15 +107,23 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                 if success:
                     getRank = InstanceInquiries.get_user_details_by_id(username) #Obtenemos información del estudiante desde la BD
                     if getRank[0]['rankId'] == 1:
-                        # Aqui se deben cargar las vistas del administrador
-                        pass
+
+                         #Aqui se cargan las vistas de administrador
+                        from Controller.AdminWindow import AdminController
+                        Instance = AdminController()
+                        Instance.show()
+                        self.hide()
+                        self.close()
+
                     elif getRank[0]['rankId'] == 2:
+
                         #Aqui se cargan las vistas para el alumno
                         from Controller.MainWindow import WindowADM
                         window = WindowADM(getRank)
                         window.show()
                         self.hide()
                         self.close()
+
                 else:
                     self.message.information_msgbox("INFORMACIÓN", "El usuario o contraseña no son correctos")
                     self.userName.setPlainText("")
@@ -128,6 +136,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error _validateLogin -> {ex}")
+
 
 
     def _readLogged(self):
@@ -390,6 +399,3 @@ class ResetPasswordUI(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error {ex}")
-
-
-

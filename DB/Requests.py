@@ -178,11 +178,6 @@ class Inquiries:
         except Exception as ex:
             print(f"Error {ex}")
 
-
-
-
-
-
 """
 Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados
 que requieras, solo quita el pass y alli mismo escribe tu lógica o pegala allí

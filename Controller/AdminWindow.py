@@ -12,6 +12,7 @@ from PyQt5.QtGui import (
     QColor,
     QBrush,
     QFont,
+    QIcon
 )
 from Controller.Implements import(
     MethodsWindow,
@@ -23,7 +24,9 @@ from PyQt5.QtCore import(
     Qt,
     QRectF,
     QTimer,
-    QDateTime
+    QDateTime,
+    QPropertyAnimation,
+    QRect
 )
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -48,7 +51,7 @@ class AdminController(QMainWindow, MethodsWindow):
     def initializeComponents(self):
         """Inicializa los componentes de la ventana."""
         InstanceWindow = RoundedWindow(self)
-        InstanceWindow.startRound(1409, 891)
+        InstanceWindow.startRound(1495, 889)
         InstanceMotion = MotionFrame(self)
 
         # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
@@ -62,7 +65,11 @@ class AdminController(QMainWindow, MethodsWindow):
         self.grafica2 = Canvas_grafica3()
         self.grafica_tres.addWidget(self.grafica2)
 
-        self.chartPerformance()#Llamamos a la gráfica de desempeño
+        # Datos de ejemplo (meses y altas/bajas)
+        self.months = ["En", "Feb", "Mar", "Abr", "May", "Jun",
+                       "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+        self.data = [50, 70, 80, 75, 90, 20, 60, 90, 80, 60, 40, 60]
+        self.showChart(self.graphicsOverView, self.months, self.data)
 
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
         self.buttonMinimize.clicked.connect(self._minimizeWindow)  # Minimizar ventana
@@ -71,30 +78,172 @@ class AdminController(QMainWindow, MethodsWindow):
         self.timerT.timeout.connect(self.update_time)
         self.timerT.start(1000)
 
-    def initializeVariables(self):
+
+        #Botones del panel leteral
+        self.buttonDashboard.clicked.connect(self.__showFramePanel)
+        self.buttonMessage.clicked.connect(self.__showFrameMessage)
+        self.buttonCalendar.clicked.connect(self.__showFrameCalendar)
+        self.buttonStudents.clicked.connect(self.__showFrameStudents)
+        self.buttonReports.clicked.connect(self.__showFrameReports)
+
+        #Botones del panel de mensajes
+        self.linkComents.clicked.connect(lambda: self.linksSelect('Comments'))
+        self.linkReports.clicked.connect(lambda: self.linksSelect('Reports'))
+        self.linkAnswers.clicked.connect(lambda: self.linksSelect('Answers'))
+
+        #Botones de contestar mensajes de caja 1 y caja 2
+        self.buttonReply.clicked.connect(lambda: self.animationMessage('FirstBox'))
+        self.buttonReply2.clicked.connect(lambda: self.animationMessage('SecondBox'))
+
+        #Botones para marcar con estrella
+        self.buttonStarUp.clicked.connect(lambda: self.showStarUp('buttonStarUp'))
+        self.buttonStarUp2.clicked.connect(lambda: self.showStarUp('buttonStarUp2'))
+
+        #Frame default
+        self.framePanel.raise_()
+
+
+    def __showFramePanel(self):
+        self.framePanel.raise_()
+        self.frameMessage.lower()
+
+    def __showFrameMessage(self):
+        self.frameMessage.raise_()
+        self.framePanel.lower()
+
+    def __showFrameCalendar(self):
         pass
 
+    def __showFrameStudents(self):
+        pass
 
-    def chartPerformance(self):
-        """Ejemplo de cómo mostrar un gráfico."""
+    def __showFrameReports(self):
+        pass
+
+    def initializeVariables(self):
+        self.first_animation = None
+        self.second_animation = None
+        self.indexButton = 0
+
+    def linksSelect(self, type):
         try:
-            self.scene = QGraphicsScene()
-            self.graphicsOverView.setScene(self.scene)
+            # Definimos los estilos comunes
+            common_style = "QFrame { background-color:transparent; border: none; border-radius: 10px; }"
+            selected_style = "QFrame { background-color:#fffefe; border: none; border-radius: 10px; }"
 
-            # Datos de ejemplo (meses y altas/bajas)
-            self.months = ["En", "Feb", "Mar", "Abr", "May", "Jun",
-                           "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-            self.data = [50, 70, 80, 75, 90, 20, 60, 90, 80, 60, 40, 60]
+            # Establecemos los estilos según el tipo
+            if type == "Comments":
+                self.frameComments.setStyleSheet(selected_style)
+                self.frameReports.setStyleSheet(common_style)
+                self.frameAnswers.setStyleSheet(common_style)
+            elif type == "Reports":
+                self.frameComments.setStyleSheet(common_style)
+                self.frameReports.setStyleSheet(selected_style)
+                self.frameAnswers.setStyleSheet(common_style)
+            elif type == "Answers":
+                self.frameComments.setStyleSheet(common_style)
+                self.frameReports.setStyleSheet(common_style)
+                self.frameAnswers.setStyleSheet(selected_style)
+        except Exception as ex:
+            print(f"Error linksSelect {ex}")
 
-            # Llamar a la función para mostrar el gráfico
-            self.showChart(self.graphicsOverView)
+    def animationMessage(self, typeBox):
+        try:
+            if typeBox == "FirstBox":
+                if self.frameBoxFirst.height() == 261 and self.frameBoxSecond.height() == 481:
+                    self.first_animation = QPropertyAnimation(self.frameBoxFirst, b"geometry")
+                    self.first_animation.setDuration(1000)
+
+                    final_rect_first = QRect(self.frameBoxFirst.geometry().x(),
+                                             self.frameBoxFirst.geometry().y(),
+                                             self.frameBoxFirst.geometry().width(),
+                                             481)  # Aumenta la altura a 481
+
+                    self.first_animation.setStartValue(self.frameBoxFirst.geometry())
+                    self.first_animation.setEndValue(final_rect_first)
+
+                    self.second_animation = QPropertyAnimation(self.frameBoxSecond, b"geometry")
+                    self.second_animation.setDuration(1000)
+
+                    final_rect_second = QRect(self.frameBoxSecond.geometry().x(),
+                                              self.frameBoxSecond.geometry().y() + self.frameBoxSecond.geometry().height() - 261,
+                                              # Mueve la caja hacia abajo en 261 píxeles
+                                              self.frameBoxSecond.geometry().width(),
+                                              261)  # Disminuye la altura a 261
+
+                    self.second_animation.setStartValue(self.frameBoxSecond.geometry())
+                    self.second_animation.setEndValue(final_rect_second)
+
+                    self.first_animation.start()
+                    self.second_animation.start()
+
+                    QTimer.singleShot(1200, self.checkAnimation)
+
+            elif typeBox == "SecondBox":
+                if self.frameBoxSecond.height() == 261 and self.frameBoxFirst.height() == 481:
+                    self.first_animation = QPropertyAnimation(self.frameBoxFirst, b"geometry")
+                    self.first_animation.setDuration(1000)
+
+                    final_rect_first = QRect(self.frameBoxFirst.geometry().x(),
+                                             self.frameBoxFirst.geometry().y(),
+                                             self.frameBoxFirst.geometry().width(),
+                                             261)  # Aumenta la altura a 481
+
+                    self.first_animation.setStartValue(self.frameBoxFirst.geometry())
+                    self.first_animation.setEndValue(final_rect_first)
+
+                    self.second_animation = QPropertyAnimation(self.frameBoxSecond, b"geometry")
+                    self.second_animation.setDuration(1000)
+
+                    #Segunda caja, debe aumentar su altura hacia arriba sin moverse de su lugar
+
+                    final_rect_second = QRect(self.frameBoxSecond.geometry().x(),
+                                              self.frameBoxSecond.geometry().y() - (481 - 261),
+                                              # La caja 2 aumenta su altura hacia arriba sin moverse de su lugar
+                                              self.frameBoxSecond.geometry().width(),
+                                              481)  # Aumenta la altura a 481
+
+                    self.second_animation.setStartValue(self.frameBoxSecond.geometry())
+                    self.second_animation.setEndValue(final_rect_second)
+
+                    self.first_animation.start()
+                    self.second_animation.start()
+
+                    QTimer.singleShot(1200, self.checkAnimation)
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error animationMessage {ex}")
 
-    def showChart(self, view):
+    def checkAnimation(self):
+        try:
+            if self.first_animation is not None and self.second_animation is not None:
+                first_animation_state = self.first_animation.state()
+                second_animation_state = self.second_animation.state()
+
+                if first_animation_state == QPropertyAnimation.Running or second_animation_state == QPropertyAnimation.Running:
+                    QTimer.singleShot(200, self.checkAnimation)
+                else:
+                    pass
+        except Exception as ex:
+            print(f"Error checkAnimation {ex}")
+
+    def showStarUp(self, indexButton):
+        try:
+            current_icon = self.buttonStarUp.icon()
+            current_icon2 = self.buttonStarUp2.icon()
+            if indexButton == 'buttonStarUp':
+                pass
+            elif indexButton == 'buttonStarUp2':
+                pass
+        except Exception as ex:
+            print(f"Error showStarUp {ex}")
+
+    def showChart(self, view, months, data):
         """Muestra un gráfico de barras."""
         try:
+
+            self.scene = QGraphicsScene()
+            self.graphicsOverView.setScene(self.scene)
 
             # Activar el scroll en modo automático
             view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -102,9 +251,9 @@ class AdminController(QMainWindow, MethodsWindow):
 
             bar_width = 25
             bar_spacing = 25  # Ajusta este valor para cambiar el espaciado entre las barras
-            max_height = max(self.data)
-            min_value = min(self.data)
-            max_value = max(self.data)
+            max_height = max(data)
+            min_value = min(data)
+            max_value = max(data)
 
             # Definir una paleta de colores
             palette = [QColor("#4aceeb"), QColor("#6fc2ff"), QColor("#91a5ff"), QColor("#b485ff"), QColor("#d764ff"),
@@ -126,7 +275,7 @@ class AdminController(QMainWindow, MethodsWindow):
             max_bar_height = 320 - title_height - 20
 
             # Dibujar barras y etiquetas
-            for i, value in enumerate(self.data):
+            for i, value in enumerate(data):
                 bar_height = (value / max_height) * max_bar_height
                 rect = self.scene.addRect(bar_spacing * (i + 1) + bar_width * i, max_bar_height - bar_height, bar_width,
                                           bar_height)
@@ -136,7 +285,7 @@ class AdminController(QMainWindow, MethodsWindow):
                 rect.setBrush(QBrush(palette[color_index]))
 
                 # Etiqueta para el mes
-                month_label = QGraphicsTextItem(self.months[i])
+                month_label = QGraphicsTextItem(months[i])
                 month_label.setPos(
                     bar_spacing * (i + 1) + bar_width * i + bar_width / 2 - month_label.boundingRect().width() / 2,
                     max_bar_height + 5)
@@ -152,7 +301,7 @@ class AdminController(QMainWindow, MethodsWindow):
                 self.scene.addItem(quantity_label)
 
             # Dibujar línea
-            line = self.scene.addLine(bar_spacing, max_bar_height, (len(self.months) + 1) * (bar_spacing + bar_width),
+            line = self.scene.addLine(bar_spacing, max_bar_height, (len(months) + 1) * (bar_spacing + bar_width),
                                       max_bar_height)
             pen = line.pen()
             pen.setColor(Qt.red)
@@ -174,81 +323,89 @@ class AdminController(QMainWindow, MethodsWindow):
         self.showMinimized()
 
     def update_time(self):
-
-        current_time = QDateTime.currentDateTime()
-        time_string = current_time.toString("hh:mm AP")
-        self.lbTime.setText(time_string)
+        try:
+            current_time = QDateTime.currentDateTime()
+            time_string = current_time.toString("hh:mm AP")
+            self.lbTime.setText(time_string)
+        except Exception as ex:
+            print(f"Error update_time {ex}")
 
 class Canvas_grafica2(FigureCanvas):
     def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
-        super().__init__(self.fig)
+        try:
+            self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
+            super().__init__(self.fig)
 
-        nombres = ['Prácticas', 'Ejercicio', 'Evaluación', 'Presentación']
-        colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff', '#f343ff']
-        tamaño = [20, 26, 30, 24]
-        explotar = [0.05, 0.05, 0.05, 0.05]
+            nombres = ['Práctica', 'Ejercicio', 'Presentación']
+            colores_hex = ['#4bcfeb', '#91a5ff', '#f343ff']
+            tamaño = [20, 26, 30]
+            explotar = [0.05, 0.05, 0.05]
 
-        colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
+            colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
 
-        plt.title("Tipos de trabajos", color='#51517f', size=12, family="Segoe UI")
+            plt.title("Tipos de trabajos", color='#51517f', size=12, family="Segoe UI")
 
-        patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
-                                                autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
-                                                radius=0.8, labeldistance=1.1)
+            patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
+                                                    autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
+                                                    radius=0.8, labeldistance=1.1)
 
-        self.ax.axis('equal')
-        self.ax.set_facecolor('white')
-        self.ax.set_aspect('equal')
-        plt.close(self.fig)
+            self.ax.axis('equal')
+            self.ax.set_facecolor('white')
+            self.ax.set_aspect('equal')
+            plt.close(self.fig)
 
-        # Agregar efecto hover con cambio de color
-        cursor = mplcursors.cursor(hover=True)
+            # Agregar efecto hover con cambio de color
+            cursor = mplcursors.cursor(hover=True)
 
-        @cursor.connect("add")
-        def on_hover(sel):
-            sel.annotation.set_text(sel.artist.get_label())
-            sel.artist.set_color('lightgrey')
+            @cursor.connect("add")
+            def on_hover(sel):
+                sel.annotation.set_text(sel.artist.get_label())
+                sel.artist.set_color('lightgrey')
 
-        @cursor.connect("remove")
-        def on_leave(sel):
-            sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
+            @cursor.connect("remove")
+            def on_leave(sel):
+                sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
+        except Exception as ex:
+            print(f"Error __ini__ Class  Canvas_grafica2 {ex}")
 
 
 class Canvas_grafica3(FigureCanvas):
     def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
-        super().__init__(self.fig)
+        try:
+            self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
+            super().__init__(self.fig)
 
-        nombres = ['Aprovo', 'Reprovo', 'Asesoria']
-        colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff']
-        tamaño = [50, 20, 40]
-        explotar = [0.05, 0.05, 0.05]
+            nombres = ['Aprovo', 'Reprovo', 'Asesoria']
+            colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff']
+            tamaño = [50, 20, 40]
+            explotar = [0.05, 0.05, 0.05]
 
-        colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
+            colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
 
-        plt.title("Desempeño de alumnos", color='#51517f', size=12, family="Segoe UI")
+            plt.title("Desempeño de alumnos", color='#51517f', size=12, family="Segoe UI")
 
-        patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
-                                                autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
-                                                radius=0.8, labeldistance=1.1)
+            patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
+                                                    autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
+                                                    radius=0.8, labeldistance=1.1)
 
-        self.ax.axis('equal')
-        self.ax.set_facecolor('white')
-        self.ax.set_aspect('equal')
-        plt.close(self.fig)
+            self.ax.axis('equal')
+            self.ax.set_facecolor('white')
+            self.ax.set_aspect('equal')
+            plt.close(self.fig)
 
-        # Agregar efecto hover con cambio de color
-        cursor = mplcursors.cursor(hover=True)
+            # Agregar efecto hover con cambio de color
+            cursor = mplcursors.cursor(hover=True)
 
-        @cursor.connect("add")
-        def on_hover(sel):
-            sel.annotation.set_text(sel.artist.get_label())
-            sel.artist.set_color('lightgrey')
+            @cursor.connect("add")
+            def on_hover(sel):
+                sel.annotation.set_text(sel.artist.get_label())
+                sel.artist.set_color('lightgrey')
 
-        @cursor.connect("remove")
-        def on_leave(sel):
-            sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
+            @cursor.connect("remove")
+            def on_leave(sel):
+                sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
+        except Exception as ex:
+            print(f"Error __ini__ Class  Canvas_grafica3 {ex}")
 
 
 

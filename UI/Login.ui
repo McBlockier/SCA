@@ -86,9 +86,18 @@ border-radius: 10px;
       <string>Nombre de usuario</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid black;
+      <string notr="true">
+QPlainTextEdit{
+border: 1px solid black;
 border-radius: 10px;
-padding-left: 50px;</string>
+padding-left: 50px;
+
+}
+
+QPlainTextEdit:hover {
+                border-color: blue;
+                border-width: 1px;
+            }</string>
      </property>
      <property name="placeholderText">
       <string>Usuario</string>
@@ -610,9 +619,17 @@ border-radius: 15px;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid black;
+      <string notr="true">QLineEdit{
+border: 1px solid black;
 border-radius: 10px;
-padding-left: 50px;</string>
+padding-left: 50px;
+
+}
+
+QLineEdit:hover {
+ border-color: blue;
+border-width: 1px;
+}</string>
      </property>
      <property name="inputMask">
       <string/>

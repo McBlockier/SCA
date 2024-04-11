@@ -178,6 +178,82 @@ class Inquiries:
         except Exception as ex:
             print(f"Error {ex}")
 
+
+
+
+
+
+
+
+#Administrador
+    def insertMessage(self, idUser, sms, hour, date):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.callproc("InsertMessage", (idUser, sms, hour, date))
+                db.connection.commit()
+        except Exception as ex:
+            print(f"Error inserting message: {ex}")
+
+
+    def insertReply(self, idMessage, idUser, reply_text, reply_hour, reply_date):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.callproc("InsertReply", (idMessage, idUser, reply_text, reply_hour, reply_date))
+                db.connection.commit()
+        except Exception as ex:
+            print(f"Error inserting reply: {ex}")
+
+
+    def get_user_file_counts(self, idUser):
+        results = {}
+        try:
+            with mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database
+            ) as db:
+                cursor = db.cursor()
+
+                cursor.callproc("GetUserFileCounts", (idUser,))
+                for result in cursor.stored_results():
+                    file_counts = result.fetchall()
+                    # Almacenar resultados en un diccionario
+                    results['rubrica_count'] = file_counts[0][0]
+                    results['evidencia_count'] = file_counts[0][1]
+                    results['imagen_count'] = file_counts[0][2]
+                    results['video_count'] = file_counts[0][3]
+
+        except mysql.connector.Error as error:
+            print("Error:", error)
+
+        return results
+
+    def search_contact(self, idTeacher):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                # Llamar al procedimiento almacenado
+                cursor.callproc('search_teacher_by_name', (idTeacher,))
+
+                # Recuperar los resultados
+                for result in cursor.stored_results():
+                    columns = result.column_names
+                    rows = result.fetchall()
+                    result_dicts = []
+                    for row in rows:
+                        result_dict = {}
+                        for i, value in enumerate(row):
+                            result_dict[columns[i]] = value
+                        result_dicts.append(result_dict)
+                    return result_dicts
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
 """
 Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados
 que requieras, solo quita el pass y alli mismo escribe tu lógica o pegala allí
@@ -186,7 +262,7 @@ que requieras, solo quita el pass y alli mismo escribe tu lógica o pegala allí
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-                pass
+                 pass
         except Exception as ex:
             print(f"Error {ex}")
 

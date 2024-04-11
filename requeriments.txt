@@ -4,6 +4,6 @@ psutil==5.9.8
 pillow==10.2.0
 numpy
 matplotlib
-mplcursors
+mplcursorspi
 
 

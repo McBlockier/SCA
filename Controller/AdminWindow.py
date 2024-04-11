@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QGraphicsTextItem,
     QSizePolicy,
     QGraphicsView,
+    QFileDialog
 )
 from PyQt5.QtGui import (
     QColor,
@@ -69,7 +70,8 @@ class AdminController(QMainWindow, MethodsWindow):
         self.months = ["En", "Feb", "Mar", "Abr", "May", "Jun",
                        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
         self.data = [50, 70, 80, 75, 90, 20, 60, 90, 80, 60, 40, 60]
-        self.showChart(self.graphicsOverView, self.months, self.data)
+        self.showChart(self.graphicsOverView, self.months, self.data, "Desempeño docente")
+        self.showActivityReports()
 
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
         self.buttonMinimize.clicked.connect(self._minimizeWindow)  # Minimizar ventana
@@ -85,6 +87,7 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonCalendar.clicked.connect(self.__showFrameCalendar)
         self.buttonStudents.clicked.connect(self.__showFrameStudents)
         self.buttonReports.clicked.connect(self.__showFrameReports)
+        self.buttonSearch.clicked.connect(self.onTextChanged)
 
         #Botones del panel de mensajes
         self.linkComents.clicked.connect(lambda: self.linksSelect('Comments'))
@@ -99,26 +102,56 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonStarUp.clicked.connect(lambda: self.showStarUp('buttonStarUp'))
         self.buttonStarUp2.clicked.connect(lambda: self.showStarUp('buttonStarUp2'))
 
+        #Botones de la vista de reporte
+        self.buttonEvi.clicked.connect(lambda: self.selectFile('doc'))
+        self.buttonRub.clicked.connect(lambda: self.selectFile('doc'))
+        self.buttonImg.clicked.connect(lambda: self.selectFile('img'))
+        self.buttonVid.clicked.connect(lambda: self.selectFile('media'))
+
+        #Boton de contactos
+        self.buttonOpenChat.clicked.connect(self.__showFrameMessage)
+
         #Frame default
         self.framePanel.raise_()
+
+    def onTextChanged(self):
+
+        try:
+            from DB.Requests import Inquiries
+            Instance = Inquiries()
+            value = Instance.search_contact(self.searchContact.text())
+            print(value[0]['name'])
+
+        except Exception as ex:
+            print(f"Error {ex}")
 
 
     def __showFramePanel(self):
         self.framePanel.raise_()
         self.frameMessage.lower()
+        self.frameReports_2.lower()
 
     def __showFrameMessage(self):
         self.frameMessage.raise_()
         self.framePanel.lower()
+        self.frameStudents.lower()
+        self.frameReports_2.lower()
 
     def __showFrameCalendar(self):
         pass
 
     def __showFrameStudents(self):
-        pass
+        self.frameMessage.lower()
+        self.framePanel.lower()
+        self.frameStudents.raise_()
+        self.frameReports_2.lower()
 
     def __showFrameReports(self):
-        pass
+        self.frameMessage.lower()
+        self.framePanel.lower()
+        self.frameStudents.lower()
+        self.frameReports_2.raise_()
+
 
     def initializeVariables(self):
         self.first_animation = None
@@ -238,12 +271,12 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error showStarUp {ex}")
 
-    def showChart(self, view, months, data):
+    def showChart(self, view, months, data, title):
         """Muestra un gráfico de barras."""
         try:
 
             self.scene = QGraphicsScene()
-            self.graphicsOverView.setScene(self.scene)
+            view.setScene(self.scene)
 
             # Activar el scroll en modo automático
             view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -263,7 +296,7 @@ class AdminController(QMainWindow, MethodsWindow):
             self.scene.clear()
 
             # Agregar título al gráfico
-            title = QGraphicsTextItem("Desempeño docente")
+            title = QGraphicsTextItem(title)
             title_font = QFont("Segoe UI", 10, QFont.Bold)
             title.setFont(title_font)
             title_width = title.boundingRect().width()
@@ -330,6 +363,37 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error update_time {ex}")
 
+
+    def showActivityReports(self):
+        # Datos de ejemplo (meses y altas/bajas)
+        self.months = ["Rub", "Ev", "Img", "Vid"]
+        self.data = [45, 57, 23, 10]
+        self.showChart(self.graphicsOverView_2, self.months, self.data, "")
+
+
+    def selectFile(self, file_type):
+        try:
+            # Configurar los filtros de archivos según el tipo especificado
+            if file_type == 'doc':
+                file_filter = "Archivo de documento (*.pdf *.doc *.docx)"
+            elif file_type == 'img':
+                file_filter = "Archivos de imagén (*.png *.jpg)"
+            elif file_type == 'media':
+                file_filter = "Archivo de video (*.mp4 *.avi *.mov)"
+            else:
+                file_filter = "All files (*)"
+
+            # Abrir el diálogo del explorador de archivos
+            file_path, _ = QFileDialog.getOpenFileName(None, f"Select {file_type.capitalize()} file",
+                                                       filter=file_filter)
+
+            # Devolver la ruta del archivo seleccionado
+            return file_path
+
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+
 class Canvas_grafica2(FigureCanvas):
     def __init__(self, parent=None):
         try:
@@ -375,7 +439,7 @@ class Canvas_grafica3(FigureCanvas):
             self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
             super().__init__(self.fig)
 
-            nombres = ['Aprovo', 'Reprovo', 'Asesoria']
+            nombres = ['Aprobo', 'Reprobo', 'Asesoria']
             colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff']
             tamaño = [50, 20, 40]
             explotar = [0.05, 0.05, 0.05]
@@ -406,6 +470,10 @@ class Canvas_grafica3(FigureCanvas):
                 sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
         except Exception as ex:
             print(f"Error __ini__ Class  Canvas_grafica3 {ex}")
+
+
+
+
 
 
 

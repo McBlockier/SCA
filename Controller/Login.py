@@ -14,6 +14,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         super().__init__()
         loadUi('../UI/Login.ui', self)
 
+
         self.initializeComponents()
         self.initializeVariables()
 
@@ -41,7 +42,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.aboutUs.clicked.connect(self.__aboutUs)  # Boton de acerca de nosotros
             self.home.clicked.connect(self.__home)  # Boton de inicio
             self.forgotPassword.clicked.connect(self._forgotPassword)
-
 
             self.timeShow.setGeometry(10, 10, 48, 48)
 
@@ -124,6 +124,9 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                         self.hide()
                         self.close()
 
+                    elif getRank[0]['rankId'] == 3:
+                        pass
+
                 else:
                     self.message.information_msgbox("INFORMACIÓN", "El usuario o contraseña no son correctos")
                     self.userName.setPlainText("")
@@ -136,7 +139,6 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error _validateLogin -> {ex}")
-
 
 
     def _readLogged(self):
@@ -158,6 +160,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                             self.password.setText(data['password'])
                             self.saved_password = data['password']
                             self.remember.setChecked(True)
+
                         else:
                             self.remember.setChecked(False)
                             return None

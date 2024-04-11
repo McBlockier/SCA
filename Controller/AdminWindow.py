@@ -375,7 +375,7 @@ class Canvas_grafica3(FigureCanvas):
             self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
             super().__init__(self.fig)
 
-            nombres = ['Aprovo', 'Reprovo', 'Asesoria']
+            nombres = ['Aprobo', 'Reprobo', 'Asesoria']
             colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff']
             tamaño = [50, 20, 40]
             explotar = [0.05, 0.05, 0.05]

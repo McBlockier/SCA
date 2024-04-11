@@ -16,9 +16,9 @@ class Inquiries:
         """
         Constructor de la clase.
         """
-        self.host = "127.0.0.1"
+        self.host = "localhost"
         self.user = "root"
-        self.password = "root"
+        self.password = "1234"
         self.database = "sca_database"
 
     def validate_login(self, userName, password):
@@ -177,6 +177,8 @@ class Inquiries:
 
         except Exception as ex:
             print(f"Error {ex}")
+
+
 
 """
 Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados

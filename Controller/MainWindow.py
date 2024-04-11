@@ -60,6 +60,8 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         self._setInformation()
 
+
+
     def initializeVariables(self):
 
         # Cargar el GIF usando QMovie
@@ -285,9 +287,16 @@ class WindowADM(QMainWindow, MethodsWindow):
        except Exception as ex:
             print(f"Error {ex}")
 
+
+#se debe agregar la vista del perfil de alumno
     def _showProfileUI(self):
         try:
-            self.message.information_msgbox("INFORMACIÓN", "Opción no disponible por el momento")
+            self.perfil_window = Perfil(self, self.information)
+            self.perfil_window.show()
+            self.setEnabled(False)
+
+            #self.cierra.clicked.connect(self._closeWindowPerfil)  # Cerrar ventana perfil
+            #self.minimiza.clicked.connect(self._minimizeWindowPerfil)  # Minimizar ventana perfil
         except Exception as ex:
             print(f"Error {ex}")
 
@@ -353,6 +362,50 @@ class Ticket(QMainWindow, MethodsWindow):
     def _minimizeWindow(self):
         self.previous_window.setEnabled(True)
         self.showMinimized()
+
+class Perfil(QMainWindow, MethodsWindow):
+    def __init__(self, windowMain, information):
+        super().__init__()
+        loadUi('../UI/perfil.ui', self)
+
+        self.information = information
+
+        self.previous_window = windowMain #Tomamos la ventana anterior para manipular
+
+        self.initializeComponents()
+        self.initializeVariables()
+
+
+    def initializeComponents(self):
+        self.InstanceWindow = RoundedWindow(self)
+        self.InstanceWindow.startRound(800, 600)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+        self.buttonExit.clicked.connect(self._closeWindow)
+        self.buttonMinimize.setVisible(False)
+
+
+        self.num.setText(str(self.information[0]['nControl']))
+        self.nombre.setText(self.information[0]['name'])
+        self.apellido.setText(self.information[0]['lastName'])
+        self.semestre.setText(str(self.information[0]['semester']))
+        self.puntos.setText(str(self.information[0]['score']))
+    def initializeVariables(self):
+
+        pass
+
+
+    def _closeWindow(self):
+        self.previous_window.setEnabled(True)
+        self.hide()
+        self.close()
+
+
 
 
 

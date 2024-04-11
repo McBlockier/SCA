@@ -14,6 +14,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         super().__init__()
         loadUi('../UI/Login.ui', self)
 
+
         self.initializeComponents()
         self.initializeVariables()
 
@@ -42,6 +43,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
             self.home.clicked.connect(self.__home)  # Boton de inicio
             self.forgotPassword.clicked.connect(self._forgotPassword)
 
+            self.buttonProfile.clicked.connect(self._perfil()) #entra al perfil del estudiante
 
             self.timeShow.setGeometry(10, 10, 48, 48)
 
@@ -137,7 +139,28 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error _validateLogin -> {ex}")
 
+    def _perfil(self):
+        try:
+            from DB.Requests import Inquiries
+            inquiries = Inquiries()
 
+            # Ejecutar la consulta SQL
+            inquiries.execute("SELECT nombre, apellido, semestre, num_control FROM tabla WHERE id = 1")
+
+            # Recuperar el resultado
+            result = inquiries.fetchone()
+
+            if result:
+                # Asignar datos a los LineEdits
+                self.nombreline_edit.setText(result[0])
+                self.apellido_line_edit.setText(result[1])
+                self.semestre_line_edit.setText(result[2])
+                self.num_control_line_edit.setText(result[3])
+
+
+
+        except Exception as ex:
+            print(f"Error: {ex}")
 
     def _readLogged(self):
         try:

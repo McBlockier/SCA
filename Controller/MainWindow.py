@@ -464,12 +464,11 @@ a los botones.
 """
 
 class SettingsUI(QMainWindow, MethodsWindow):
-    def __init__(self, windowMain, information):
+    def __init__(self, windowMain):
         super().__init__()
         loadUi('../UI/Settings.ui', self)
 
         self.previous_window = windowMain #Tomamos la ventana anterior para manipular
-        self.information = information
 
         self.initializeComponents()
         self.initializeVariables()

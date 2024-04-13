@@ -253,6 +253,28 @@ class Inquiries:
         except Exception as ex:
             print(f"Error {ex}")
 
+    def GetAllUsers(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT * FROM user")
+                users = cursor.fetchall()
+                return users
+        except Exception as ex:
+            print(f"Error {ex}")
+            return []
+
+    def GetAllTeachers(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT * FROM teachers")
+                users = cursor.fetchall()
+                return users
+        except Exception as ex:
+            print(f"Error {ex}")
+            return []
+
 
 """
 Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados

@@ -73,13 +73,14 @@ class MessageBox:
 
     @staticmethod
     def question_msgbox(title, text):
-        msg_box = MsgBox(title, text)  # Crear un objeto MsgBox con el título y el texto proporcionados
-        icon = '../Resources/question.png'  # Ruta del icono "información"
-        msg_box.set_custom_icon(icon)  # Establecer el icono personalizado en el cuadro de mensaje
-        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)  # Establecer los botones estándar del cuadro de mensaje
-        msg_box.buttonClicked.connect(
-            msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
-        msg_box.exec_()  # Ejecutar el cuadro de mensaje
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle(title)
+        msg_box.setText(text)
+        icon = QMessageBox.Question
+        msg_box.setIcon(icon)
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        reply = msg_box.exec_()
+        return reply == QMessageBox.Yes
 
     @staticmethod
     def not_found_msgbox(title, text):
@@ -91,6 +92,3 @@ class MessageBox:
         msg_box.buttonClicked.connect(
             msg_box.fade_out)  # Conectar el clic del botón al método fade_out del cuadro de mensaje
         msg_box.exec_()  # Ejecutar el cuadro de mensaje
-
-
-

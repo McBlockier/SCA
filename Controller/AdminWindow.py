@@ -7,7 +7,14 @@ from PyQt5.QtWidgets import (
     QGraphicsTextItem,
     QSizePolicy,
     QGraphicsView,
-    QFileDialog
+    QFileDialog,
+    QVBoxLayout,
+    QScrollArea,
+    QWidget,
+    QCheckBox,
+    QLabel,
+    QTableWidget,
+    QTableWidgetItem
 )
 from PyQt5.QtGui import (
     QColor,
@@ -34,6 +41,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import mplcursors
 from PyQt5.uic import loadUi
+from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
 
 
 
@@ -84,7 +92,7 @@ class AdminController(QMainWindow, MethodsWindow):
         #Botones del panel leteral
         self.buttonDashboard.clicked.connect(self.__showFramePanel)
         self.buttonMessage.clicked.connect(self.__showFrameMessage)
-        self.buttonCalendar.clicked.connect(self.__showFrameCalendar)
+        self.buttonLogout.clicked.connect(self.__closeSesion)
         self.buttonStudents.clicked.connect(self.__showFrameStudents)
         self.buttonReports.clicked.connect(self.__showFrameReports)
         self.buttonSearch.clicked.connect(self.onTextChanged)
@@ -114,6 +122,11 @@ class AdminController(QMainWindow, MethodsWindow):
         #Frame default
         self.framePanel.raise_()
 
+
+        #Campos de ScrollAreas
+        self.__updateScrollTeachers()
+        self.__updateScrollUsers()
+
     def onTextChanged(self):
 
         try:
@@ -124,7 +137,6 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error {ex}")
-
 
     def __showFramePanel(self):
         self.framePanel.raise_()
@@ -137,9 +149,6 @@ class AdminController(QMainWindow, MethodsWindow):
         self.frameStudents.lower()
         self.frameReports_2.lower()
 
-    def __showFrameCalendar(self):
-        pass
-
     def __showFrameStudents(self):
         self.frameMessage.lower()
         self.framePanel.lower()
@@ -151,6 +160,20 @@ class AdminController(QMainWindow, MethodsWindow):
         self.framePanel.lower()
         self.frameStudents.lower()
         self.frameReports_2.raise_()
+
+
+    def __closeSesion(self):
+        try:
+
+            if MessageBox.question_msgbox("PREGUNTA", "¿Está seguro(a) de salir al inicio de sesión?"):
+                from Controller.Login import ControllerLogin
+                Instance = ControllerLogin()
+                Instance.show()
+                self.hide()
+                self.close()
+
+        except Exepcion as ex:
+            print(f"Error {ex}")
 
 
     def initializeVariables(self):
@@ -179,6 +202,76 @@ class AdminController(QMainWindow, MethodsWindow):
                 self.frameAnswers.setStyleSheet(selected_style)
         except Exception as ex:
             print(f"Error linksSelect {ex}")
+
+
+
+
+    def __updateScrollUsers(self):
+        """Actualiza la tabla de usuarios."""
+        try:
+            # Obtener todos los usuarios de la base de datos
+            from DB.Requests import Inquiries
+            Instance = Inquiries()
+            valueAll = Instance.GetAllUsers()
+
+            # Encabezados de columna para la tabla de usuarios
+            column_headers = ["ID Usuario", "Contraseña", "Nombre", "Apellido", "No. Control", "ID Rango",
+                              "Semestre", "Regular", "Puntaje"]
+
+            # Rellenar la tabla de usuarios
+            self._fillTablesStudents(valueAll, self.tableUsers, column_headers, 9)
+
+        except Exception as ex:
+            print(f"Error al actualizar la tabla de usuarios: {ex}")
+
+    def __updateScrollTeachers(self):
+        """Actualiza la tabla de profesores."""
+        try:
+            # Obtener todos los profesores de la base de datos
+            from DB.Requests import Inquiries
+            Instance = Inquiries()
+            valueAll = Instance.GetAllTeachers()
+
+            # Encabezados de columna para la tabla de profesores
+            column_headers = ["ID", "Nombre", "Matricula"]
+
+            # Rellenar la tabla de profesores
+            self._fillTablesStudents(valueAll, self.tableTeacher, column_headers, 3)
+
+        except Exception as ex:
+            print(f"Error al actualizar la tabla de profesores: {ex}")
+
+    def _fillTablesStudents(self, valueAll, table, column_headers, columns):
+        """Rellena una tabla con los valores proporcionados y alterna el color de las filas."""
+        try:
+            # Establecer el número de filas y columnas
+            table.setRowCount(len(valueAll))
+            table.setColumnCount(columns)
+
+            # Establecer los encabezados de las columnas
+            table.setHorizontalHeaderLabels(column_headers)
+
+            # Colores personalizados para las filas
+            colors = [QColor("#fefeff"), QColor("#ecf3fc")]
+
+            # Insertar los datos en la tabla
+            for row, user in enumerate(valueAll):
+                for column, data in enumerate(user):
+                    item = QTableWidgetItem(str(data))
+                    table.setItem(row, column, item)
+
+                    # Alternar el color de fondo de las filas
+                    color_index = row % len(colors)
+                    background_color = colors[color_index]
+                    text_color = QColor(Qt.black)
+
+                    item.setBackground(background_color)
+                    item.setForeground(text_color)
+
+
+        except Exception as ex:
+            print(f"Error al rellenar la tabla: {ex}")
+
 
     def animationMessage(self, typeBox):
         try:

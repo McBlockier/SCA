@@ -1,4 +1,5 @@
 from DB.Connection import ConnectionDB
+from datetime import datetime
 
 class Inquiries:
     """
@@ -20,6 +21,7 @@ class Inquiries:
         self.user = "root"
         self.password = "root"
         self.database = "sca_database"
+
 
     def validate_login(self, userName, password):
         """
@@ -45,6 +47,7 @@ class Inquiries:
         except Exception as ex:
             print(f"Error: {ex}")
             return False, "Error al conectar a la base de datos."
+
 
     def register_user(self, idUser, password, name, lastName, nControl, rank):
         """
@@ -133,6 +136,7 @@ class Inquiries:
             print(f"Error en reset {ex}")
             return False
 
+
     def isAvailable(self):
         """
         Método para verificar si la base de datos está disponible.
@@ -155,6 +159,22 @@ class Inquiries:
                   "allí se debe poner la información para la conexión con la base de datos.")
 
     def get_subject_by_user(self, idUser):
+        """
+        Obtiene las asignaturas asociadas a un usuario por su ID.
+
+        Parameters:
+        - idUser: El ID del usuario del cual se desean obtener las asignaturas.
+
+        Returns:
+        - resultados: Un diccionario que contiene las asignaturas asociadas al usuario.
+
+        Description:
+        Este método se utiliza para obtener las asignaturas asociadas a un usuario en la base de datos.
+        Se conecta a la base de datos y llama al procedimiento almacenado 'ObtenerAsignaturasPorUsuario' pasando el ID del usuario como parámetro.
+        Recupera los resultados del procedimiento almacenado y los almacena en un diccionario, donde las claves son los usuarios y los valores son listas de asignaturas asociadas a cada usuario.
+        Si se encuentran asignaturas asociadas al usuario, se devuelve un diccionario con los datos.
+        Si no se encuentra ninguna asignatura asociada al usuario o si ocurre un error durante el proceso, se imprime un mensaje de error y se devuelve un diccionario vacío.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
@@ -176,50 +196,107 @@ class Inquiries:
                 return resultados
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error al obtener las asignaturas por usuario: {ex}")
+            return {}
 
 
+    #Administrador
 
 
+    def insertMessage(self, idUser, sms):
+        """
+        Inserta un nuevo mensaje en la base de datos.
 
+        Parameters:
+        - idUser: El ID del usuario que envía el mensaje.
+        - sms: El contenido del mensaje.
 
+        Returns:
+        - None
 
-
-#Administrador
-    def insertMessage(self, idUser, sms, hour, date):
+        Description:
+        Este método se utiliza para insertar un nuevo mensaje en la base de datos.
+        Se conecta a la base de datos y llama al procedimiento almacenado 'InsertMessage' pasando los parámetros necesarios,
+        junto con la hora y la fecha actuales obtenidas automáticamente.
+        Después de insertar el mensaje, se confirma la transacción.
+        Si ocurre un error durante el proceso, se imprime un mensaje de error.
+        """
         try:
+            # Obtener la hora y la fecha actuales
+            hour = datetime.now().strftime('%H:%M:%S')
+            date = datetime.now().strftime('%Y-%m-%d')
+
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
                 cursor.callproc("InsertMessage", (idUser, sms, hour, date))
                 db.connection.commit()
         except Exception as ex:
-            print(f"Error inserting message: {ex}")
+            print(f"Error al insertar el mensaje: {ex}")
 
 
-    def insertReply(self, idMessage, idUser, reply_text, reply_hour, reply_date):
+    def insertReply(self, idMessage, idUser, reply_text):
+        """
+        Inserta una nueva respuesta a un mensaje en la base de datos.
+
+        Parameters:
+        - idMessage: El ID del mensaje al que se responde.
+        - idUser: El ID del usuario que envía la respuesta.
+        - reply_text: El contenido de la respuesta.
+
+        Returns:
+        - None
+
+        Description:
+        Este método se utiliza para insertar una nueva respuesta a un mensaje en la base de datos.
+        Se conecta a la base de datos y llama al procedimiento almacenado 'InsertReply' pasando los parámetros necesarios,
+        junto con la hora y la fecha actuales obtenidas automáticamente.
+        Después de insertar la respuesta, se confirma la transacción.
+        Si ocurre un error durante el proceso, se imprime un mensaje de error.
+        """
         try:
+            # Obtener la hora y la fecha actuales
+            reply_hour = datetime.now().strftime('%H:%M:%S')
+            reply_date = datetime.now().strftime('%Y-%m-%d')
+
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
                 cursor.callproc("InsertReply", (idMessage, idUser, reply_text, reply_hour, reply_date))
                 db.connection.commit()
         except Exception as ex:
-            print(f"Error inserting reply: {ex}")
+            print(f"Error al insertar la respuesta: {ex}")
 
 
     def get_user_file_counts(self, idUser):
+        """
+        Obtiene el recuento de archivos de un usuario por su ID.
+
+        Parameters:
+        - idUser: El ID del usuario del cual se desea obtener el recuento de archivos.
+
+        Returns:
+        - results: Un diccionario que contiene el recuento de archivos del usuario en diferentes categorías.
+
+        Description:
+        Este método se conecta a la base de datos y llama al procedimiento almacenado 'GetUserFileCounts' pasando el ID del usuario como parámetro.
+        Recupera los resultados del procedimiento almacenado y los almacena en un diccionario, donde las claves representan las categorías de archivos y los valores representan el recuento de archivos correspondiente.
+        Las categorías de archivos incluyen rubricas, evidencias, imágenes y videos.
+        Si se encuentran los recuentos de archivos del usuario, se devuelve un diccionario con los recuentos.
+        Si no se encuentra ningún recuento de archivos para el usuario o si ocurre un error durante el proceso, se imprime un mensaje de error y se devuelve un diccionario vacío.
+        """
         results = {}
         try:
             with mysql.connector.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database
+                    host=self.host,
+                    user=self.user,
+                    password=self.password,
+                    database=self.database
             ) as db:
                 cursor = db.cursor()
 
                 cursor.callproc("GetUserFileCounts", (idUser,))
                 for result in cursor.stored_results():
                     file_counts = result.fetchall()
+
                     # Almacenar resultados en un diccionario
                     results['rubrica_count'] = file_counts[0][0]
                     results['evidencia_count'] = file_counts[0][1]
@@ -227,11 +304,29 @@ class Inquiries:
                     results['video_count'] = file_counts[0][3]
 
         except mysql.connector.Error as error:
-            print("Error:", error)
+            print("Error al obtener el recuento de archivos del usuario:", error)
 
         return results
 
+
     def search_contact(self, idTeacher):
+        """
+        Busca un contacto de profesor en la base de datos por su ID.
+
+        Parameters:
+        - idTeacher: El ID del profesor que se desea buscar en la base de datos.
+
+        Returns:
+        - result_dicts: Lista de diccionarios que contienen los datos del contacto del profesor encontrado en la base de datos.
+
+        Description:
+        Este método busca un contacto de profesor en la base de datos utilizando su ID.
+        Se conecta a la base de datos, llama al procedimiento almacenado 'search_teacher_by_name' pasando el ID del profesor como parámetro.
+        Recupera los resultados del procedimiento almacenado y los convierte en una lista de diccionarios.
+        Cada diccionario contiene los datos del contacto del profesor, donde las claves son los nombres de las columnas y los valores son los datos correspondientes.
+        Si se encuentra un contacto de profesor, se devuelve una lista de diccionarios con los datos del contacto.
+        Si no se encuentra ningún contacto de profesor o si ocurre un error durante la búsqueda, se imprime un mensaje de error y se devuelve una lista vacía.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
@@ -251,9 +346,22 @@ class Inquiries:
                     return result_dicts
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error al buscar el contacto del profesor: {ex}")
+            return []
+
 
     def GetAllUsers(self):
+        """
+        Obtiene todos los usuarios de la base de datos.
+
+        Returns:
+        - users: Lista de tuplas que contienen los datos de los usuarios. Cada tupla representa un usuario y contiene todos los campos de la tabla 'user'.
+
+        Description:
+        Este método realiza una consulta a la base de datos para obtener todos los usuarios almacenados en la tabla 'user'.
+        Retorna una lista de tuplas donde cada tupla representa un usuario y contiene todos los campos de la tabla.
+        Si ocurre un error durante la consulta a la base de datos, se imprime un mensaje de error y se retorna una lista vacía.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
@@ -261,19 +369,39 @@ class Inquiries:
                 users = cursor.fetchall()
                 return users
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error al obtener todos los usuarios: {ex}")
             return []
 
+
     def GetAllTeachers(self):
+        """
+        Obtiene todos los profesores de la base de datos.
+
+        Returns:
+        - teachers: Lista de tuplas que contienen los datos de los profesores. Cada tupla representa un profesor y contiene todos los campos de la tabla 'teachers'.
+
+        Description:
+        Este método realiza una consulta a la base de datos para obtener todos los profesores almacenados en la tabla 'teachers'.
+        Retorna una lista de tuplas donde cada tupla representa un profesor y contiene todos los campos de la tabla.
+        Si ocurre un error durante la consulta a la base de datos, se imprime un mensaje de error y se retorna una lista vacía.
+        """
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
                 cursor.execute("SELECT * FROM teachers")
-                users = cursor.fetchall()
-                return users
+                teachers = cursor.fetchall()
+                return teachers
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error al obtener todos los profesores: {ex}")
             return []
+
+
+
+
+
+
+
+
 
 
 """

@@ -397,6 +397,7 @@ class Perfil(QMainWindow, MethodsWindow):
         self.apellido.setText(self.information[0]['lastName'])
         self.semestre.setText(str(self.information[0]['semester']))
         self.puntos.setText(str(self.information[0]['score']))
+
     def initializeVariables(self):
 
         pass

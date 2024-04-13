@@ -9,11 +9,11 @@ class ControllerRegister(QMainWindow, MethodsWindow):
         loadUi('../UI/Register.ui', self)
 
         # Llamamos a los inicializadores
-        self.InitializeVariables()
-        self.InitializeComponents()
-        self.InitializeStyles()
+        self.initializeVariables()
+        self.initializeComponents()
 
-    def InitializeVariables(self):
+
+    def initializeVariables(self):
         InstanceWindow = RoundedWindow(self)
         InstanceWindow.startRound(830, 665)
         InstanceMotion = MotionFrame(self)
@@ -26,15 +26,12 @@ class ControllerRegister(QMainWindow, MethodsWindow):
         self.message = MessageBox()
 
 
-    def InitializeComponents(self):
+    def initializeComponents(self):
         # Botones del formulario REGISTER
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
         self.buttonMinimize.clicked.connect(self._minimizeWindow)  # Minimizar ventana
         self.buttonBack.clicked.connect(self._backToLogin) #Boton de regreso al login
         self.buttonRegister.clicked.connect(self._registerUser) #Boton para hacer el registro en la BD
-
-    def InitializeStyles(self):
-        pass
 
     def _registerUser(self):
         try:
@@ -56,7 +53,8 @@ class ControllerRegister(QMainWindow, MethodsWindow):
 
             # Realizar el registro del usuario
             success, message = InstanceInquiries.register_user(userName, password, names, lastNames,
-                                                                    controlNum, 2)
+                                                               controlNum, 2)
+            # Mostrar mensaje de éxito o advertencia
             if success:
                 self.message.information_msgbox("Éxito", "Usuario registrado correctamente.")
                 self._backToLogin()
@@ -64,15 +62,19 @@ class ControllerRegister(QMainWindow, MethodsWindow):
                 self.message.information_msgbox("ADVERTENCIA", "No se pudo hacer el registro")
 
             # Limpiar los campos de entrada
-            self.userName.setPlainText("")
-            self.password.setText("")
-            self.confirmPassword.setText("")
-            self.name.setPlainText("")
-            self.lastName.setPlainText("")
-            self.controlNumber.setPlainText()
+            self.clearInputFields()
 
         except Exception as ex:
             print(f"Error {ex}")
+
+    def clearInputFields(self):
+        """Limpiar los campos de entrada."""
+        self.userName.setPlainText("")
+        self.password.setText("")
+        self.confirmPassword.setText("")
+        self.name.setPlainText("")
+        self.lastName.setPlainText("")
+        self.controlNumber.setPlainText("")
 
     #Funciones raíz de la ventana
     def _closeWindow(self):

@@ -43,8 +43,6 @@ import mplcursors
 from PyQt5.uic import loadUi
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
 
-
-
 class AdminController(QMainWindow, MethodsWindow):
     """Clase para controlar la ventana principal de la aplicación."""
 
@@ -56,11 +54,25 @@ class AdminController(QMainWindow, MethodsWindow):
         self.initializeComponents()
         self.initializeVariables()
 
+        #Variables globales
+        self.dataTable = None
 
     def initializeComponents(self):
-        """Inicializa los componentes de la ventana."""
+        """
+        Inicializa los componentes de la ventana principal.
+
+        Description:
+        Este método se encarga de inicializar todos los componentes necesarios en la ventana principal de la aplicación.
+        Configura la ventana con bordes redondeados y agrega eventos de movimiento del ratón.
+        También inicializa las gráficas y los datos de ejemplo, configura los botones de minimizar y cerrar la aplicación,
+        así como los temporizadores para la animación y los botones del panel lateral de la ventana principal.
+        Además, establece las conexiones de los botones y widgets a sus respectivos métodos y eventos.
+
+        Returns:
+        - None
+        """
         InstanceWindow = RoundedWindow(self)
-        InstanceWindow.startRound(1495, 889)
+        InstanceWindow.startRound(1495, 889) #Dimensiones de la ventana
         InstanceMotion = MotionFrame(self)
 
         # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
@@ -68,6 +80,7 @@ class AdminController(QMainWindow, MethodsWindow):
         self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
         self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
 
+        # Clases para el dibujado gráfico
         self.grafica1 = Canvas_grafica2()
         self.grafica_dos.addWidget(self.grafica1)
 
@@ -81,15 +94,16 @@ class AdminController(QMainWindow, MethodsWindow):
         self.showChart(self.graphicsOverView, self.months, self.data, "Desempeño docente")
         self.showActivityReports()
 
+        # Botones de minimizar y cerrar la aplicación
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
         self.buttonMinimize.clicked.connect(self._minimizeWindow)  # Minimizar ventana
 
+        # Temporizador para animación
         self.timerT = QTimer(self)
         self.timerT.timeout.connect(self.update_time)
         self.timerT.start(1000)
 
-
-        #Botones del panel leteral
+        # Botones del panel lateral de la ventana principal
         self.buttonDashboard.clicked.connect(self.__showFramePanel)
         self.buttonMessage.clicked.connect(self.__showFrameMessage)
         self.buttonLogout.clicked.connect(self.__closeSesion)
@@ -97,38 +111,50 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonReports.clicked.connect(self.__showFrameReports)
         self.buttonSearch.clicked.connect(self.onTextChanged)
 
-        #Botones del panel de mensajes
+        # Botones del panel de mensajes
         self.linkComents.clicked.connect(lambda: self.linksSelect('Comments'))
         self.linkReports.clicked.connect(lambda: self.linksSelect('Reports'))
         self.linkAnswers.clicked.connect(lambda: self.linksSelect('Answers'))
 
-        #Botones de contestar mensajes de caja 1 y caja 2
+        # Botones de contestar mensajes de caja 1 y caja 2
         self.buttonReply.clicked.connect(lambda: self.animationMessage('FirstBox'))
         self.buttonReply2.clicked.connect(lambda: self.animationMessage('SecondBox'))
 
-        #Botones para marcar con estrella
+        # Botones para marcar con estrella
         self.buttonStarUp.clicked.connect(lambda: self.showStarUp('buttonStarUp'))
         self.buttonStarUp2.clicked.connect(lambda: self.showStarUp('buttonStarUp2'))
 
-        #Botones de la vista de reporte
+        # Botones de la vista de reporte
         self.buttonEvi.clicked.connect(lambda: self.selectFile('doc'))
         self.buttonRub.clicked.connect(lambda: self.selectFile('doc'))
         self.buttonImg.clicked.connect(lambda: self.selectFile('img'))
         self.buttonVid.clicked.connect(lambda: self.selectFile('media'))
 
-        #Boton de contactos
+        # Boton de contactos
         self.buttonOpenChat.clicked.connect(self.__showFrameMessage)
 
-        #Frame default
+        # Frame default
         self.framePanel.raise_()
 
-
-        #Campos de ScrollAreas
+        # Campos de ScrollAreas(tabla usuarios y docentes)
         self.__updateScrollTeachers()
         self.__updateScrollUsers()
 
-    def onTextChanged(self):
+        # Detectar click en las tablas
+        self.tableUsers.cellClicked.connect(lambda row, col:
+                                            self.on_cell_clicked(row, self.tableUsers))  # Tabla de alumnos
+        self.tableTeacher.cellClicked.connect(lambda row, col:
+                                              self.on_cell_clicked(row, self.tableTeacher))  # Tabla de docentes
 
+    def initializeVariables(self):
+        self.first_animation = None
+        self.second_animation = None
+        self.indexButton = 0
+        self.dataTable = None
+
+
+    def onTextChanged(self):
+    #Función no implementada para uso real
         try:
             from DB.Requests import Inquiries
             Instance = Inquiries()
@@ -138,29 +164,39 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+    def __showFrame(self, frame):
+        """
+        Muestra el marco especificado y oculta los demás.
+
+        Parameters:
+        - frame: El marco que se desea mostrar.
+
+        Returns:
+        - None
+
+        Description:
+        Este método muestra el marco especificado y oculta los demás marcos en la ventana principal.
+        Recorre todos los marcos disponibles y los eleva si coinciden con el marco especificado;
+        de lo contrario, los baja para ocultarlos.
+        """
+        frames = [self.framePanel, self.frameMessage, self.frameStudents, self.frameReports_2]
+        for f in frames:
+            if f == frame:
+                f.raise_()
+            else:
+                f.lower()
+
     def __showFramePanel(self):
-        self.framePanel.raise_()
-        self.frameMessage.lower()
-        self.frameReports_2.lower()
+        self.__showFrame(self.framePanel)
 
     def __showFrameMessage(self):
-        self.frameMessage.raise_()
-        self.framePanel.lower()
-        self.frameStudents.lower()
-        self.frameReports_2.lower()
+        self.__showFrame(self.frameMessage)
 
     def __showFrameStudents(self):
-        self.frameMessage.lower()
-        self.framePanel.lower()
-        self.frameStudents.raise_()
-        self.frameReports_2.lower()
+        self.__showFrame(self.frameStudents)
 
     def __showFrameReports(self):
-        self.frameMessage.lower()
-        self.framePanel.lower()
-        self.frameStudents.lower()
-        self.frameReports_2.raise_()
-
+        self.__showFrame(self.frameReports_2)
 
     def __closeSesion(self):
         try:
@@ -174,12 +210,6 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exepcion as ex:
             print(f"Error {ex}")
-
-
-    def initializeVariables(self):
-        self.first_animation = None
-        self.second_animation = None
-        self.indexButton = 0
 
     def linksSelect(self, type):
         try:
@@ -204,8 +234,6 @@ class AdminController(QMainWindow, MethodsWindow):
             print(f"Error linksSelect {ex}")
 
 
-
-
     def __updateScrollUsers(self):
         """Actualiza la tabla de usuarios."""
         try:
@@ -224,6 +252,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al actualizar la tabla de usuarios: {ex}")
 
+
     def __updateScrollTeachers(self):
         """Actualiza la tabla de profesores."""
         try:
@@ -240,6 +269,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error al actualizar la tabla de profesores: {ex}")
+
 
     def _fillTable(self, valueAll, table, column_headers, columns):
         """Rellena una tabla con los valores proporcionados y alterna el color de las filas."""
@@ -271,6 +301,35 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error al rellenar la tabla: {ex}")
+
+    def on_cell_clicked(self, row, table):
+        """
+        Maneja el evento de clic en una celda de la tabla.
+
+        Parameters:
+        - row: Índice de la fila en la que se hizo clic.
+        - table: QTableWidget en la que se hizo clic en la celda.
+
+        Returns:
+        - None
+
+        Description:
+        Este método se utiliza para manejar el evento de clic en una celda de la tabla.
+        Recibe como parámetros el índice de la fila en la que se hizo clic y la tabla en la que se encuentra la celda.
+        Extrae los datos de la fila seleccionada y los almacena en el atributo 'dataTable' del objeto actual.
+
+        Si ocurre algún error durante la ejecución del método, se imprime un mensaje de error detallado.
+        """
+        try:
+            row_data = {}
+            for col in range(table.columnCount()):
+                header_item = table.horizontalHeaderItem(col)
+                item = table.item(row, col)
+                if header_item and item:
+                    row_data[header_item.text()] = item.text()
+            self.dataTable = row_data
+        except Exception as ex:
+            print(f"Error al manejar clic en celda: {ex}")
 
 
     def animationMessage(self, typeBox):
@@ -340,6 +399,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error animationMessage {ex}")
 
+
     def checkAnimation(self):
         try:
             if self.first_animation is not None and self.second_animation is not None:
@@ -353,6 +413,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error checkAnimation {ex}")
 
+
     def showStarUp(self, indexButton):
         try:
             current_icon = self.buttonStarUp.icon()
@@ -363,6 +424,7 @@ class AdminController(QMainWindow, MethodsWindow):
                 pass
         except Exception as ex:
             print(f"Error showStarUp {ex}")
+
 
     def showChart(self, view, months, data, title):
         """Muestra un gráfico de barras."""
@@ -439,6 +501,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error: {ex}")
+
 
     def _closeWindow(self):
         self.close()

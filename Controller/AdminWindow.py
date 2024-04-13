@@ -219,7 +219,7 @@ class AdminController(QMainWindow, MethodsWindow):
                               "Semestre", "Regular", "Puntaje"]
 
             # Rellenar la tabla de usuarios
-            self._fillTablesStudents(valueAll, self.tableUsers, column_headers, 9)
+            self._fillTable(valueAll, self.tableUsers, column_headers, 9)
 
         except Exception as ex:
             print(f"Error al actualizar la tabla de usuarios: {ex}")
@@ -236,12 +236,12 @@ class AdminController(QMainWindow, MethodsWindow):
             column_headers = ["ID", "Nombre", "Matricula"]
 
             # Rellenar la tabla de profesores
-            self._fillTablesStudents(valueAll, self.tableTeacher, column_headers, 3)
+            self._fillTable(valueAll, self.tableTeacher, column_headers, 3)
 
         except Exception as ex:
             print(f"Error al actualizar la tabla de profesores: {ex}")
 
-    def _fillTablesStudents(self, valueAll, table, column_headers, columns):
+    def _fillTable(self, valueAll, table, column_headers, columns):
         """Rellena una tabla con los valores proporcionados y alterna el color de las filas."""
         try:
             # Establecer el número de filas y columnas

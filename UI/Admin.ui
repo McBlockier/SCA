@@ -5480,7 +5480,7 @@ border-radius:30px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_75">
+       <widget class="QLabel" name="lbUserStudent">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -5534,7 +5534,7 @@ color:#e8dbf9;
          <string>Información académica</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_77">
+       <widget class="QLabel" name="control">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -5559,7 +5559,7 @@ color:#e8dbf9;
          <string>N. Control: 21070012</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_79">
+       <widget class="QLabel" name="note">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -5584,7 +5584,7 @@ color:#e8dbf9;
          <string>Califiación: 90</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_80">
+       <widget class="QLabel" name="lbTypeUser">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -5611,7 +5611,7 @@ color:#e8dbf9;
          <string>Alumno</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_82">
+       <widget class="QLabel" name="grade">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -5694,31 +5694,6 @@ color:#e8dbf9;
          <string>Información académica</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_83">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>110</y>
-          <width>191</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel{
-background-color:transparent;
-color:#e8dbf9;
-}</string>
-        </property>
-        <property name="text">
-         <string>Semestre: 7mo</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="pushButton_49">
         <property name="geometry">
          <rect>
@@ -5749,7 +5724,7 @@ border-radius:30px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_84">
+       <widget class="QLabel" name="userTeacher">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -5776,7 +5751,7 @@ color:#e8dbf9;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_85">
+       <widget class="QLabel" name="type">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -5803,7 +5778,7 @@ color:#e8dbf9;
          <string>Alumno</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_86">
+       <widget class="QLabel" name="serie">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -5826,31 +5801,6 @@ color:#e8dbf9;
         </property>
         <property name="text">
          <string>N. Control: 21070012</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_87">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>80</y>
-          <width>191</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel{
-background-color:transparent;
-color:#e8dbf9;
-}</string>
-        </property>
-        <property name="text">
-         <string>Califiación: 90</string>
         </property>
        </widget>
       </widget>

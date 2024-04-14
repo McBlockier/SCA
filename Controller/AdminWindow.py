@@ -328,8 +328,32 @@ class AdminController(QMainWindow, MethodsWindow):
                 if header_item and item:
                     row_data[header_item.text()] = item.text()
             self.dataTable = row_data
+            self.setInformationLabel()
         except Exception as ex:
             print(f"Error al manejar clic en celda: {ex}")
+
+
+    def setInformationLabel(self):
+        try:
+            if self.dataTable is not None:
+                if self.dataTable['Matricula'] is not None:
+                    self.userTeacher.setText(self.dataTable['Nombre'])
+                    self.type.setText("Docente")
+                    self.serie.setText("Matricula: "+self.dataTable['Matricula'])
+
+        except Exception as ex:
+            self.lbUserStudent.setText(self.dataTable['ID Usuario'])
+            self.lbTypeUser.setText("Alumno")
+            self.control.setText("N. Control: "+ str(self.dataTable['No. Control']))
+            self.note.setText("Calificación: " + str(self.dataTable['Puntaje']))
+            self.grade.setText("Semestre: " + str(self.dataTable['Semestre']))
+
+    def createRow(self):
+        try:
+            pass
+        except Exception as ex:
+            print(f"Error {ex}")
+
 
 
     def animationMessage(self, typeBox):

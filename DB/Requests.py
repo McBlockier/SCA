@@ -395,6 +395,26 @@ class Inquiries:
             print(f"Error al obtener todos los profesores: {ex}")
             return []
 
+    def delete_by_id(self, procedure_name, id):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                # Llamar al procedimiento almacenado
+                cursor.callproc(procedure_name, (id,))
+                # Confirmar los cambios en la base de datos
+                db.connection.commit()
+                return True
+        except Exception as ex:
+            print(f"Error {ex}")
+            return False
+
+    # Llamada al nuevo método para eliminar un usuario por su ID
+    def delete_user_by_id(self, id):
+        return self.delete_by_id('delete_user', id)
+
+    # Llamadas a los métodos existentes
+    def delete_teacher_by_id(self, id):
+        return self.delete_by_id('delete_teacher', id)
 
 
 

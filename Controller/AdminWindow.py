@@ -146,6 +146,15 @@ class AdminController(QMainWindow, MethodsWindow):
         self.tableTeacher.cellClicked.connect(lambda row, col:
                                               self.on_cell_clicked(row, self.tableTeacher))  # Tabla de docentes
 
+        #Botones de crear nueva fila en cada tabla
+        self.buttonCreateUsers.clicked.connect(lambda: self.createRow(self.tableUsers))#Crear en estudiantes
+        self.buttonCreateTeacher.clicked.connect(lambda: self.createRow(self.tableTeacher))  # Crear en docentes
+
+        #Botones de borrado de filas en cada tabla
+        self.buttonDeleteUser.clicked.connect(lambda: self.deleteRow("Student"))#Borrado para estudiantes
+        self.buttonDeleteTeacher.clicked.connect(lambda: self.deleteRow("Teacher"))#Borrado para docentes
+
+
     def initializeVariables(self):
         self.first_animation = None
         self.second_animation = None
@@ -302,6 +311,79 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al rellenar la tabla: {ex}")
 
+    def createRow(self, table):
+        try:
+            row_count = table.rowCount()
+            table.insertRow(row_count)
+            for col in range(table.columnCount()):
+                item = QTableWidgetItem("")
+                table.setItem(row_count, col, item)
+            # Desplazar la tabla hacia la nueva fila
+            item = table.item(row_count, 0)  # Obtener el primer elemento de la nueva fila
+            table.scrollToItem(item)  # Desplazar la tabla hasta ese elemento
+            table.editItem(item)  # Hacer editable el primer campo de la nueva fila
+
+            # Conectar la señal itemChanged a una función para manejar los cambios en la fila nueva
+            table.itemChanged.connect(lambda item: self.on_item_changed(item, table, row_count))
+        except Exception as ex:
+            print(f"Error al crear una nueva fila: {ex}")
+
+
+    #Función para realizar el borrado en cada tabla, según se especifique en typeButton
+    def deleteRow(self, typeButton):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            # Validar si self.dataTable tiene información
+            if not self.dataTable:
+                MessageBox.information_msgbox("INFORMACIÓN",
+                                              "Primero debes seleccionar una celda de la fila que desea eliminar de la tabla, para poder realizar esta acción")
+                return
+
+            success_message = "El usuario ha sido borrado exitósamente"
+            failure_message = "El usuario no ha sido borrado exitósamente"
+
+            if typeButton == "Student":
+                success = InstanceInquiries.delete_user_by_id(self.dataTable['ID Usuario'])
+                self.__updateScrollUsers() #Actualizamos la tabla de estudiantes
+            elif typeButton == "Teacher":
+                success = InstanceInquiries.delete_teacher_by_id(self.dataTable['ID'])
+                self.__updateScrollTeachers() #Actualizamos la tabla de docentes
+
+            if success:
+                MessageBox.information_msgbox("INFORMACIÓN", success_message)
+            else:
+                MessageBox.information_msgbox("INFORMACIÓN", failure_message)
+
+        except Exception as ex:
+            print(f"Error al eliminar {ex}")
+
+    def on_item_changed(self, item, table, row):
+        """
+        Maneja el evento de cambio de un elemento en la tabla.
+
+        Parameters:
+        - item: El QTableWidgetItem que ha cambiado.
+        - table: La QTableWidget en la que se realizó el cambio.
+        - row: El índice de la fila en la que se realizó el cambio.
+
+        Returns:
+        - None
+
+        Description:
+        Este método se utiliza para manejar el evento de cambio de un elemento en la tabla.
+        Actualiza los datos de la fila cambiada en el diccionario 'dataTable'.
+        """
+        try:
+            header_item = table.horizontalHeaderItem(item.column())
+            if header_item:
+                self.dataTable[header_item.text()] = item.text()
+                print(self.dataTable)
+        except Exception as ex:
+            print(f"Error al manejar cambio de elemento: {ex}")
+
+
     def on_cell_clicked(self, row, table):
         """
         Maneja el evento de clic en una celda de la tabla.
@@ -347,13 +429,6 @@ class AdminController(QMainWindow, MethodsWindow):
             self.control.setText("N. Control: "+ str(self.dataTable['No. Control']))
             self.note.setText("Calificación: " + str(self.dataTable['Puntaje']))
             self.grade.setText("Semestre: " + str(self.dataTable['Semestre']))
-
-    def createRow(self):
-        try:
-            pass
-        except Exception as ex:
-            print(f"Error {ex}")
-
 
 
     def animationMessage(self, typeBox):

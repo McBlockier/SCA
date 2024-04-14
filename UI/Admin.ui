@@ -5955,7 +5955,7 @@ background-color:transparent;
             }</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_27">
+      <widget class="QPushButton" name="buttonCreateUsers">
        <property name="geometry">
         <rect>
          <x>560</x>
@@ -5988,7 +5988,7 @@ border-radius:10px;
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_28">
+      <widget class="QPushButton" name="buttonDeleteUser">
        <property name="geometry">
         <rect>
          <x>490</x>
@@ -6021,7 +6021,7 @@ border-radius:10px;
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_30">
+      <widget class="QPushButton" name="buttonCreateTeacher">
        <property name="geometry">
         <rect>
          <x>1170</x>
@@ -6054,7 +6054,7 @@ border-radius:10px;
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_48">
+      <widget class="QPushButton" name="buttonDeleteTeacher">
        <property name="geometry">
         <rect>
          <x>1100</x>

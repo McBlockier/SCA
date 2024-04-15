@@ -34,7 +34,8 @@ from PyQt5.QtCore import(
     QTimer,
     QDateTime,
     QPropertyAnimation,
-    QRect
+    QRect,
+    QEvent
 )
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -153,6 +154,18 @@ class AdminController(QMainWindow, MethodsWindow):
         #Botones de borrado de filas en cada tabla
         self.buttonDeleteUser.clicked.connect(lambda: self.deleteRow("Student"))#Borrado para estudiantes
         self.buttonDeleteTeacher.clicked.connect(lambda: self.deleteRow("Teacher"))#Borrado para docentes
+
+        try:
+            #Limitador de caracteres de los QLineEdit de Message
+            self.setupLineEdit(self.lineEdit_3, self.lbLimit)
+            self.setupLineEdit(self.lineEdit_2, self.lbLimit2)
+
+            self.lbLimit.setText("Carácteres disponibles 240")
+            self.lbLimit2.setText("Carácteres disponibles 240")
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
 
 
     def initializeVariables(self):
@@ -462,6 +475,27 @@ class AdminController(QMainWindow, MethodsWindow):
                     self.second_animation.start()
 
                     QTimer.singleShot(1200, self.checkAnimation)
+                    self.buttonReply.setStyleSheet(
+                        "QPushButton {" 
+                        "    background-color: #337ffe;"
+                        "    color: white;"
+                        "    border-radius: 10px;"
+                        "}"
+                        "QPushButton:hover {" 
+                        "    background-color: #4b8bff;"
+                        "}")
+
+                    self.buttonReply2.setStyleSheet(
+                        "QPushButton {" 
+                        "    background-color: #ecf1f6;"
+                        "    color: #84b1fa;"
+                        "    border-radius: 10px;"
+                        "}"
+                        "QPushButton:hover {" 
+                        "    background-color: #337ffe;"
+                        "    color: white;"
+                        "}")
+
 
             elif typeBox == "SecondBox":
                 if self.frameBoxSecond.height() == 261 and self.frameBoxFirst.height() == 481:
@@ -495,6 +529,27 @@ class AdminController(QMainWindow, MethodsWindow):
 
                     QTimer.singleShot(1200, self.checkAnimation)
 
+                    self.buttonReply2.setStyleSheet(
+                        "QPushButton {"
+                        "    background-color: #337ffe;"
+                        "    color: white;"
+                        "    border-radius: 10px;"
+                        "}"
+                        "QPushButton:hover {"
+                        "    background-color: #4b8bff;"
+                        "}")
+
+                    self.buttonReply.setStyleSheet(
+                        "QPushButton {"
+                        "    background-color: #ecf1f6;"
+                        "    color: #84b1fa;"
+                        "    border-radius: 10px;"
+                        "}"
+                        "QPushButton:hover {"
+                        "    background-color: #337ffe;"
+                        "    color: white;"
+                        "}")
+
         except Exception as ex:
             print(f"Error animationMessage {ex}")
 
@@ -512,21 +567,36 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error checkAnimation {ex}")
 
-
     def showStarUp(self, indexButton):
         try:
-            current_icon = self.buttonStarUp.icon()
-            current_icon2 = self.buttonStarUp2.icon()
+            # Usar el índiceButton para determinar qué botón utilizar
             if indexButton == 'buttonStarUp':
-                pass
+                button = self.buttonStarUp
             elif indexButton == 'buttonStarUp2':
-                pass
+                button = self.buttonStarUp2
+            else:
+                print("Índice de botón no válido")
+                return
+
+            # Verificar el estado actual del botón y cambiar al estado opuesto
+            if button.property("star_state") == "on":
+                button.setIcon(QIcon("../Resources/star_off.png"))
+                button.setProperty("star_state", "off")
+            else:
+                button.setIcon(QIcon("../Resources/star_on.png"))
+                button.setProperty("star_state", "on")
+
+            # Aplicar los cambios en las propiedades
+            button.style().unpolish(button)
+            button.style().polish(button)
+            button.update()
+
         except Exception as ex:
             print(f"Error showStarUp {ex}")
 
-
     def showChart(self, view, months, data, title):
         """Muestra un gráfico de barras."""
+
         try:
 
             self.scene = QGraphicsScene()
@@ -626,6 +696,55 @@ class AdminController(QMainWindow, MethodsWindow):
         self.showChart(self.graphicsOverView_2, self.months, self.data, "")
 
 
+    def setupLineEdit(self, lineEdit, label):
+        try:
+            # Conecta la señal textChanged al método actualizar_caracteres_restantes
+            lineEdit.textChanged.connect(lambda: self.actualizar_caracteres_restantes(lineEdit, label))
+
+            # Instala un filtro de eventos en el QLineEdit para capturar eventos de teclado
+            lineEdit.installEventFilter(self)
+        except Exception as ex:
+            print(f"Error setupLineEdit {ex}")
+
+    def actualizar_caracteres_restantes(self, lineEdit, label):
+        try:
+            # Obtener el texto actual del QTextEdit
+            texto = lineEdit.toPlainText()
+
+            # Limitar el texto a 140 caracteres si excede el límite
+            if len(texto) > 240:
+                texto = texto[:240]
+                lineEdit.setPlainText(texto)
+
+            # Calcular la cantidad de caracteres restantes
+            caracteres_restantes = 240 - len(texto)
+
+            # Actualizar el QLabel con la cantidad de caracteres restantes
+            label.setText(f"Caracteres disponibles: {caracteres_restantes}")
+
+
+        except Exception as ex:
+            print(f"Error actualizar_caracteres_restantes: {ex}")
+
+    def eventFilter(self, obj, event):
+        try:
+            # Verificar si el evento es un evento de teclado
+            if event.type() == QEvent.KeyPress:
+                # Si el QTextEdit alcanza el límite de 140 caracteres
+                if len(obj.toPlainText()) >= 240:
+                    # Permitir borrar caracteres presionando la tecla Backspace o Delete
+                    if event.key() == Qt.Key_Backspace or event.key() == Qt.Key_Delete:
+                        return False
+                    # Bloquear la adición de caracteres presionando cualquier otra tecla
+                    else:
+                        return True
+
+            # Dejar que el QTextEdit maneje otros eventos de teclado
+            return super().eventFilter(obj, event)
+        except Exception as ex:
+            print(f"Error eventFilter: {ex}")
+
+
     def selectFile(self, file_type):
         try:
             # Configurar los filtros de archivos según el tipo especificado
@@ -655,37 +774,54 @@ class Canvas_grafica2(FigureCanvas):
             self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
             super().__init__(self.fig)
 
+            self.draw_grafica()
+
+        except Exception as ex:
+            print(f"Error __ini__ Class  Canvas_grafica2 {ex}")
+
+
+    def draw_grafica(self):
+        try:
             nombres = ['Práctica', 'Ejercicio', 'Presentación']
             colores_hex = ['#4bcfeb', '#91a5ff', '#f343ff']
             tamaño = [20, 26, 30]
             explotar = [0.05, 0.05, 0.05]
 
-            colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
+            colores_rgb = [(int(col[1:3], 16) / 255, int(col[3:5], 16) / 255, int(col[5:7], 16) / 255) for col in
+                           colores_hex]
 
             plt.title("Tipos de trabajos", color='#51517f', size=12, family="Segoe UI")
 
-            patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
-                                                    autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
-                                                    radius=0.8, labeldistance=1.1)
+            self.patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
+                                                         autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
+                                                         radius=0.8, labeldistance=1.1)
 
             self.ax.axis('equal')
             self.ax.set_facecolor('white')
             self.ax.set_aspect('equal')
             plt.close(self.fig)
 
-            # Agregar efecto hover con cambio de color
-            cursor = mplcursors.cursor(hover=True)
+            self.mpl_connect('button_press_event', self.on_click)
 
-            @cursor.connect("add")
-            def on_hover(sel):
-                sel.annotation.set_text(sel.artist.get_label())
-                sel.artist.set_color('lightgrey')
-
-            @cursor.connect("remove")
-            def on_leave(sel):
-                sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
         except Exception as ex:
-            print(f"Error __ini__ Class  Canvas_grafica2 {ex}")
+            print(f"Error en draw_grafica {ex}")
+
+    def on_click(self, event):
+        try:
+            import matplotlib.pyplot as plt
+            import mplcursors
+            from PyQt5.QtWidgets import QFileDialog
+            from Controller.Message import MessageBox
+
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getSaveFileName(self, "Guardar gráfico como PNG", "Gráfico.png",
+                                                      "PNG (*.png)", options=options)
+            if fileName:
+                self.fig.savefig(fileName)
+                MessageBox.information_msgbox("INFORMACIÓN", "El gráfico se ha guardado exitosamente.")
+
+        except Exception as ex:
+            print(f"Error: {ex}")
 
 
 class Canvas_grafica3(FigureCanvas):
@@ -694,41 +830,52 @@ class Canvas_grafica3(FigureCanvas):
             self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(6, 6), sharey=True)
             super().__init__(self.fig)
 
-            nombres = ['Aprobo', 'Reprobo', 'Asesoria']
-            colores_hex = ['#4bcfeb', '#91a5ff', '#b485ff']
-            tamaño = [50, 20, 40]
+            self.draw_grafica()
+
+        except Exception as ex:
+            print(f"Error __ini__ Class  Canvas_grafica3 {ex}")
+
+    def draw_grafica(self):
+        try:
+            nombres = ['Práctica', 'Ejercicio', 'Presentación']
+            colores_hex = ['#4bcfeb', '#91a5ff', '#f343ff']
+            tamaño = [20, 26, 30]
             explotar = [0.05, 0.05, 0.05]
 
-            colores_rgb = [(int(col[1:3], 16)/255, int(col[3:5], 16)/255, int(col[5:7], 16)/255) for col in colores_hex]
+            colores_rgb = [(int(col[1:3], 16) / 255, int(col[3:5], 16) / 255, int(col[5:7], 16) / 255) for col in
+                           colores_hex]
 
-            plt.title("Desempeño de alumnos", color='#51517f', size=12, family="Segoe UI")
+            plt.title("Tipos de trabajos", color='#51517f', size=12, family="Segoe UI")
 
-            patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
-                                                    autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
-                                                    radius=0.8, labeldistance=1.1)
+            self.patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
+                                                         autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,
+                                                         radius=0.8, labeldistance=1.1)
 
             self.ax.axis('equal')
             self.ax.set_facecolor('white')
             self.ax.set_aspect('equal')
             plt.close(self.fig)
 
-            # Agregar efecto hover con cambio de color
-            cursor = mplcursors.cursor(hover=True)
+            self.mpl_connect('button_press_event', self.on_click)
 
-            @cursor.connect("add")
-            def on_hover(sel):
-                sel.annotation.set_text(sel.artist.get_label())
-                sel.artist.set_color('lightgrey')
-
-            @cursor.connect("remove")
-            def on_leave(sel):
-                sel.artist.set_color(colores_rgb[nombres.index(sel.artist.get_label())])
         except Exception as ex:
-            print(f"Error __ini__ Class  Canvas_grafica3 {ex}")
+            print(f"Error en draw_grafica {ex}")
 
+    def on_click(self, event):
+        try:
+            import matplotlib.pyplot as plt
+            import mplcursors
+            from PyQt5.QtWidgets import QFileDialog
+            from Controller.Message import MessageBox
 
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getSaveFileName(self, "Guardar gráfico como PNG", "Gráfico.png",
+                                                      "PNG (*.png)", options=options)
+            if fileName:
+                self.fig.savefig(fileName)
+                MessageBox.information_msgbox("INFORMACIÓN", "El gráfico se ha guardado exitosamente.")
 
-
-
+        except Exception as ex:
+            print(f"Error: {ex}")
 
 

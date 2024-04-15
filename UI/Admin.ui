@@ -175,7 +175,7 @@ color:#fffffe;
 }</string>
       </property>
       <property name="text">
-       <string>         Estudiantes</string>
+       <string>     Personal</string>
       </property>
       <property name="iconSize">
        <size>
@@ -2090,8 +2090,11 @@ border-radius:10px;
          <string notr="true">QPushButton{
 background-color:#337ffe;
 color:white;
-border-radius:10px
-}</string>
+border-radius:10px;
+}
+QPushButton:hover {
+                background-color: #4b8bff;
+            }</string>
         </property>
         <property name="text">
          <string>Responder comentarios</string>
@@ -2263,42 +2266,6 @@ color:#bfc5cf;
          <string>2 Comentarios  0 Respuestas</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_2">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>270</y>
-          <width>691</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">
-QLineEdit {
-background-color:#ecf1f6;
-border-radius:10px;
-padding-top: -90px; /* Espacio arriba para el placeholder */
-}
-QLineEdit::placeholder {
-position: absolute;
-top: 0;
- left: 0;
-padding-left: 2px; /* Espacio izquierdo */
- color: gray;
-            }</string>
-        </property>
-        <property name="placeholderText">
-         <string>Escriba su mensaje aqui</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="pushButton_20">
         <property name="geometry">
          <rect>
@@ -2372,7 +2339,7 @@ border-radius:10px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="lbLimit2">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -2423,6 +2390,41 @@ color:#bfc5cf;
         </property>
         <property name="text">
          <string>Hace 20 minutos</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="lineEdit_2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>270</y>
+          <width>691</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit {
+background-color:#ecf1f6;
+border-radius:10px;
+padding-top: -90px; /* Espacio arriba para el placeholder */
+}
+QTextEdit::placeholder {
+position: absolute;
+top: 0;
+ left: 0;
+padding-left: 2px; /* Espacio izquierdo */
+ color: gray;
+            }</string>
+        </property>
+        <property name="placeholderText">
+         <string>Escriba su mensaje aqui</string>
         </property>
        </widget>
       </widget>
@@ -2682,42 +2684,6 @@ color:#bfc5cf;
          <string>2 Comentarios  0 Respuestas</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_3">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>270</y>
-          <width>691</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">
-QLineEdit {
-background-color:#ecf1f6;
-border-radius:10px;
-padding-top: -90px; /* Espacio arriba para el placeholder */
-}
-QLineEdit::placeholder {
-position: absolute;
-top: 0;
- left: 0;
-padding-left: 2px; /* Espacio izquierdo */
- color: gray;
-            }</string>
-        </property>
-        <property name="placeholderText">
-         <string>Escriba su mensaje aqui</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="pushButton_33">
         <property name="geometry">
          <rect>
@@ -2734,6 +2700,9 @@ padding-left: 2px; /* Espacio izquierdo */
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{
@@ -2785,7 +2754,7 @@ border-radius:10px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_12">
+       <widget class="QLabel" name="lbLimit">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -2836,6 +2805,41 @@ color:#bfc5cf;
         </property>
         <property name="text">
          <string>Hace 20 minutos</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="lineEdit_3">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>270</y>
+          <width>691</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit {
+background-color:#ecf1f6;
+border-radius:10px;
+padding-top: -90px; /* Espacio arriba para el placeholder */
+}
+QTextEdit::placeholder {
+position: absolute;
+top: 0;
+ left: 0;
+padding-left: 2px; /* Espacio izquierdo */
+ color: gray;
+            }</string>
+        </property>
+        <property name="placeholderText">
+         <string>Escriba su mensaje aqui</string>
         </property>
        </widget>
       </widget>
@@ -6130,10 +6134,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
-     <zorder>frameMessage</zorder>
      <zorder>framePanel</zorder>
      <zorder>frameReports_2</zorder>
      <zorder>frameStudents</zorder>
+     <zorder>frameMessage</zorder>
     </widget>
    </widget>
   </widget>

@@ -233,38 +233,84 @@ class Inquiries:
         except Exception as ex:
             print(f"Error al insertar el mensaje: {ex}")
 
-
-    def insertReply(self, idMessage, idUser, reply_text):
+    def insertReply(self, idUser, reply_text):
         """
         Inserta una nueva respuesta a un mensaje en la base de datos.
 
         Parameters:
-        - idMessage: El ID del mensaje al que se responde.
         - idUser: El ID del usuario que envía la respuesta.
         - reply_text: El contenido de la respuesta.
 
         Returns:
-        - None
+        - bool: True si la inserción fue exitosa, False si ocurrió un error.
 
         Description:
         Este método se utiliza para insertar una nueva respuesta a un mensaje en la base de datos.
         Se conecta a la base de datos y llama al procedimiento almacenado 'InsertReply' pasando los parámetros necesarios,
         junto con la hora y la fecha actuales obtenidas automáticamente.
         Después de insertar la respuesta, se confirma la transacción.
-        Si ocurre un error durante el proceso, se imprime un mensaje de error.
+        Si ocurre un error durante el proceso, se imprime un mensaje de error y se retorna False.
         """
         try:
-            # Obtener la hora y la fecha actuales
-            reply_hour = datetime.now().strftime('%H:%M:%S')
-            reply_date = datetime.now().strftime('%Y-%m-%d')
+            # Verificar si el idUser existe en la tabla user antes de la inserción
+            if self.checkUserExists(idUser):
+                # Obtener la hora y la fecha actuales
+                reply_hour = datetime.now().strftime('%H:%M:%S')
+                reply_date = datetime.now().strftime('%Y-%m-%d')
 
-            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
-                cursor = db.connection.cursor()
-                cursor.callproc("InsertReply", (idMessage, idUser, reply_text, reply_hour, reply_date))
-                db.connection.commit()
+                with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                    cursor = db.connection.cursor()
+                    cursor.callproc("InsertReply", (idUser, reply_text, reply_hour, reply_date))
+                    db.connection.commit()
+
+                # Si la inserción fue exitosa, retornar True
+                return True
+            else:
+                print("El idUser proporcionado no existe en la tabla user.")
+                return False
         except Exception as ex:
             print(f"Error al insertar la respuesta: {ex}")
+            # Si ocurrió un error, retornar False
+            return False
 
+    def checkUserExists(self, idUser):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT idUser FROM user WHERE idUser = %s", (idUser,))
+                result = cursor.fetchone()
+                if result:
+                    return True  # El idUser existe en la tabla user
+                else:
+                    return False  # El idUser no existe en la tabla user
+        except Exception as ex:
+            print(f"Error al verificar si el idUser existe: {ex}")
+            return False  # En caso de error, asumimos que el idUser no existe
+
+    def updateReplyStatus(self, idMessage):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("UPDATE messages SET reply = 1 WHERE id = %s", (idMessage,))
+                db.connection.commit()
+            return True  # Indicar que la actualización fue exitosa
+        except Exception as ex:
+            print(f"Error al actualizar el estado de respuesta del mensaje: {ex}")
+            return False  # Indicar que ocurrió un error durante la actualización
+
+    def getMessageId(self, message_text):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("CALL GetMessageIdBySms(%s)", (message_text,))
+                result = cursor.fetchone()
+                if result:
+                    return result[0]  # Devuelve el idMessage si se encuentra el mensaje
+                else:
+                    return None  # Devuelve None si no se encuentra el mensaje
+        except Exception as ex:
+            print(f"Error al obtener el id del mensaje: {ex}")
+            return None  # En caso de error, devuelve None
 
     def get_user_file_counts(self, idUser):
         """
@@ -416,12 +462,24 @@ class Inquiries:
     def delete_teacher_by_id(self, id):
         return self.delete_by_id('delete_teacher', id)
 
-
-
-
-
-
-
+    def getMessages(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT idUser, sms, hour FROM messages WHERE reply = FALSE")
+                mensajes_no_respondidos = cursor.fetchall()
+                mensajes_dict = []
+                for mensaje in mensajes_no_respondidos:
+                    mensaje_dict = {
+                        "usuario": mensaje[0],
+                        "mensaje": mensaje[1],
+                        "hora": mensaje[2]
+                    }
+                    mensajes_dict.append(mensaje_dict)
+                    print(mensaje_dict)  # Opcional: imprime el diccionario de cada mensaje
+                return mensajes_dict
+        except Exception as ex:
+            print(f"Error {ex}")
 
 
 """

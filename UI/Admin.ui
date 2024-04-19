@@ -2161,7 +2161,7 @@ border-radius:10px
            <height>121</height>
           </rect>
          </property>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="label_sms2">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -2217,7 +2217,7 @@ border-radius:10px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="userSms2">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -2266,7 +2266,7 @@ color:#bfc5cf;
          <string>2 Comentarios  0 Respuestas</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_20">
+       <widget class="QPushButton" name="buttonSendSms2">
         <property name="geometry">
          <rect>
           <x>600</x>
@@ -2579,7 +2579,7 @@ border-radius:10px
            <height>121</height>
           </rect>
          </property>
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="label_sms">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -2635,7 +2635,7 @@ border-radius:10px;
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="userSms">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -2684,7 +2684,7 @@ color:#bfc5cf;
          <string>2 Comentarios  0 Respuestas</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_33">
+       <widget class="QPushButton" name="buttonSendSms1">
         <property name="geometry">
          <rect>
           <x>600</x>
@@ -3081,7 +3081,7 @@ border-radius:10px;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label_32">
+         <widget class="QLabel" name="lb1">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3108,7 +3108,7 @@ color:#616d7e;
            <string>Reporte de constancia de semana de ingeniería</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_33">
+         <widget class="QLabel" name="lbD1">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3164,7 +3164,7 @@ color:#bfc5cf;
            <string>Sin revisión</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_35">
+         <widget class="QPushButton" name="b1">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3184,6 +3184,39 @@ border-radius:10px</string>
            <string/>
           </property>
          </widget>
+         <widget class="QLabel" name="lbUser1">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel{
+
+background-color:transparent;
+color:#bfc5cf;
+}</string>
+          </property>
+          <property name="text">
+           <string>McBlockier</string>
+          </property>
+         </widget>
+         <zorder>b1</zorder>
+         <zorder>lb1</zorder>
+         <zorder>lbD1</zorder>
+         <zorder>label_34</zorder>
+         <zorder>lbUser1</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_2">
          <property name="geometry">
@@ -3206,7 +3239,7 @@ border-radius:10px;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label_35">
+         <widget class="QLabel" name="lb2">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3233,7 +3266,7 @@ color:#616d7e;
            <string>Reporte de constancia de semana de ingeniería</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_36">
+         <widget class="QLabel" name="lbD2">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3289,7 +3322,7 @@ color:#bfc5cf;
            <string>Sin revisión</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_36">
+         <widget class="QPushButton" name="b2">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3309,6 +3342,39 @@ border-radius:10px</string>
            <string/>
           </property>
          </widget>
+         <widget class="QLabel" name="lbUser2">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel{
+
+background-color:transparent;
+color:#bfc5cf;
+}</string>
+          </property>
+          <property name="text">
+           <string>McBlockier</string>
+          </property>
+         </widget>
+         <zorder>b2</zorder>
+         <zorder>lb2</zorder>
+         <zorder>lbD2</zorder>
+         <zorder>label_37</zorder>
+         <zorder>lbUser2</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_3">
          <property name="geometry">
@@ -3331,7 +3397,7 @@ border-radius:10px;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label_38">
+         <widget class="QLabel" name="lb3">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3358,7 +3424,7 @@ color:#616d7e;
            <string>Reporte de constancia de semana de ingeniería</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_39">
+         <widget class="QLabel" name="lbD3">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3414,7 +3480,7 @@ color:#bfc5cf;
            <string>Sin revisión</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_37">
+         <widget class="QPushButton" name="b3">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3434,6 +3500,39 @@ border-radius:10px</string>
            <string/>
           </property>
          </widget>
+         <widget class="QLabel" name="lbUser3">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel{
+
+background-color:transparent;
+color:#bfc5cf;
+}</string>
+          </property>
+          <property name="text">
+           <string>McBlockier</string>
+          </property>
+         </widget>
+         <zorder>b3</zorder>
+         <zorder>lb3</zorder>
+         <zorder>lbD3</zorder>
+         <zorder>label_40</zorder>
+         <zorder>lbUser3</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_4">
          <property name="geometry">
@@ -3456,7 +3555,7 @@ border-radius:10px;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label_41">
+         <widget class="QLabel" name="lb4">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3483,7 +3582,7 @@ color:#616d7e;
            <string>Reporte de constancia de semana de ingeniería</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_42">
+         <widget class="QLabel" name="lbD4">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3539,7 +3638,7 @@ color:#bfc5cf;
            <string>Sin revisión</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_38">
+         <widget class="QPushButton" name="b4">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3559,6 +3658,39 @@ border-radius:10px</string>
            <string/>
           </property>
          </widget>
+         <widget class="QLabel" name="lbUser4">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel{
+
+background-color:transparent;
+color:#bfc5cf;
+}</string>
+          </property>
+          <property name="text">
+           <string>McBlockier</string>
+          </property>
+         </widget>
+         <zorder>b4</zorder>
+         <zorder>lb4</zorder>
+         <zorder>lbD4</zorder>
+         <zorder>label_43</zorder>
+         <zorder>lbUser4</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_5">
          <property name="geometry">
@@ -3581,7 +3713,7 @@ border-radius:10px;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label_44">
+         <widget class="QLabel" name="lb5">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3608,7 +3740,7 @@ color:#616d7e;
            <string>Reporte de constancia de semana de ingeniería</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_45">
+         <widget class="QLabel" name="lbD5">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -3664,7 +3796,7 @@ color:#bfc5cf;
            <string>Sin revisión</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_39">
+         <widget class="QPushButton" name="b5">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3684,6 +3816,39 @@ border-radius:10px</string>
            <string/>
           </property>
          </widget>
+         <widget class="QLabel" name="lbUser5">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel{
+
+background-color:transparent;
+color:#bfc5cf;
+}</string>
+          </property>
+          <property name="text">
+           <string>McBlockier</string>
+          </property>
+         </widget>
+         <zorder>b5</zorder>
+         <zorder>lb5</zorder>
+         <zorder>lbD5</zorder>
+         <zorder>label_46</zorder>
+         <zorder>lbUser5</zorder>
         </widget>
        </widget>
       </widget>

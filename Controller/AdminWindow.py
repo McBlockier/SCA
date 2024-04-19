@@ -35,13 +35,16 @@ from PyQt5.QtCore import(
     QDateTime,
     QPropertyAnimation,
     QRect,
-    QEvent
+    QEvent,
+    QPoint,
+    QEasingCurve
 )
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import numpy as np
 import mplcursors
 from PyQt5.uic import loadUi
+from datetime import timedelta
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
 
 class AdminController(QMainWindow, MethodsWindow):
@@ -166,14 +169,141 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+        # Carga los mensajes
+        self.loadMessages()
 
+        #Colocar mensajes de cada boton emergente
+        self.b1.clicked.connect(lambda: self.setMessageButton('b1'))
+        self.b2.clicked.connect(lambda: self.setMessageButton('b2'))
+        self.b3.clicked.connect(lambda: self.setMessageButton('b3'))
+        self.b4.clicked.connect(lambda: self.setMessageButton('b4'))
+        self.b5.clicked.connect(lambda: self.setMessageButton('b5'))
+
+        #Botones de enviar respuesta
+        self.buttonSendSms1.clicked.connect(lambda: self.reply("reply1"))
+        self.buttonSendSms2.clicked.connect(lambda: self.reply("reply2"))
+
+    def loadMessages(self):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            messages = InstanceInquiries.getMessages()
+
+            if len(messages) >= 2:
+                self.label_sms.setText(messages[0]['mensaje'])
+                self.userSms.setText(messages[0]['usuario'])
+
+                self.label_sms2.setText(messages[1]['mensaje'])
+                self.userSms2.setText(messages[1]['usuario'])
+
+                for i in range(min(len(messages) - 2, 5)):
+                    message = messages[i + 2]
+                    label_message = getattr(self, f"lb{i + 1}")
+                    label_date = getattr(self, f"lbD{i + 1}")
+                    label_user = getattr(self, f"lbUser{i + 1}")
+
+                    # Configuración del texto del mensaje
+                    label_message.setText(message['mensaje'])
+
+                    # Configuración de la fecha del mensaje
+                    if 'hora' in message:
+                        time_delta = message['hora']
+                        if isinstance(time_delta, timedelta):
+                            formatted_time = self.format_time_delta(time_delta)
+                            label_date.setText(formatted_time)
+                        else:
+                            print("Error: 'hora' no es un objeto timedelta")
+
+                    # Configuración del usuario del mensaje
+                    if 'usuario' in message:
+                        user = message['usuario']
+                        label_user.setText(user)
+                    else:
+                        print("Error: 'usuario' no está presente en el mensaje")
+
+        except Exception as ex:
+            print(f"Error inesperado: {ex}")
+
+    def format_time_delta(self, delta):
+        hours, remainder = divmod(delta.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return f"{hours:02d}:{minutes:02d}"
+
+    def setMessageButton(self, typeButton):
+        try:
+            saveOldText1 = self.label_sms.text()
+            saveOldText2 = self.label_sms2.text()
+
+
+            if typeButton == "b1":
+                self.label_sms.setText(self.lb1.text())
+                self.lb1.setText(saveOldText1)
+                self.userSms.setText(self.lbUser1.text())
+            elif typeButton == "b2":
+                self.label_sms.setText(self.lb2.text())
+                self.lb2.setText(saveOldText1)
+                self.userSms.setText(self.lbUser2.text())
+            elif typeButton == "b3":
+                self.label_sms2.setText(self.lb3.text())
+                self.lb3.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser3.text())
+            elif typeButton == "b4":
+                self.label_sms2.setText(self.lb4.text())
+                self.lb4.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser4.text())
+            elif typeButton == "b5":
+                self.label_sms2.setText(self.lb5.text())
+                self.lb5.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser5.text())
+
+            # Habilitar el ajuste automático de texto para los QLabel
+            self.label_sms.setWordWrap(True)
+            self.label_sms2.setWordWrap(True)
+
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+    def reply(self, typeButton):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            if typeButton in ["reply1", "reply2"]:
+                # Determinar el QLabel y el userSms correspondientes
+                label_sms = self.label_sms if typeButton == "reply1" else self.label_sms2
+                userSms = self.userSms.text() if typeButton == "reply1" else self.userSms2.text()
+
+                line_edit = self.lineEdit_3 if typeButton == "reply1" else self.lineEdit_2
+
+                # Verificar si el campo de texto no está vacío o nulo
+                if line_edit.toPlainText().strip():  # Si hay texto en el campo
+                    if InstanceInquiries.insertReply(userSms, line_edit.toPlainText()):
+                        MessageBox.information_msgbox("INFORMACION",
+                                                      "La respuesta del mensaje fue enviada correctamente")
+                        self.loadMessages()
+                        self.lineEdit_2.clear()  # Limpiar los campos de texto
+                        self.lineEdit_3.clear()
+
+                        # Obtener el idMessage del mensaje
+                        idMessage = InstanceInquiries.getMessageId(label_sms.text())
+                        # Actualizar el estado de respuesta del mensaje
+                        if idMessage:
+                            InstanceInquiries.updateReplyStatus(idMessage)
+                        else:
+                            print("No se encontró el idMessage del mensaje.")
+                    else:
+                        MessageBox.input_error_msgbox("ERROR", "La respuesta del mensaje no fue enviada correctamente")
+                else:
+                    MessageBox.input_error_msgbox("ERROR", "Por favor ingrese la respuesta antes de enviarla")
+        except Exception as ex:
+            print(f"Error in reply: {ex}")
 
     def initializeVariables(self):
         self.first_animation = None
         self.second_animation = None
         self.indexButton = 0
         self.dataTable = None
-
 
     def onTextChanged(self):
     #Función no implementada para uso real

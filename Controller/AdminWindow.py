@@ -168,8 +168,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
-        # Carga los mensajes
-        self.loadMessages()
+        self.load_information("None", "Null")
 
         #Colocar mensajes de cada boton emergente
         self.b1.clicked.connect(lambda: self.setMessageButton('b1'))
@@ -183,49 +182,92 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonSendSms2.clicked.connect(lambda: self.reply("reply2"))
 
 
-    def loadMessages(self):
+    def load_information(self, type, messages):
         try:
-            from DB.Requests import Inquiries
-            InstanceInquiries = Inquiries()
+            if type == "Answers":
 
-            self.messages = InstanceInquiries.getMessages()
+                self.loadMessages(messages)
+            else:
 
-            if len(self.messages) >= 2:
-                self.label_sms.setText(self.messages[0]['mensaje'])
-                self.userSms.setText(self.messages[0]['usuario'])
+                from DB.Requests import Inquiries
+                InstanceInquiries = Inquiries()
 
-                self.label_sms2.setText(self.messages[1]['mensaje'])
-                self.userSms2.setText(self.messages[1]['usuario'])
+                messages = InstanceInquiries.getMessages()
 
-                for i in range(min(len(self.messages) - 2, 5)):
-                    message = self.messages[i + 2]
+                # Carga los mensajes
+                self.loadMessages(messages)
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def loadMessages(self, messages):
+        try:
+            # Verificar si hay mensajes con reply igual a 1
+            has_reply_1 = any(message.get('reply') == 1 for message in messages)
+
+            # Deshabilitar los botones de respuesta si hay mensajes con reply igual a 1
+            self.buttonReply.setEnabled(not has_reply_1)
+            self.buttonReply2.setEnabled(not has_reply_1)
+
+            # Deshabilitar los campos de entrada si hay mensajes con reply igual a 1
+            self.lineEdit_2.setEnabled(not has_reply_1)
+            self.lineEdit_3.setEnabled(not has_reply_1)
+
+            # Configurar los mensajes disponibles
+            for i in range(5):
+                if i < len(messages):
+                    message = messages[i]
                     label_message = getattr(self, f"lb{i + 1}")
                     label_date = getattr(self, f"lbD{i + 1}")
                     label_user = getattr(self, f"lbUser{i + 1}")
+                    label_reply = getattr(self, f"r{i + 1}")
+                    button = getattr(self, f"b{i + 1}")
 
-                    # Configuración del texto del mensaje
-                    label_message.setText(message['mensaje'])
+                    # Configurar el texto del mensaje
+                    label_message.setText(message.get('mensaje', ''))
 
-                    # Configuración de la fecha del mensaje
-                    if 'hora' in message:
-                        time_delta = message['hora']
-                        if isinstance(time_delta, timedelta):
-                            formatted_time = self.format_time_delta(time_delta)
-                            label_date.setText(formatted_time)
-                        else:
-                            print("Error: 'hora' no es un objeto timedelta")
-
-                    # Configuración del usuario del mensaje
-                    if 'usuario' in message:
-                        user = message['usuario']
-                        label_user.setText(user)
+                    # Configurar la fecha del mensaje
+                    time_delta = message.get('hora')
+                    if isinstance(time_delta, timedelta):
+                        formatted_time = self.format_time_delta(time_delta)
+                        label_date.setText(formatted_time)
                     else:
-                        print("Error: 'usuario' no está presente en el mensaje")
+                        label_date.setText("")
 
-                self.loadPreviewSms(self.messages)
+                    # Configurar el usuario del mensaje
+                    label_user.setText(message.get('usuario', ''))
+
+                    # Configurar el estado de "Revisado" si el mensaje tiene reply igual a 1
+                    if message.get('reply') == 1:
+                        label_reply.setText("Revisado")
+                    else:
+                        label_reply.setText("")
+
+                    # Mostrar los QLabel y los QPushButtons correspondientes
+                    label_message.setVisible(True)
+                    label_date.setVisible(True)
+                    label_user.setVisible(True)
+                    label_reply.setVisible(True)
+                    button.setVisible(True)
+                else:
+                    # Ocultar los QLabel y los QPushButtons si no hay información disponible
+                    label_message = getattr(self, f"lb{i + 1}")
+                    label_date = getattr(self, f"lbD{i + 1}")
+                    label_user = getattr(self, f"lbUser{i + 1}")
+                    label_reply = getattr(self, f"r{i + 1}")
+                    button = getattr(self, f"b{i + 1}")
+
+                    label_message.setVisible(False)
+                    label_date.setVisible(False)
+                    label_user.setVisible(False)
+                    label_reply.setVisible(False)
+                    button.setVisible(False)
+
+            # Cargar la vista previa de los mensajes
+            self.loadPreviewSms(messages)
 
         except Exception as ex:
             print(f"Error inesperado: {ex}")
+
 
     def load_icon(self, button, icon_number):
         try:
@@ -234,8 +276,10 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error: {ex}")
 
+
     def calculate_icon_numbers(self, user_message_count):
         return {user: min(message_count, 3) for user, message_count in user_message_count.items()}
+
 
     def loadPreviewSms(self, messages):
         try:
@@ -265,9 +309,10 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error inesperado: {ex}")
 
+
     def onTextChanged(self):
         try:
-            self.loadMessages()
+            self.load_information("None", "Null")
 
             # Obtener el usuario a buscar desde el campo de búsqueda
             user_to_search = self.searchContact.text()
@@ -305,26 +350,35 @@ class AdminController(QMainWindow, MethodsWindow):
         minutes, seconds = divmod(remainder, 60)
         return f"{hours:02d}:{minutes:02d}"
 
+
     def setMessageButton(self, typeButton):
         try:
             saveOldText1 = self.label_sms.text()
             saveOldText2 = self.label_sms2.text()
 
-            if typeButton in ["b1", "b2"]:
-                label_sms = self.label_sms
-                label_user = self.lbUser1 if typeButton == "b1" else self.lbUser2
-                new_text = self.lb1.text() if typeButton == "b1" else self.lb2.text()
-            else:
-                label_sms = self.label_sms2
-                label_user = self.lbUser3 if typeButton == "b3" else self.lbUser4 if typeButton == "b4" else self.lbUser5
-                new_text = self.lb3.text() if typeButton == "b3" else self.lb4.text() if typeButton == "b4" else self.lb5.text()
-
-            label_sms.setText(new_text)
-            label_user.setText(saveOldText1 if typeButton in ["b1", "b2"] else saveOldText2)
-            self.userSms.setText(label_user.text())
+            if typeButton == "b1":
+                self.label_sms.setText(self.lb1.text())
+                self.lb1.setText(saveOldText1)
+                self.userSms.setText(self.lbUser1.text())
+            elif typeButton == "b2":
+                self.label_sms.setText(self.lb2.text())
+                self.lb2.setText(saveOldText1)
+                self.userSms.setText(self.lbUser2.text())
+            elif typeButton == "b3":
+                self.label_sms2.setText(self.lb3.text())
+                self.lb3.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser3.text())
+            elif typeButton == "b4":
+                self.label_sms2.setText(self.lb4.text())
+                self.lb4.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser4.text())
+            elif typeButton == "b5":
+                self.label_sms2.setText(self.lb5.text())
+                self.lb5.setText(saveOldText2)
+                self.userSms2.setText(self.lbUser5.text())
 
             # Habilitar el ajuste automático de texto para los QLabel
-            label_sms.setWordWrap(True)
+            self.label_sms.setWordWrap(True)
             self.label_sms2.setWordWrap(True)
 
         except Exception as ex:
@@ -348,7 +402,7 @@ class AdminController(QMainWindow, MethodsWindow):
                     if InstanceInquiries.insertReply(userSms, line_edit.toPlainText()):
                         MessageBox.information_msgbox("INFORMACION",
                                                       "La respuesta del mensaje fue enviada correctamente")
-                        self.loadMessages()
+                        self.load_information("None", "Null")
                         self.lineEdit_2.clear()  # Limpiar los campos de texto
                         self.lineEdit_3.clear()
 
@@ -431,16 +485,30 @@ class AdminController(QMainWindow, MethodsWindow):
                 self.frameComments.setStyleSheet(selected_style)
                 self.frameReports.setStyleSheet(common_style)
                 self.frameAnswers.setStyleSheet(common_style)
+
+                self.load_information("None", "Null")
+
             elif type == "Reports":
                 self.frameComments.setStyleSheet(common_style)
                 self.frameReports.setStyleSheet(selected_style)
                 self.frameAnswers.setStyleSheet(common_style)
+                MessageBox.information_msgbox("INFORMACIÓN", "Sistema de reportes aún no disponible")
+
             elif type == "Answers":
                 self.frameComments.setStyleSheet(common_style)
                 self.frameReports.setStyleSheet(common_style)
                 self.frameAnswers.setStyleSheet(selected_style)
+
+                from DB.Requests import Inquiries
+                InstanceInquieries = Inquiries()
+
+                value, messages = InstanceInquieries.get_messages_with_answer()
+                if value:
+                    self.load_information("Answers", messages)
+
         except Exception as ex:
             print(f"Error linksSelect {ex}")
+
 
 
     def __updateScrollUsers(self):

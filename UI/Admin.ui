@@ -3188,7 +3188,7 @@ color:#bfc5cf;
            <string>2023.15.03</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_34">
+         <widget class="QLabel" name="r1">
           <property name="geometry">
            <rect>
             <x>210</x>
@@ -3264,11 +3264,11 @@ color:#bfc5cf;
            <string>McBlockier</string>
           </property>
          </widget>
-         <zorder>b1</zorder>
-         <zorder>lb1</zorder>
          <zorder>lbD1</zorder>
-         <zorder>label_34</zorder>
+         <zorder>r1</zorder>
          <zorder>lbUser1</zorder>
+         <zorder>lb1</zorder>
+         <zorder>b1</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_2">
          <property name="geometry">
@@ -3346,7 +3346,7 @@ color:#bfc5cf;
            <string>2023.15.03</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_37">
+         <widget class="QLabel" name="r2">
           <property name="geometry">
            <rect>
             <x>210</x>
@@ -3422,11 +3422,11 @@ color:#bfc5cf;
            <string>McBlockier</string>
           </property>
          </widget>
-         <zorder>b2</zorder>
          <zorder>lb2</zorder>
          <zorder>lbD2</zorder>
-         <zorder>label_37</zorder>
+         <zorder>r2</zorder>
          <zorder>lbUser2</zorder>
+         <zorder>b2</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_3">
          <property name="geometry">
@@ -3504,7 +3504,7 @@ color:#bfc5cf;
            <string>2023.15.03</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_40">
+         <widget class="QLabel" name="r3">
           <property name="geometry">
            <rect>
             <x>210</x>
@@ -3580,11 +3580,11 @@ color:#bfc5cf;
            <string>McBlockier</string>
           </property>
          </widget>
-         <zorder>b3</zorder>
          <zorder>lb3</zorder>
          <zorder>lbD3</zorder>
-         <zorder>label_40</zorder>
+         <zorder>r3</zorder>
          <zorder>lbUser3</zorder>
+         <zorder>b3</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_4">
          <property name="geometry">
@@ -3662,7 +3662,7 @@ color:#bfc5cf;
            <string>2023.15.03</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_43">
+         <widget class="QLabel" name="r4">
           <property name="geometry">
            <rect>
             <x>210</x>
@@ -3738,11 +3738,11 @@ color:#bfc5cf;
            <string>McBlockier</string>
           </property>
          </widget>
-         <zorder>b4</zorder>
          <zorder>lb4</zorder>
          <zorder>lbD4</zorder>
-         <zorder>label_43</zorder>
+         <zorder>r4</zorder>
          <zorder>lbUser4</zorder>
+         <zorder>b4</zorder>
         </widget>
         <widget class="QFrame" name="frameSms_5">
          <property name="geometry">
@@ -3820,7 +3820,7 @@ color:#bfc5cf;
            <string>2023.15.03</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_46">
+         <widget class="QLabel" name="r5">
           <property name="geometry">
            <rect>
             <x>210</x>
@@ -3899,9 +3899,14 @@ color:#bfc5cf;
          <zorder>b5</zorder>
          <zorder>lb5</zorder>
          <zorder>lbD5</zorder>
-         <zorder>label_46</zorder>
+         <zorder>r5</zorder>
          <zorder>lbUser5</zorder>
         </widget>
+        <zorder>frameSms_2</zorder>
+        <zorder>frameSms_3</zorder>
+        <zorder>frameSms_4</zorder>
+        <zorder>frameSms_5</zorder>
+        <zorder>frameSms</zorder>
        </widget>
       </widget>
      </widget>
@@ -6351,10 +6356,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
+     <zorder>framePanel</zorder>
      <zorder>frameReports_2</zorder>
      <zorder>frameStudents</zorder>
      <zorder>frameMessage</zorder>
-     <zorder>framePanel</zorder>
     </widget>
    </widget>
   </widget>

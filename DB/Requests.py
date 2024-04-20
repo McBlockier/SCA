@@ -1,5 +1,6 @@
 from DB.Connection import ConnectionDB
 from datetime import datetime
+from datetime import timedelta
 
 class Inquiries:
     """
@@ -287,6 +288,7 @@ class Inquiries:
             print(f"Error al verificar si el idUser existe: {ex}")
             return False  # En caso de error, asumimos que el idUser no existe
 
+
     def updateReplyStatus(self, idMessage):
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
@@ -297,6 +299,7 @@ class Inquiries:
         except Exception as ex:
             print(f"Error al actualizar el estado de respuesta del mensaje: {ex}")
             return False  # Indicar que ocurrió un error durante la actualización
+
 
     def getMessageId(self, message_text):
         try:
@@ -311,6 +314,7 @@ class Inquiries:
         except Exception as ex:
             print(f"Error al obtener el id del mensaje: {ex}")
             return None  # En caso de error, devuelve None
+        
 
     def get_user_file_counts(self, idUser):
         """
@@ -353,47 +357,6 @@ class Inquiries:
             print("Error al obtener el recuento de archivos del usuario:", error)
 
         return results
-
-
-    def search_contact(self, idTeacher):
-        """
-        Busca un contacto de profesor en la base de datos por su ID.
-
-        Parameters:
-        - idTeacher: El ID del profesor que se desea buscar en la base de datos.
-
-        Returns:
-        - result_dicts: Lista de diccionarios que contienen los datos del contacto del profesor encontrado en la base de datos.
-
-        Description:
-        Este método busca un contacto de profesor en la base de datos utilizando su ID.
-        Se conecta a la base de datos, llama al procedimiento almacenado 'search_teacher_by_name' pasando el ID del profesor como parámetro.
-        Recupera los resultados del procedimiento almacenado y los convierte en una lista de diccionarios.
-        Cada diccionario contiene los datos del contacto del profesor, donde las claves son los nombres de las columnas y los valores son los datos correspondientes.
-        Si se encuentra un contacto de profesor, se devuelve una lista de diccionarios con los datos del contacto.
-        Si no se encuentra ningún contacto de profesor o si ocurre un error durante la búsqueda, se imprime un mensaje de error y se devuelve una lista vacía.
-        """
-        try:
-            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
-                cursor = db.connection.cursor()
-                # Llamar al procedimiento almacenado
-                cursor.callproc('search_teacher_by_name', (idTeacher,))
-
-                # Recuperar los resultados
-                for result in cursor.stored_results():
-                    columns = result.column_names
-                    rows = result.fetchall()
-                    result_dicts = []
-                    for row in rows:
-                        result_dict = {}
-                        for i, value in enumerate(row):
-                            result_dict[columns[i]] = value
-                        result_dicts.append(result_dict)
-                    return result_dicts
-
-        except Exception as ex:
-            print(f"Error al buscar el contacto del profesor: {ex}")
-            return []
 
 
     def GetAllUsers(self):
@@ -479,6 +442,40 @@ class Inquiries:
                 return mensajes_dict
         except Exception as ex:
             print(f"Error {ex}")
+
+    def get_messages_with_answer(self):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor(dictionary=True)
+
+                # Llamar al procedimiento almacenado sin argumentos
+                cursor.callproc("GetRespondedMessagesWithTable")
+
+                # Recuperar los datos de los mensajes respondidos
+                result = next(cursor.stored_results(), None)
+                if result is not None:
+                    # Procesar los datos de los mensajes respondidos
+                    messages = []
+                    for row in result.fetchall():
+                        message_data = {
+                            'usuario': row['idUser'],
+                            'mensaje': row['sms'],
+                            'hora': timedelta(seconds=row['hour'].seconds),
+                            'reply': row['reply']
+                        }
+                        messages.append(message_data)
+
+                    # Devolver directamente la lista de mensajes
+                    return True, messages
+                else:
+                    # No se encontraron mensajes respondidos
+                    return False, []
+
+        except Exception as ex:
+            print(f"Error in get_messages_with_answer: {ex}")
+            return False, []
+
+
 
 
 """

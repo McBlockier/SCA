@@ -864,7 +864,7 @@ QFrame:hover {
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLabel" name="label_24">
+       <widget class="QLabel" name="lbA">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -911,7 +911,7 @@ QFrame:hover {
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="label_29">
+      <widget class="QLabel" name="lbDoc">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -1033,7 +1033,7 @@ QFrame:hover {
          <string>Contactos (4)</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_21">
+       <widget class="QPushButton" name="i1">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -1060,7 +1060,7 @@ border-radius:10px;</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_22">
+       <widget class="QPushButton" name="i2">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -1087,7 +1087,7 @@ border-radius:10px;</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_23">
+       <widget class="QPushButton" name="i3">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -1114,7 +1114,7 @@ border-radius:10px;</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_24">
+       <widget class="QPushButton" name="i4">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -1141,12 +1141,12 @@ border-radius:10px;</string>
          </size>
         </property>
        </widget>
-       <widget class="QLabel" name="label_16">
+       <widget class="QLabel" name="lbU1">
         <property name="geometry">
          <rect>
           <x>70</x>
           <y>70</y>
-          <width>161</width>
+          <width>241</width>
           <height>21</height>
          </rect>
         </property>
@@ -1170,12 +1170,12 @@ color:#8e8eaa;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_17">
+       <widget class="QLabel" name="lbU2">
         <property name="geometry">
          <rect>
           <x>70</x>
           <y>160</y>
-          <width>161</width>
+          <width>251</width>
           <height>21</height>
          </rect>
         </property>
@@ -1199,12 +1199,12 @@ color:#8e8eaa;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_18">
+       <widget class="QLabel" name="lbU3">
         <property name="geometry">
          <rect>
           <x>70</x>
           <y>250</y>
-          <width>161</width>
+          <width>251</width>
           <height>21</height>
          </rect>
         </property>
@@ -1228,12 +1228,12 @@ color:#8e8eaa;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_19">
+       <widget class="QLabel" name="lbU4">
         <property name="geometry">
          <rect>
           <x>70</x>
           <y>350</y>
-          <width>161</width>
+          <width>251</width>
           <height>21</height>
          </rect>
         </property>
@@ -1257,7 +1257,7 @@ color:#8e8eaa;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_20">
+       <widget class="QLabel" name="t1">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -1286,7 +1286,7 @@ color:#8e8eaa;
          <string>Docente</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_21">
+       <widget class="QLabel" name="t2">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -1315,7 +1315,7 @@ color:#8e8eaa;
          <string>Docente</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_22">
+       <widget class="QLabel" name="t3">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -1344,7 +1344,7 @@ color:#8e8eaa;
          <string>Docente</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_23">
+       <widget class="QLabel" name="t4">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -1402,7 +1402,7 @@ color:#8e8eaa;
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_29">
+       <widget class="QPushButton" name="s3">
         <property name="geometry">
          <rect>
           <x>350</x>
@@ -1490,6 +1490,58 @@ color:#f3f2f2;
         </property>
         <property name="placeholderText">
          <string>   Buscar contacto</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="s2">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>160</y>
+          <width>32</width>
+          <height>32</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/2-color.png</normaloff>../Resources/2-color.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="s1">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>80</y>
+          <width>32</width>
+          <height>32</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/2-color.png</normaloff>../Resources/2-color.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </widget>
@@ -1717,7 +1769,7 @@ QPushButton::icon {
         </size>
        </property>
       </widget>
-      <widget class="QLabel" name="label_27">
+      <widget class="QLabel" name="lbM">
        <property name="geometry">
         <rect>
          <x>280</x>
@@ -1793,7 +1845,7 @@ QFrame:hover {
          <string>Descargas</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_31">
+       <widget class="QLabel" name="lbDown">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -1976,7 +2028,7 @@ QFrame:hover {
       <zorder>pushButton_14</zorder>
       <zorder>frame_10</zorder>
       <zorder>frame_3</zorder>
-      <zorder>label_29</zorder>
+      <zorder>lbDoc</zorder>
       <zorder>pushButton_13</zorder>
       <zorder>frame_7</zorder>
       <zorder>pushButton_11</zorder>
@@ -1984,7 +2036,7 @@ QFrame:hover {
       <zorder>label_26</zorder>
       <zorder>pushButton_15</zorder>
       <zorder>pushButton_10</zorder>
-      <zorder>label_27</zorder>
+      <zorder>lbM</zorder>
       <zorder>frame_6</zorder>
       <zorder>pushButton_2</zorder>
       <zorder>label_28</zorder>
@@ -5920,7 +5972,7 @@ color:#e8dbf9;
          <string>McBlockier</string>
         </property>
        </widget>
-       <widget class="QLabel" name="type">
+       <widget class="QLabel" name="typeDoc">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -5947,7 +5999,7 @@ color:#e8dbf9;
          <string>Alumno</string>
         </property>
        </widget>
-       <widget class="QLabel" name="serie">
+       <widget class="QLabel" name="serieDo">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -6299,10 +6351,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
-     <zorder>framePanel</zorder>
      <zorder>frameReports_2</zorder>
      <zorder>frameStudents</zorder>
      <zorder>frameMessage</zorder>
+     <zorder>framePanel</zorder>
     </widget>
    </widget>
   </widget>

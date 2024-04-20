@@ -43,6 +43,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import numpy as np
 import mplcursors
+import random
+import locale
 from PyQt5.uic import loadUi
 from datetime import timedelta
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
@@ -60,6 +62,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
         #Variables globales
         self.dataTable = None
+        self.messages = None
 
     def initializeComponents(self):
         """
@@ -91,12 +94,8 @@ class AdminController(QMainWindow, MethodsWindow):
         self.grafica2 = Canvas_grafica3()
         self.grafica_tres.addWidget(self.grafica2)
 
-        # Datos de ejemplo (meses y altas/bajas)
-        self.months = ["En", "Feb", "Mar", "Abr", "May", "Jun",
-                       "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-        self.data = [50, 70, 80, 75, 90, 20, 60, 90, 80, 60, 40, 60]
-        self.showChart(self.graphicsOverView, self.months, self.data, "Desempeño docente")
         self.showActivityReports()
+        self.dataHeader()
 
         # Botones de minimizar y cerrar la aplicación
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
@@ -183,22 +182,23 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonSendSms1.clicked.connect(lambda: self.reply("reply1"))
         self.buttonSendSms2.clicked.connect(lambda: self.reply("reply2"))
 
+
     def loadMessages(self):
         try:
             from DB.Requests import Inquiries
             InstanceInquiries = Inquiries()
 
-            messages = InstanceInquiries.getMessages()
+            self.messages = InstanceInquiries.getMessages()
 
-            if len(messages) >= 2:
-                self.label_sms.setText(messages[0]['mensaje'])
-                self.userSms.setText(messages[0]['usuario'])
+            if len(self.messages) >= 2:
+                self.label_sms.setText(self.messages[0]['mensaje'])
+                self.userSms.setText(self.messages[0]['usuario'])
 
-                self.label_sms2.setText(messages[1]['mensaje'])
-                self.userSms2.setText(messages[1]['usuario'])
+                self.label_sms2.setText(self.messages[1]['mensaje'])
+                self.userSms2.setText(self.messages[1]['usuario'])
 
-                for i in range(min(len(messages) - 2, 5)):
-                    message = messages[i + 2]
+                for i in range(min(len(self.messages) - 2, 5)):
+                    message = self.messages[i + 2]
                     label_message = getattr(self, f"lb{i + 1}")
                     label_date = getattr(self, f"lbD{i + 1}")
                     label_user = getattr(self, f"lbUser{i + 1}")
@@ -222,8 +222,83 @@ class AdminController(QMainWindow, MethodsWindow):
                     else:
                         print("Error: 'usuario' no está presente en el mensaje")
 
+                self.loadPreviewSms(self.messages)
+
         except Exception as ex:
             print(f"Error inesperado: {ex}")
+
+    def load_icon(self, button, icon_number):
+        try:
+            icon_path = f"../Resources/{icon_number}-color.png"
+            button.setIcon(QIcon(icon_path))
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+    def calculate_icon_numbers(self, user_message_count):
+        return {user: min(message_count, 3) for user, message_count in user_message_count.items()}
+
+    def loadPreviewSms(self, messages):
+        try:
+            user_message_count = {}  # Diccionario para almacenar el usuario y la cantidad de mensajes
+
+            # Contar la cantidad de mensajes para cada usuario
+            for message in messages:
+                user = message.get('usuario')
+                if user:
+                    user_message_count[user] = user_message_count.get(user, 0) + 1
+
+            # Asignar un número de icono a cada usuario según su cantidad de mensajes
+            icon_numbers = self.calculate_icon_numbers(user_message_count)
+
+            # Asignar iconos a los QPushButton para cada usuario
+            for i, (user, icon_number) in enumerate(icon_numbers.items()):
+                if i < 3:  # Limitar a 3 usuarios
+                    button = getattr(self, f"s{i + 1}")
+                    self.load_icon(button, icon_number)
+
+            # Display the latest message for each user in QLabel widgets lbU1 to lbU4
+            for i, (user, message_count) in enumerate(user_message_count.items()):
+                if i < 3:  # Limitar a 3 usuarios
+                    label_user = getattr(self, f"lbU{i + 1}")
+                    label_user.setText(f"{user}")
+
+        except Exception as ex:
+            print(f"Error inesperado: {ex}")
+
+    def onTextChanged(self):
+        try:
+            self.loadMessages()
+
+            # Obtener el usuario a buscar desde el campo de búsqueda
+            user_to_search = self.searchContact.text()
+
+            # Verificar si el usuario está en la lista de mensajes
+            found_messages = [message for message in self.messages if message['usuario'] == user_to_search]
+
+            if found_messages:
+
+                # Mostrar solo lbU1 y s1
+                self.lbU1.setText(user_to_search)
+                self.s1.setVisible(True)
+                self.lbU1.setVisible(True)
+
+                # Ocultar lbU2 hasta lbU4, s2 y s3, t2 hasta t4, i2 hasta i4 (si existen)
+                for i in range(2, 5):
+                    label_user = getattr(self, f"lbU{i}")
+                    label_user.setVisible(False)
+                    if i <= 3:  # Solo ocultar s2 y s3 si existen
+                        button_s = getattr(self, f"s{i}")
+                        button_s.setVisible(False)
+                    label_t = getattr(self, f"t{i}")
+                    label_t.setVisible(False)
+                    label_i = getattr(self, f"i{i}")
+                    label_i.setVisible(False)
+
+            else:
+                MessageBox.information_msgbox("INFORMACIÓN", "El usuario no fue encontrado.")
+
+        except Exception as ex:
+            print(f"Error onTextChanged: {ex}")
 
     def format_time_delta(self, delta):
         hours, remainder = divmod(delta.seconds, 3600)
@@ -235,34 +310,26 @@ class AdminController(QMainWindow, MethodsWindow):
             saveOldText1 = self.label_sms.text()
             saveOldText2 = self.label_sms2.text()
 
+            if typeButton in ["b1", "b2"]:
+                label_sms = self.label_sms
+                label_user = self.lbUser1 if typeButton == "b1" else self.lbUser2
+                new_text = self.lb1.text() if typeButton == "b1" else self.lb2.text()
+            else:
+                label_sms = self.label_sms2
+                label_user = self.lbUser3 if typeButton == "b3" else self.lbUser4 if typeButton == "b4" else self.lbUser5
+                new_text = self.lb3.text() if typeButton == "b3" else self.lb4.text() if typeButton == "b4" else self.lb5.text()
 
-            if typeButton == "b1":
-                self.label_sms.setText(self.lb1.text())
-                self.lb1.setText(saveOldText1)
-                self.userSms.setText(self.lbUser1.text())
-            elif typeButton == "b2":
-                self.label_sms.setText(self.lb2.text())
-                self.lb2.setText(saveOldText1)
-                self.userSms.setText(self.lbUser2.text())
-            elif typeButton == "b3":
-                self.label_sms2.setText(self.lb3.text())
-                self.lb3.setText(saveOldText2)
-                self.userSms2.setText(self.lbUser3.text())
-            elif typeButton == "b4":
-                self.label_sms2.setText(self.lb4.text())
-                self.lb4.setText(saveOldText2)
-                self.userSms2.setText(self.lbUser4.text())
-            elif typeButton == "b5":
-                self.label_sms2.setText(self.lb5.text())
-                self.lb5.setText(saveOldText2)
-                self.userSms2.setText(self.lbUser5.text())
+            label_sms.setText(new_text)
+            label_user.setText(saveOldText1 if typeButton in ["b1", "b2"] else saveOldText2)
+            self.userSms.setText(label_user.text())
 
             # Habilitar el ajuste automático de texto para los QLabel
-            self.label_sms.setWordWrap(True)
+            label_sms.setWordWrap(True)
             self.label_sms2.setWordWrap(True)
 
         except Exception as ex:
             print(f"Error: {ex}")
+
 
     def reply(self, typeButton):
         try:
@@ -299,22 +366,12 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error in reply: {ex}")
 
+
     def initializeVariables(self):
         self.first_animation = None
         self.second_animation = None
         self.indexButton = 0
         self.dataTable = None
-
-    def onTextChanged(self):
-    #Función no implementada para uso real
-        try:
-            from DB.Requests import Inquiries
-            Instance = Inquiries()
-            value = Instance.search_contact(self.searchContact.text())
-            print(value[0]['name'])
-
-        except Exception as ex:
-            print(f"Error {ex}")
 
     def __showFrame(self, frame):
         """
@@ -454,6 +511,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al rellenar la tabla: {ex}")
 
+
     def createRow(self, table):
         try:
             row_count = table.rowCount()
@@ -557,22 +615,36 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al manejar clic en celda: {ex}")
 
-
     def setInformationLabel(self):
         try:
-            if self.dataTable is not None:
-                if self.dataTable['Matricula'] is not None:
-                    self.userTeacher.setText(self.dataTable['Nombre'])
-                    self.type.setText("Docente")
-                    self.serie.setText("Matricula: "+self.dataTable['Matricula'])
-
+            if isinstance(self.dataTable, dict):
+                if 'Matricula' in self.dataTable:
+                    if self.dataTable['Matricula'] is not None:
+                        if hasattr(self.userTeacher, 'setText') and hasattr(self.typeDoc, 'setText') and hasattr(
+                                self.serieDo, 'setText'):
+                            self.userTeacher.setText(self.dataTable['Nombre'])
+                            self.typeDoc.setText("Docente")
+                            self.serieDo.setText("Matricula: " + self.dataTable['Matricula'])
+                        else:
+                            print(
+                                "Error: Alguno de los atributos de texto de docente no está correctamente configurado.")
+                elif 'ID Usuario' in self.dataTable:
+                    if hasattr(self.lbUserStudent, 'setText') and hasattr(self.lbTypeUser, 'setText') and hasattr(
+                            self.control, 'setText') and hasattr(self.note, 'setText') and hasattr(self.grade,
+                                                                                                   'setText'):
+                        self.lbUserStudent.setText(self.dataTable.get('ID Usuario', ''))
+                        self.lbTypeUser.setText("Alumno")
+                        self.control.setText("N. Control: " + str(self.dataTable.get('No. Control', '')))
+                        self.note.setText("Calificación: " + str(self.dataTable.get('Puntaje', '')))
+                        self.grade.setText("Semestre: " + str(self.dataTable.get('Semestre', '')))
+                    else:
+                        print("Error: Alguno de los atributos de texto de alumno no está correctamente configurado.")
+            else:
+                print("Error: dataTable no es un diccionario.")
+        except KeyError as ex:
+            print(f"Error al manejar la clave: {ex}")
         except Exception as ex:
-            self.lbUserStudent.setText(self.dataTable['ID Usuario'])
-            self.lbTypeUser.setText("Alumno")
-            self.control.setText("N. Control: "+ str(self.dataTable['No. Control']))
-            self.note.setText("Calificación: " + str(self.dataTable['Puntaje']))
-            self.grade.setText("Semestre: " + str(self.dataTable['Semestre']))
-
+            print(f"Error inesperado: {ex}")
 
     def animationMessage(self, typeBox):
         try:
@@ -818,13 +890,31 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error update_time {ex}")
 
+    import random
 
     def showActivityReports(self):
-        # Datos de ejemplo (meses y altas/bajas)
-        self.months = ["Rub", "Ev", "Img", "Vid"]
-        self.data = [45, 57, 23, 10]
-        self.showChart(self.graphicsOverView_2, self.months, self.data, "")
+        try:
+            self.type = ["Rub", "Ev", "Img", "Vid"]
+            # Generar datos aleatorios para self.data
+            self.data = [random.randint(10, 100) for _ in
+                         range(4)]  # Genera una lista de 4 números aleatorios entre 10 y 100
+            self.showChart(self.graphicsOverView_2, self.type, self.data, "")
+            self.showPerfomanceTeacher()
+        except Exception as ex:
+            print(f"Error inesperado: {ex}")
 
+    def showPerfomanceTeacher(self):
+        try:
+            # Datos de ejemplo (meses y altas/bajas)
+            self.months = ["En", "Feb", "Mar", "Abr", "May", "Jun",
+                           "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            # Generar datos aleatorios para self.data
+            self.data = [random.randint(10, 50) for _ in
+                         range(11)]  # Genera una lista de 11 números aleatorios entre 10 y 50
+            self.data.append(random.randint(10, 50))  # Añade un valor aleatorio para "Dic"
+            self.showChart(self.graphicsOverView, self.months, self.data, "Desempeño docente")
+        except Exception as ex:
+            print(f"Error inesperado: {ex}")
 
     def setupLineEdit(self, lineEdit, label):
         try:
@@ -855,6 +945,30 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error actualizar_caracteres_restantes: {ex}")
+
+    def dataHeader(self):
+        try:
+            # Establecer la localización para el formateo
+            locale.setlocale(locale.LC_ALL, '')
+
+            # Generar y establecer el número aleatorio en self.lbDown
+            self.lbDown.setText(str(random.randint(20, 1900)))
+
+            # Generar un número aleatorio en el rango especificado para self.lbM
+            random_number = random.randint(1000, 20000)
+
+            # Formatear el número sin decimales con el símbolo de dólar y miles separados por comas
+            formatted_number = locale.format_string('%d', random_number, grouping=True)
+
+            # Establecer el texto en self.lbM
+            self.lbM.setText(f"${formatted_number}")
+
+            # Establecer el texto en self.lbA y self.lbDoc
+            self.lbA.setText("120")
+            self.lbDoc.setText("30")
+
+        except Exception as ex:
+            print(f"Error en dataHeader: {ex}")
 
     def eventFilter(self, obj, event):
         try:
@@ -912,9 +1026,9 @@ class Canvas_grafica2(FigureCanvas):
 
     def draw_grafica(self):
         try:
-            nombres = ['Práctica', 'Ejercicio', 'Presentación']
+            nombres = ['Reprovado', 'Asesoria', 'Aprovado']
             colores_hex = ['#4bcfeb', '#91a5ff', '#f343ff']
-            tamaño = [20, 26, 30]
+            tamaño = [random.randint(20, 90) for _ in range(3)]
             explotar = [0.05, 0.05, 0.05]
 
             colores_rgb = [(int(col[1:3], 16) / 255, int(col[3:5], 16) / 255, int(col[5:7], 16) / 255) for col in
@@ -969,7 +1083,7 @@ class Canvas_grafica3(FigureCanvas):
         try:
             nombres = ['Práctica', 'Ejercicio', 'Presentación']
             colores_hex = ['#4bcfeb', '#91a5ff', '#f343ff']
-            tamaño = [20, 26, 30]
+            tamaño = [random.randint(20, 90) for _ in range(3)]
             explotar = [0.05, 0.05, 0.05]
 
             colores_rgb = [(int(col[1:3], 16) / 255, int(col[3:5], 16) / 255, int(col[5:7], 16) / 255) for col in

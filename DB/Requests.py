@@ -476,7 +476,6 @@ class Inquiries:
                         "hora": mensaje[2]
                     }
                     mensajes_dict.append(mensaje_dict)
-                    print(mensaje_dict)  # Opcional: imprime el diccionario de cada mensaje
                 return mensajes_dict
         except Exception as ex:
             print(f"Error {ex}")

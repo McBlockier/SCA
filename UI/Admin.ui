@@ -5453,6 +5453,138 @@ color:#1d2840;
         <string>27GB</string>
        </property>
       </widget>
+      <widget class="QComboBox" name="comboBoxSemester">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>60</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_73">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>20</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+       </property>
+       <property name="text">
+        <string>Semestre</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBoxGroup">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>60</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_75">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>20</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+       </property>
+       <property name="text">
+        <string>Grupo</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="subjects">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>60</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_77">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>20</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+       </property>
+       <property name="text">
+        <string>Asignatura</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QFrame" name="frameStudents">
       <property name="geometry">
@@ -5511,139 +5643,6 @@ border-radius:10px;
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QComboBox" name="comboShowFilter">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>40</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"> QComboBox {
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 1px 18px 1px 3px;
-                min-width: 6em;
-                background-color: #FFFFFF;
-                selection-background-color: #4A90E2;
-            }
-
-            QComboBox::drop-down {
-                subcontrol-origin: padding;
-                subcontrol-position: right;
-                width: 20px;
-                border-left-width: 1px;
-                border-left-color: #4A90E2;
-                border-left-style: solid;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-            }
-
-      </string>
-         </property>
-         <property name="currentText">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBox_2">
-         <property name="geometry">
-          <rect>
-           <x>300</x>
-           <y>40</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"> QComboBox {
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 1px 18px 1px 3px;
-                min-width: 6em;
-                background-color: #FFFFFF;
-                selection-background-color: #4A90E2;
-            }
-
-            QComboBox::drop-down {
-                subcontrol-origin: padding;
-                subcontrol-position: right;
-                width: 20px;
-                border-left-width: 1px;
-                border-left-color: #4A90E2;
-                border-left-style: solid;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-            }
-
-      </string>
-         </property>
-         <property name="currentText">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBox_3">
-         <property name="geometry">
-          <rect>
-           <x>560</x>
-           <y>40</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"> QComboBox {
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 1px 18px 1px 3px;
-                min-width: 6em;
-                background-color: #FFFFFF;
-                selection-background-color: #4A90E2;
-            }
-
-            QComboBox::drop-down {
-                subcontrol-origin: padding;
-                subcontrol-position: right;
-                width: 20px;
-                border-left-width: 1px;
-                border-left-color: #4A90E2;
-                border-left-style: solid;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-            }
-
-      </string>
-         </property>
-         <property name="currentText">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_81">
-         <property name="geometry">
-          <rect>
-           <x>40</x>
-           <y>20</y>
-           <width>111</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel{
-background-color:transparent;
-color:#ded6fa;
-}</string>
-         </property>
-         <property name="text">
-          <string>Mostrar por</string>
-         </property>
-        </widget>
        </widget>
       </widget>
       <widget class="QFrame" name="frame_19">
@@ -6356,10 +6355,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
-     <zorder>framePanel</zorder>
-     <zorder>frameReports_2</zorder>
      <zorder>frameStudents</zorder>
      <zorder>frameMessage</zorder>
+     <zorder>framePanel</zorder>
+     <zorder>frameReports_2</zorder>
     </widget>
    </widget>
   </widget>

@@ -110,7 +110,7 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
                          #Aqui se cargan las vistas de administrador
                         from Controller.AdminWindow import AdminController
-                        Instance = AdminController()
+                        Instance = AdminController(getRank)
                         Instance.show()
                         self.hide()
                         self.close()
@@ -125,7 +125,13 @@ class ControllerLogin(QMainWindow, MethodsWindow):
                         self.close()
 
                     elif getRank[0]['rankId'] == 3:
-                        pass
+
+                        # Aqui se cargan las vistas de docente
+                        from Controller.AdminWindow import AdminController
+                        Instance = AdminController(getRank)
+                        Instance.show()
+                        self.hide()
+                        self.close()
 
                 else:
                     self.message.information_msgbox("INFORMACIÓN", "El usuario o contraseña no son correctos")

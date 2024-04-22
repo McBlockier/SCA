@@ -14,7 +14,8 @@ from PyQt5.QtWidgets import (
     QCheckBox,
     QLabel,
     QTableWidget,
-    QTableWidgetItem
+    QTableWidgetItem,
+    QMessageBox
 )
 from PyQt5.QtGui import (
     QColor,
@@ -52,10 +53,12 @@ from Controller.Message import MessageBox #Clase responsable de mostrar mensajes
 class AdminController(QMainWindow, MethodsWindow):
     """Clase para controlar la ventana principal de la aplicación."""
 
-    def __init__(self):
+    def __init__(self, information):
         """Inicializa la ventana principal."""
         super().__init__()
         loadUi("../UI/Admin.ui", self)
+
+        self.information = information
 
         self.initializeComponents()
         self.initializeVariables()
@@ -63,6 +66,10 @@ class AdminController(QMainWindow, MethodsWindow):
         #Variables globales
         self.dataTable = None
         self.messages = None
+        self.rowNew = False
+        self.selected_item = None
+
+        print(self.information)
 
     def initializeComponents(self):
         """
@@ -96,6 +103,19 @@ class AdminController(QMainWindow, MethodsWindow):
 
         self.showActivityReports()
         self.dataHeader()
+
+        #ComboBox
+        for i in range(1, 10):
+            self.comboBoxSemester.addItem(str(i))
+
+        self.comboBoxGroup.addItem("A")
+        self.comboBoxGroup.addItem("B")
+
+        self.comboBoxSemester.currentIndexChanged.connect(self.onComboBoxIndexChanged)
+        from DB.Requests import Inquiries
+        InstanceInquiries = Inquiries()
+        values = InstanceInquiries.get_teacher_subjects(self.information[0]['name'] + " " + self.information[0]['lastName'])
+        self.subjects.addItems(values)
 
         # Botones de minimizar y cerrar la aplicación
         self.buttonExit.clicked.connect(self._closeWindow)  # Cerrar ventana
@@ -193,11 +213,13 @@ class AdminController(QMainWindow, MethodsWindow):
                 InstanceInquiries = Inquiries()
 
                 messages = InstanceInquiries.getMessages()
+                self.messages = messages
 
                 # Carga los mensajes
                 self.loadMessages(messages)
         except Exception as ex:
             print(f"Error {ex}")
+
 
     def loadMessages(self, messages):
         try:
@@ -582,6 +604,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
     def createRow(self, table):
         try:
+            self.rowNew = True
             row_count = table.rowCount()
             table.insertRow(row_count)
             for col in range(table.columnCount()):
@@ -594,8 +617,130 @@ class AdminController(QMainWindow, MethodsWindow):
 
             # Conectar la señal itemChanged a una función para manejar los cambios en la fila nueva
             table.itemChanged.connect(lambda item: self.on_item_changed(item, table, row_count))
+            table.keyPressEvent = lambda event: self.onKeyPress(event, table)
         except Exception as ex:
             print(f"Error al crear una nueva fila: {ex}")
+
+
+    def onKeyPress(self, event, tableAction):
+        try:
+            if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+                value = MessageBox.question_msgbox("PREGUNTA", "¿Esta seguro(a) de realizar esta operación?")
+                if tableAction == self.tableUsers and value:
+                    self.__actionUser__()
+                elif tableAction == self.tableTeacher and value:
+                    self.__actionTeacher__()
+            else:
+                super().keyPressEvent(event)
+
+        except Exception as ex:
+            print(f"Error al crear una nueva fila: {ex}")
+
+    def __actionUser__(self):
+        try:
+            if self.rowNew:
+                # Verificar campos solo si se está creando una nueva fila
+                valid = True
+                errors = []
+
+                # Verificar cada campo del diccionario
+                for key, value in self.dataTable.items():
+                    if key == 'No. Control':
+                        if not value.isdigit() or len(value) != 8:
+                            valid = False
+                            errors.append("El campo 'No. Control' debe tener 8 dígitos numéricos.")
+                    elif key == 'ID Rango':
+                        if value not in ['1', '2', '3']:
+                            valid = False
+                            errors.append("El campo 'ID Rango' debe ser 1, 2 o 3.")
+                    elif key == 'Semestre':
+                        if not value.isdigit() or not 1 <= int(value) <= 9:
+                            valid = False
+                            errors.append("El campo 'Semestre' debe ser un número entre 1 y 9.")
+                    elif key == 'Regular':
+                        if value not in ['Si', 'No']:
+                            valid = False
+                            errors.append("El campo 'Regular' debe ser 'Si' o 'No'.")
+                    elif key == 'Puntaje':
+                        if not value.isdigit() or not 0 <= int(value) <= 100:
+                            valid = False
+                            errors.append("El campo 'Puntaje' debe ser un número entre 0 y 100.")
+
+                if valid:
+                    from DB.Requests import Inquiries
+                    InstanceInquiries = Inquiries()
+                    if InstanceInquiries.create_user(self.dataTable):
+                        MessageBox.correct_msgbox("ÉXITO", "El usuario fue creado exitosamente.")
+                        self.rowNew = False
+                        self.__updateScrollUsers()
+                    else:
+                        MessageBox.input_error_msgbox("ERROR", "No se pudo crear el usuario.")
+                        self.rowNew = False
+                else:
+                    for error in errors:
+                        MessageBox.information_msgbox("INFORMACIÓN", f"{error}")
+            else:
+                from DB.Requests import Inquiries
+                InstanceInquiries = Inquiries()
+
+                if InstanceInquiries.update_user(self.dataTable):
+                    MessageBox.correct_msgbox("ÉXITO", "La información del usuario fue actualizada exitosamente.")
+                    self.rowNew = False
+                    self.__updateScrollUsers()
+                else:
+                    MessageBox.input_error_msgbox("ERROR",
+                                                  "La información del usuario no fue actualizada exitosamente.")
+        except Exception as ex:
+            print(f"Error al crear una nueva fila: {ex}")
+
+
+    def __actionTeacher__(self):
+        try:
+            if self.rowNew:
+                # Verificar campos solo si se está creando una nueva fila
+                valid = True
+                errors = []
+
+                # Verificar el nombre (debe contener solo letras)
+                if not self.dataTable['Nombre'].isalpha():
+                    valid = False
+                    errors.append("El campo 'Nombre' debe contener solo letras.")
+
+                # Intentar convertir la matrícula a un número
+                try:
+                    matricula = int(self.dataTable['Matricula'])
+                except ValueError:
+                    matricula = None
+
+                # Verificar la matrícula (debe ser numérica y tener una longitud de 5)
+                if matricula is None or len(str(matricula)) != 5:
+                    valid = False
+                    errors.append("El campo 'Matrícula' debe ser numérico y tener una longitud de 5.")
+
+                if valid:
+                    from DB.Requests import Inquiries
+                    InstanceInquiries = Inquiries()
+                    if InstanceInquiries.create_teacher(self.dataTable):
+                        MessageBox.correct_msgbox("ÉXITO", "El docente fue creado exitosamente.")
+                        self.rowNew = False
+                        self.__updateScrollTeachers()
+                    else:
+                        MessageBox.input_error_msgbox("ERROR", "No se pudo crear el docente.")
+                else:
+                    for error in errors:
+                        MessageBox.information_msgbox("INFORMACIÓN", f"{error}")
+            else:
+                from DB.Requests import Inquiries
+                InstanceInquiries = Inquiries()
+                if InstanceInquiries.update_teacher(self.dataTable):
+                    MessageBox.correct_msgbox("ÉXITO", "La información del docente fue actualizada exitosamente.")
+                    self.rowNew = False
+                    self.__updateScrollTeachers()
+                else:
+                    MessageBox.input_error_msgbox("ERROR", "La información del docente no fue actualizada exitosamente.")
+        except Exception as ex:
+            print(f"Error al crear un nuevo docente: {ex}")
+
 
 
     #Función para realizar el borrado en cada tabla, según se especifique en typeButton
@@ -628,6 +773,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al eliminar {ex}")
 
+
     def on_item_changed(self, item, table, row):
         """
         Maneja el evento de cambio de un elemento en la tabla.
@@ -648,7 +794,7 @@ class AdminController(QMainWindow, MethodsWindow):
             header_item = table.horizontalHeaderItem(item.column())
             if header_item:
                 self.dataTable[header_item.text()] = item.text()
-                print(self.dataTable)
+
         except Exception as ex:
             print(f"Error al manejar cambio de elemento: {ex}")
 
@@ -680,8 +826,11 @@ class AdminController(QMainWindow, MethodsWindow):
                     row_data[header_item.text()] = item.text()
             self.dataTable = row_data
             self.setInformationLabel()
+            print(self.dataTable)
+            table.keyPressEvent = lambda event: self.onKeyPress(event, table)
         except Exception as ex:
             print(f"Error al manejar clic en celda: {ex}")
+
 
     def setInformationLabel(self):
         try:
@@ -713,6 +862,7 @@ class AdminController(QMainWindow, MethodsWindow):
             print(f"Error al manejar la clave: {ex}")
         except Exception as ex:
             print(f"Error inesperado: {ex}")
+
 
     def animationMessage(self, typeBox):
         try:
@@ -837,6 +987,7 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error checkAnimation {ex}")
 
+
     def showStarUp(self, indexButton):
         try:
             # Usar el índiceButton para determinar qué botón utilizar
@@ -863,6 +1014,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error showStarUp {ex}")
+
 
     def showChart(self, view, months, data, title):
         """Muestra un gráfico de barras."""
@@ -1056,9 +1208,17 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error eventFilter: {ex}")
 
+    def onComboBoxIndexChanged(self, index):
+        # Obtener el texto del elemento seleccionado
+        self.selected_item = self.comboBoxSemester.currentText()
 
+
+
+#Evidences buttons
     def selectFile(self, file_type):
         try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
             # Configurar los filtros de archivos según el tipo especificado
             if file_type == 'doc':
                 file_filter = "Archivo de documento (*.pdf *.doc *.docx)"
@@ -1073,11 +1233,39 @@ class AdminController(QMainWindow, MethodsWindow):
             file_path, _ = QFileDialog.getOpenFileName(None, f"Select {file_type.capitalize()} file",
                                                        filter=file_filter)
 
-            # Devolver la ruta del archivo seleccionado
+            # Verificar si se seleccionó un archivo
+            if file_path:
+                # Obtener otros parámetros necesarios para insertar en la tabla de evidencias
+                name = os.path.basename(file_path)  # Obtener el nombre del archivo
+                file = open(file_path, 'rb').read()  # Leer el archivo en modo binario
+                type = file_type
+                if self.selected_item is not None:
+                    forUser = InstanceInquiries.get_users_by_semester(self.selected_item)
+                    semester = self.selected_item
+                else:
+                    MessageBox.warning_msgbox("ADVERTENCIA", "Seleccione el semestre al cual subirá el archivo")
+
+                subject = InstanceInquiries.get_teacher_subjects(self.information[0]['name'])
+                teacher = self.information[0]['name']
+
+                # Llamar al método insert_to_evidences con los parámetros recopilados
+                success = InstanceInquiries.insert_to_evidences(name, file, type,
+                                                                forUser, semester, subject, teacher)
+                if success:
+                    MessageBox.correct_msgbox("ÉXITO", "El archivo fue subido correctamente")
+                else:
+                    MessageBox.input_error_msgbox("ERROR", "No se pudo subir el archivo")
+            else:
+                MessageBox.warning_msgbox("ADVERTENCIA", "No ha seleccionado el archivo")
+
+            # Devolver la ruta del archivo seleccionado (puede ser útil para otras operaciones)
             return file_path
 
         except Exception as ex:
             print(f"Error: {ex}")
+
+
+#Ends
 
 
 class Canvas_grafica2(FigureCanvas):
@@ -1147,6 +1335,7 @@ class Canvas_grafica3(FigureCanvas):
         except Exception as ex:
             print(f"Error __ini__ Class  Canvas_grafica3 {ex}")
 
+
     def draw_grafica(self):
         try:
             nombres = ['Práctica', 'Ejercicio', 'Presentación']
@@ -1172,6 +1361,7 @@ class Canvas_grafica3(FigureCanvas):
 
         except Exception as ex:
             print(f"Error en draw_grafica {ex}")
+
 
     def on_click(self, event):
         try:

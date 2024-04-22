@@ -404,6 +404,7 @@ class Inquiries:
             print(f"Error al obtener todos los profesores: {ex}")
             return []
 
+
     def delete_by_id(self, procedure_name, id):
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
@@ -417,6 +418,7 @@ class Inquiries:
             print(f"Error {ex}")
             return False
 
+
     # Llamada al nuevo método para eliminar un usuario por su ID
     def delete_user_by_id(self, id):
         return self.delete_by_id('delete_user', id)
@@ -424,6 +426,7 @@ class Inquiries:
     # Llamadas a los métodos existentes
     def delete_teacher_by_id(self, id):
         return self.delete_by_id('delete_teacher', id)
+
 
     def getMessages(self):
         try:
@@ -442,6 +445,7 @@ class Inquiries:
                 return mensajes_dict
         except Exception as ex:
             print(f"Error {ex}")
+
 
     def get_messages_with_answer(self):
         try:
@@ -475,20 +479,217 @@ class Inquiries:
             print(f"Error in get_messages_with_answer: {ex}")
             return False, []
 
-
-
-
-"""
-Este metodo es la base para hacer tus propios métodos y mandar a llamar las funciones o metodos almacenados
-que requieras, solo quita el pass y alli mismo escribe tu lógica o pegala allí
-
- def metodoBase(self):
+    def create_user(self, dataTable):
         try:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
-                 pass
+
+                # Llamar al procedimiento almacenado
+                cursor.callproc('create_user', (
+                    dataTable['ID Usuario'],
+                    dataTable['Contraseña'],
+                    dataTable['Nombre'],
+                    dataTable['Apellido'],
+                    int(dataTable['No. Control']),
+                    int(dataTable['ID Rango']),
+                    int(dataTable['Semestre']),
+                    dataTable['Regular'],
+                    int(dataTable['Puntaje'])
+                ))
+
+                db.connection.commit()  # Confirmar la transacción
+
+                return True  # Retornar True si la inserción fue exitosa
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return False  # Retornar False en caso de error
+
+
+    def create_teacher(self, dataTable):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Llamar al procedimiento almacenado
+                cursor.callproc('create_teacher', (
+                    dataTable['Nombre'],
+                    dataTable['Matricula']
+                ))
+
+                db.connection.commit()  # Confirmar la transacción
+
+                return True  # Retornar True si la inserción fue exitosa
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return False  # Retornar False en caso de error
+
+    def update_user(self, dataTable):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                print(dataTable)
+
+                # Extraer el ID del usuario del diccionario dataTable
+                user_id = dataTable.get('ID Usuario')
+                if not user_id:
+                    print("No se proporcionó el ID del usuario.")
+                    return False
+
+                # Ejecutar el procedimiento almacenado para actualizar el usuario
+                cursor.callproc('update_user_by_id', (
+                    user_id,
+                    dataTable.get('Contraseña'),
+                    dataTable.get('Nombre'),
+                    dataTable.get('Apellido'),
+                    dataTable.get('No. Control'),
+                    dataTable.get('ID Rango'),
+                    dataTable.get('Semestre'),
+                    dataTable.get('Regular'),
+                    dataTable.get('Puntaje')
+                ))
+
+                # Confirmar los cambios en la base de datos
+                db.connection.commit()
+
+                return True
+
+        except Exception as ex:
+            print(f"Error al actualizar el usuario: {ex}")
+            return False
+
+
+    def update_teacher(self, dataTable):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Extraer el ID del profesor del diccionario dataTable
+                teacher_id = dataTable.get('ID')
+                if not teacher_id:
+                    print("No se proporcionó el ID del profesor.")
+                    return False
+
+                # Ejecutar el procedimiento almacenado para actualizar el profesor
+                cursor.callproc('update_teacher_by_id', (
+                    int(teacher_id),  # Convertir a entero
+                    dataTable.get('Nombre'),
+                    dataTable.get('Matricula')
+                ))
+
+                # Confirmar los cambios en la base de datos
+                db.connection.commit()
+
+                return True
+        except Exception as ex:
+            print(f"Error al actualizar el profesor: {ex}")
+            return False
+
+
+#Evidences
+
+    def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher):
+        try:
+            # Obtener la fecha y hora actual
+            current_date = datetime.now().date()
+            current_hour = datetime.now().time().strftime('%H:%M:%S')
+
+            # Conectar a la base de datos
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Insertar la evidencia en la tabla
+                cursor.execute(
+                    "INSERT INTO evidences (name, file, type, forUser, semester, date, hour, subject, teacher) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (name, file, type, forUser, semester, current_date, current_hour, subject, teacher))
+
+                # Confirmar los cambios en la base de datos
+                db.connection.commit()
+
+                return True
+        except mysql.connector.Error as ex:
+            print(f"MySQL Error: {ex}")
+            return False
+        except Exception as ex:
+            print(f"Error: {ex}")
+            return False
+
+
+    def get_users_by_semester(self, selected_semester):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Verificar si se proporcionó el semestre
+                if not selected_semester:
+                    print("No se proporcionó el semestre.")
+                    return []
+
+                # Consultar los usuarios con el semestre seleccionado
+                users = []
+                query = "SELECT idUser, name FROM user WHERE semester = %s"
+                cursor.execute(query, (selected_semester,))
+                rows = cursor.fetchall()
+                for row in rows:
+                    user_info = {
+                        'idUser': row[0],
+                        'name': row[1]
+                    }
+                    users.append(user_info)  # Agregar información del usuario a la lista
+                return users
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return []
+
+    def get_teacher_subjects(self, teacher_name):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Verificar si se proporcionó el nombre del docente
+                if not teacher_name:
+                    print("No se proporcionó el nombre del docente.")
+                    return []
+
+                # Consultar las asignaturas del docente
+                subjects = []
+                query = """
+                    SELECT s.nombre
+                    FROM subjects s
+                    JOIN subjects_taught_by_teacher st ON s.idAsignatura = st.subject_id
+                    JOIN teachers t ON st.teacher_id = t.teacher_id
+                    WHERE t.name = %s
+                """
+                print(teacher_name)
+                cursor.execute(query, (teacher_name,))
+                rows = cursor.fetchall()
+                for row in rows:
+                    subjects.append(row[0])  # Agregar nombre de asignatura a la lista
+
+                print("Asignaturas del docente", teacher_name, ":", subjects)
+                return subjects
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return []
+
+
+"""
+    def method(self, dataTable):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                    pass
+
         except Exception as ex:
             print(f"Error {ex}")
 
+
 """
+
+
 

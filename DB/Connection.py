@@ -73,3 +73,5 @@ class ConnectionDB:
         """
         if self.connection is not None and self.connection.is_connected():
             self.connection.close()
+
+

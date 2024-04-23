@@ -46,6 +46,7 @@ import numpy as np
 import mplcursors
 import random
 import locale
+import os
 from PyQt5.uic import loadUi
 from datetime import timedelta
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
@@ -68,6 +69,8 @@ class AdminController(QMainWindow, MethodsWindow):
         self.messages = None
         self.rowNew = False
         self.selected_item = None
+        self.select_subject = None
+        self.select_t = None
 
         print(self.information)
 
@@ -108,10 +111,15 @@ class AdminController(QMainWindow, MethodsWindow):
         for i in range(1, 10):
             self.comboBoxSemester.addItem(str(i))
 
+        for x in range(1,6):
+            self.comboT.addItem(str(x))
+
         self.comboBoxGroup.addItem("A")
         self.comboBoxGroup.addItem("B")
 
         self.comboBoxSemester.currentIndexChanged.connect(self.onComboBoxIndexChanged)
+        self.subjects.currentIndexChanged.connect(self.onComboBoxIndexChanged2)
+        self.comboT.currentIndexChanged.connect(self.onComboBoxIndexChanged3)
         from DB.Requests import Inquiries
         InstanceInquiries = Inquiries()
         values = InstanceInquiries.get_teacher_subjects(self.information[0]['name'] + " " + self.information[0]['lastName'])
@@ -1212,6 +1220,12 @@ class AdminController(QMainWindow, MethodsWindow):
         # Obtener el texto del elemento seleccionado
         self.selected_item = self.comboBoxSemester.currentText()
 
+    def onComboBoxIndexChanged2(self, index):
+        self.select_subject = self.subjects.currentText()
+
+    def onComboBoxIndexChanged3(self, index):
+        self.select_t = self.comboT.currentText()
+
 
 
 #Evidences buttons
@@ -1219,6 +1233,7 @@ class AdminController(QMainWindow, MethodsWindow):
         try:
             from DB.Requests import Inquiries
             InstanceInquiries = Inquiries()
+
             # Configurar los filtros de archivos según el tipo especificado
             if file_type == 'doc':
                 file_filter = "Archivo de documento (*.pdf *.doc *.docx)"
@@ -1238,6 +1253,7 @@ class AdminController(QMainWindow, MethodsWindow):
                 # Obtener otros parámetros necesarios para insertar en la tabla de evidencias
                 name = os.path.basename(file_path)  # Obtener el nombre del archivo
                 file = open(file_path, 'rb').read()  # Leer el archivo en modo binario
+
                 type = file_type
                 if self.selected_item is not None:
                     forUser = InstanceInquiries.get_users_by_semester(self.selected_item)
@@ -1245,16 +1261,17 @@ class AdminController(QMainWindow, MethodsWindow):
                 else:
                     MessageBox.warning_msgbox("ADVERTENCIA", "Seleccione el semestre al cual subirá el archivo")
 
-                subject = InstanceInquiries.get_teacher_subjects(self.information[0]['name'])
+                subject = self.select_subject
                 teacher = self.information[0]['name']
+                if self.select_t is not None:
 
-                # Llamar al método insert_to_evidences con los parámetros recopilados
-                success = InstanceInquiries.insert_to_evidences(name, file, type,
-                                                                forUser, semester, subject, teacher)
-                if success:
-                    MessageBox.correct_msgbox("ÉXITO", "El archivo fue subido correctamente")
-                else:
-                    MessageBox.input_error_msgbox("ERROR", "No se pudo subir el archivo")
+                    # Llamar al método insert_to_evidences con los parámetros recopilados
+                    success = InstanceInquiries.insert_to_evidences(name, file, type,
+                                                                    forUser, semester, subject, teacher, int(self.select_t))
+                    if success:
+                        MessageBox.correct_msgbox("ÉXITO", "El archivo fue subido correctamente")
+                    else:
+                        MessageBox.input_error_msgbox("ERROR", "No se pudo subir el archivo")
             else:
                 MessageBox.warning_msgbox("ADVERTENCIA", "No ha seleccionado el archivo")
 
@@ -1262,10 +1279,12 @@ class AdminController(QMainWindow, MethodsWindow):
             return file_path
 
         except Exception as ex:
-            print(f"Error: {ex}")
+            print(f"Error in selectFile: {ex}")
 
 
 #Ends
+
+
 
 
 class Canvas_grafica2(FigureCanvas):

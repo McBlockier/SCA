@@ -4303,7 +4303,7 @@ border:none;
        <property name="geometry">
         <rect>
          <x>40</x>
-         <y>100</y>
+         <y>90</y>
          <width>161</width>
          <height>31</height>
         </rect>
@@ -5459,7 +5459,7 @@ color:#1d2840;
          <x>250</x>
          <y>60</y>
          <width>151</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -5500,10 +5500,10 @@ color:black;
       <widget class="QComboBox" name="comboBoxGroup">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>430</x>
          <y>60</y>
-         <width>151</width>
-         <height>31</height>
+         <width>101</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -5516,7 +5516,7 @@ color:black;
       <widget class="QLabel" name="label_75">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>430</x>
          <y>20</y>
          <width>111</width>
          <height>31</height>
@@ -5544,10 +5544,10 @@ color:black;
       <widget class="QComboBox" name="subjects">
        <property name="geometry">
         <rect>
-         <x>680</x>
+         <x>740</x>
          <y>60</y>
          <width>241</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -5560,7 +5560,7 @@ color:black;
       <widget class="QLabel" name="label_77">
        <property name="geometry">
         <rect>
-         <x>680</x>
+         <x>740</x>
          <y>20</y>
          <width>111</width>
          <height>31</height>
@@ -5583,6 +5583,50 @@ color:black;
        </property>
        <property name="text">
         <string>Asignatura</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboT">
+       <property name="geometry">
+        <rect>
+         <x>560</x>
+         <y>60</y>
+         <width>151</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_79">
+       <property name="geometry">
+        <rect>
+         <x>560</x>
+         <y>20</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+       </property>
+       <property name="text">
+        <string>Tema</string>
        </property>
       </widget>
      </widget>

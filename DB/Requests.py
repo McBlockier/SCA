@@ -1,6 +1,7 @@
 from DB.Connection import ConnectionDB
 from datetime import datetime
 from datetime import timedelta
+import json
 
 class Inquiries:
     """
@@ -590,8 +591,12 @@ class Inquiries:
 
 #Evidences
 
-    def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher):
+    def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher, issue):
         try:
+            # Convertir la lista de diccionarios a una cadena JSON
+            for_user_json = json.dumps(forUser)
+            print(for_user_json)
+
             # Obtener la fecha y hora actual
             current_date = datetime.now().date()
             current_hour = datetime.now().time().strftime('%H:%M:%S')
@@ -602,21 +607,17 @@ class Inquiries:
 
                 # Insertar la evidencia en la tabla
                 cursor.execute(
-                    "INSERT INTO evidences (name, file, type, forUser, semester, date, hour, subject, teacher) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (name, file, type, forUser, semester, current_date, current_hour, subject, teacher))
+                    "INSERT INTO evidences (name, file, type, forUser, semester, date, hour, subject, teacher, issue) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (name, file, type, for_user_json, semester, current_date, current_hour, subject, teacher, issue))
 
                 # Confirmar los cambios en la base de datos
                 db.connection.commit()
 
                 return True
-        except mysql.connector.Error as ex:
-            print(f"MySQL Error: {ex}")
-            return False
         except Exception as ex:
-            print(f"Error: {ex}")
+            print(f"Error to insert evidences: {ex}")
             return False
-
 
     def get_users_by_semester(self, selected_semester):
         try:
@@ -642,7 +643,7 @@ class Inquiries:
                 return users
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error user by semesters {ex}")
             return []
 
     def get_teacher_subjects(self, teacher_name):
@@ -674,7 +675,7 @@ class Inquiries:
                 return subjects
 
         except Exception as ex:
-            print(f"Error {ex}")
+            print(f"Error teacher subjects {ex}")
             return []
 
 

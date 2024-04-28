@@ -19,9 +19,9 @@ class Inquiries:
         """
         Constructor de la clase.
         """
-        self.host = "localhost"
+        self.host = "127.0.0.1"
         self.user = "root"
-        self.password = "1234"
+        self.password = "root"
         self.database = "sca_database"
 
 

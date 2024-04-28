@@ -62,12 +62,7 @@ class AdminController(QMainWindow, MethodsWindow):
         super().__init__()
         loadUi("../UI/Admin.ui", self)
 
-        self.information = information
-
-        self.initializeComponents()
-        self.initializeVariables()
-
-        #Variables globales
+        # Variables globales
         self.dataTable = None
         self.messages = None
         self.rowNew = False
@@ -75,6 +70,14 @@ class AdminController(QMainWindow, MethodsWindow):
         self.select_subject = None
         self.select_t = None
         self.counterSemester = 0
+
+        self.information = information
+
+        self.initializeComponents()
+        self.initializeVariables()
+        self.hideComponents()
+
+
 
     def initializeComponents(self):
         """
@@ -224,6 +227,24 @@ class AdminController(QMainWindow, MethodsWindow):
         self.semester.currentIndexChanged.connect(self.handle_combo_box_selection)
         self.score.currentIndexChanged.connect(self.handle_combo_box_selection)
         self.views.currentIndexChanged.connect(self.handle_combo_box_selection)
+
+
+    def hideComponents(self):
+        if self.information[0]['rankId'] == 3:
+            self.buttonStudents.setEnabled(False)
+            self.buttonCali.setEnabled(True)
+            self.comboBoxSemester.setEnabled(True)
+            self.comboBoxGroup.setEnabled(True)
+            self.comboT.setEnabled(True)
+            self.subjects.setEnabled(True)
+        if self.information[0]['rankId'] == 1:
+            self.buttonStudents.setEnabled(True)
+            self.buttonCali.setEnabled(False)
+            self.comboBoxSemester.setEnabled(False)
+            self.comboBoxGroup.setEnabled(False)
+            self.comboT.setEnabled(False)
+            self.subjects.setEnabled(False)
+
 
     def increment_counterSemester(self, typeButton):
         if typeButton == "increment" and self.counterSemester == 6:

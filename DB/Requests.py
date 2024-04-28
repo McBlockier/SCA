@@ -591,32 +591,75 @@ class Inquiries:
 
 #Evidences
 
-    def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher, issue):
+    def count_evidences_by_issue(self, teacher, issue):
         try:
-            # Convertir la lista de diccionarios a una cadena JSON
-            for_user_json = json.dumps(forUser)
-            print(for_user_json)
-
-            # Obtener la fecha y hora actual
-            current_date = datetime.now().date()
-            current_hour = datetime.now().time().strftime('%H:%M:%S')
-
             # Conectar a la base de datos
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
 
-                # Insertar la evidencia en la tabla
-                cursor.execute(
-                    "INSERT INTO evidences (name, file, type, forUser, semester, date, hour, subject, teacher, issue) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (name, file, type, for_user_json, semester, current_date, current_hour, subject, teacher, issue))
+                # Contar las evidencias asociadas al problema (issue) y al profesor específicos
+                cursor.execute("SELECT COUNT(*) FROM evidences WHERE teacher = %s AND issue = %s", (teacher, issue))
+                count = cursor.fetchone()[0]
 
-                # Confirmar los cambios en la base de datos
-                db.connection.commit()
-
-                return True
+                return count
         except Exception as ex:
-            print(f"Error to insert evidences: {ex}")
+            print(f"Error counting evidences: {ex}")
+            return -1  # Retornar un valor negativo en caso de error
+
+    def get_unscored_evidences(self):
+        try:
+            # Conectar a la base de datos
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Obtener las evidencias no calificadas (score NULL o 0) y agruparlas por usuario
+                cursor.execute(
+                    "SELECT MAX(semester) AS semester, idUser, MAX(score) AS score FROM evidences_student WHERE score IS NULL OR score = 0 GROUP BY idUser"
+                )
+                unscored_evidences = cursor.fetchall()
+
+                return unscored_evidences
+        except Exception as ex:
+            print(f"Error getting unscored evidences: {ex}")
+            return None  # Retornar None en caso de error
+
+
+    def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher, issue):
+        try:
+            # Verificar cuántas evidencias hay asociadas a este problema (issue) y profesor
+            evidences_count = self.count_evidences_by_issue(teacher, issue)
+
+            # Si hay menos de 3 evidencias, permitir la inserción
+            if evidences_count < 3:
+                # Convertir la lista de diccionarios a una cadena JSON
+                for_user_json = json.dumps(forUser)
+                print(for_user_json)
+
+                # Obtener la fecha y hora actual
+                current_date = datetime.now().date()
+                current_hour = datetime.now().time().strftime('%H:%M:%S')
+
+                # Conectar a la base de datos
+                with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                    cursor = db.connection.cursor()
+
+                    # Insertar la evidencia en la tabla
+                    cursor.execute(
+                        "INSERT INTO evidences (name, file, type, forUser, semester, date, hour, subject, teacher, issue) "
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (
+                        name, file, type, for_user_json, semester, current_date, current_hour, subject, teacher, issue))
+
+                    # Confirmar los cambios en la base de datos
+                    db.connection.commit()
+
+                    return True
+            else:
+                from Controller.Message import MessageBox
+                MessageBox.warning_msgbox("ADVERTENCIA", f"Ya no se pueden agregar mas evidencias para el tema {issue}")
+                return False
+        except Exception as ex:
+            print(f"Error al insertar evidencias: {ex}")
             return False
 
     def get_users_by_semester(self, selected_semester):
@@ -665,18 +708,67 @@ class Inquiries:
                     JOIN teachers t ON st.teacher_id = t.teacher_id
                     WHERE t.name = %s
                 """
-                print(teacher_name)
                 cursor.execute(query, (teacher_name,))
                 rows = cursor.fetchall()
                 for row in rows:
                     subjects.append(row[0])  # Agregar nombre de asignatura a la lista
-
-                print("Asignaturas del docente", teacher_name, ":", subjects)
                 return subjects
 
         except Exception as ex:
             print(f"Error teacher subjects {ex}")
             return []
+
+    def get_files_by_teacher(self, teacher_name):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                query = "SELECT id, name, type, LENGTH(file) AS size FROM evidences WHERE teacher = %s"
+                params = (teacher_name,)
+                cursor.execute(query, params)
+                files = cursor.fetchall()
+                return files
+        except Exception as ex:
+            print(f"Error {ex}")
+
+
+    def get_users_by_semester_order(self, semester):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Consulta SQL para seleccionar usuarios de acuerdo al semestre indicado y ordenarlos por semestre
+                query = "SELECT * FROM user WHERE semester = %s ORDER BY semester ASC"
+                cursor.execute(query, (semester,))
+
+                # Obtener los resultados de la consulta
+                users = cursor.fetchall()
+
+                return users
+
+        except Exception as ex:
+            print(f"Error {ex}")
+            return None
+
+
+    def execute_sql_script(self, sql_script):
+        try:
+            # Lista para almacenar los resultados
+            results = []
+
+            # Conectar a la base de datos
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Ejecutar el script SQL
+                cursor.execute(sql_script)
+
+                # Obtener los resultados
+                results = cursor.fetchall()
+
+        except Exception as ex:
+            print(f"Error executing SQL script: {ex}")
+
+        return results
 
 
 """

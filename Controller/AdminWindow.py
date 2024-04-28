@@ -15,13 +15,15 @@ from PyQt5.QtWidgets import (
     QLabel,
     QTableWidget,
     QTableWidgetItem,
-    QMessageBox
+    QMessageBox,
+    QPushButton
 )
 from PyQt5.QtGui import (
     QColor,
     QBrush,
     QFont,
-    QIcon
+    QIcon,
+    QPixmap
 )
 from Controller.Implements import(
     MethodsWindow,
@@ -51,6 +53,7 @@ from PyQt5.uic import loadUi
 from datetime import timedelta
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
 
+
 class AdminController(QMainWindow, MethodsWindow):
     """Clase para controlar la ventana principal de la aplicación."""
 
@@ -71,8 +74,7 @@ class AdminController(QMainWindow, MethodsWindow):
         self.selected_item = None
         self.select_subject = None
         self.select_t = None
-
-        print(self.information)
+        self.counterSemester = 0
 
     def initializeComponents(self):
         """
@@ -111,11 +113,14 @@ class AdminController(QMainWindow, MethodsWindow):
         for i in range(1, 10):
             self.comboBoxSemester.addItem(str(i))
 
-        for x in range(1,6):
+        for x in range(0,7):
             self.comboT.addItem(str(x))
 
         self.comboBoxGroup.addItem("A")
         self.comboBoxGroup.addItem("B")
+        self.__fillComboViews()
+        self.__fillComboScores()
+        self.__fillComboSemester()
 
         self.comboBoxSemester.currentIndexChanged.connect(self.onComboBoxIndexChanged)
         self.subjects.currentIndexChanged.connect(self.onComboBoxIndexChanged2)
@@ -160,6 +165,11 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonRub.clicked.connect(lambda: self.selectFile('doc'))
         self.buttonImg.clicked.connect(lambda: self.selectFile('img'))
         self.buttonVid.clicked.connect(lambda: self.selectFile('media'))
+        self.buttonCali.clicked.connect(self.showFrameCali)
+        self.backR.clicked.connect(self.backReports)
+        self.backSemester.clicked.connect(lambda : self.increment_counterSemester("decrement"))
+        self.nextSemester.clicked.connect(lambda: self.increment_counterSemester("increment"))
+
 
         # Boton de contactos
         self.buttonOpenChat.clicked.connect(self.__showFrameMessage)
@@ -170,6 +180,7 @@ class AdminController(QMainWindow, MethodsWindow):
         # Campos de ScrollAreas(tabla usuarios y docentes)
         self.__updateScrollTeachers()
         self.__updateScrollUsers()
+        self.loadFilesRecents()
 
         # Detectar click en las tablas
         self.tableUsers.cellClicked.connect(lambda row, col:
@@ -209,6 +220,84 @@ class AdminController(QMainWindow, MethodsWindow):
         self.buttonSendSms1.clicked.connect(lambda: self.reply("reply1"))
         self.buttonSendSms2.clicked.connect(lambda: self.reply("reply2"))
 
+        # Conectar la señal currentIndexChanged de cada ComboBox a la función correspondiente
+        self.semester.currentIndexChanged.connect(self.handle_combo_box_selection)
+        self.score.currentIndexChanged.connect(self.handle_combo_box_selection)
+        self.views.currentIndexChanged.connect(self.handle_combo_box_selection)
+
+    def increment_counterSemester(self, typeButton):
+        if typeButton == "increment" and self.counterSemester == 6:
+            MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 6 unidades")
+        elif typeButton == "decrement" and self.counterSemester == 0:
+            MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 unidades")
+        else:
+            self.counterSemester += 1 if typeButton == "increment" else -1
+            self.setIconSemester()
+
+    def setIconSemester(self):
+        # Obtener la ruta del archivo de ícono basado en el valor de counterSemester
+        icon_path = f"../Resources/{self.counterSemester}-color.png"
+
+        # Validar el valor de counterSemester y ajustar la ruta del ícono si es necesario
+        if self.counterSemester < 0:
+            self.counterSemester = 0
+        elif self.counterSemester > 6:
+            self.counterSemester = 6
+
+        # Crear un objeto QIcon con la ruta del archivo de ícono
+        icon = QIcon(icon_path)
+
+        # Establecer el ícono en el botón viewSemester
+        self.viewSemester.setIcon(icon)
+
+    def __showFrame(self, frame):
+        """
+        Muestra el marco especificado y oculta los demás.
+
+        Parameters:
+        - frame: El marco que se desea mostrar.
+
+        Returns:
+        - None
+
+        Description:
+        Este método muestra el marco especificado y oculta los demás marcos en la ventana principal.
+        Recorre todos los marcos disponibles y los eleva si coinciden con el marco especificado;
+        de lo contrario, los baja para ocultarlos.
+        """
+        frames = [self.framePanel, self.frameMessage, self.frameStudents, self.frameReports_2]
+        for f in frames:
+            if f == frame:
+                f.raise_()
+            else:
+                f.lower()
+
+    def __showFramePanel(self):
+        self.__showFrame(self.framePanel)
+
+    def __showFrameMessage(self):
+        self.__showFrame(self.frameMessage)
+
+    def __showFrameStudents(self):
+        self.__showFrame(self.frameStudents)
+
+    def __showFrameReports(self):
+        self.frameCali.setVisible(False)
+        self.frame_24.setVisible(False)
+        self.backR.setVisible(False)
+        self.__showFrame(self.frameReports_2)
+
+    def showFrameCali(self):
+        self.frameCali.setVisible(True)
+        self.frame_24.setVisible(True)
+        self.backR.setVisible(True)
+        self.loadUserEvidence()
+
+    def backReports(self):
+        self.frameCali.setVisible(False)
+        self.frame_24.setVisible(False)
+        self.backR.setVisible(False)
+
 
     def load_information(self, type, messages):
         try:
@@ -228,6 +317,66 @@ class AdminController(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+
+
+    # En el método donde se crea y se agrega el QScrollArea
+    def loadFilesRecents(self):
+        try:
+            # El ScrollArea se llama self.scrollFiles
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            # Obtener la lista de archivos recientes para el profesor actual
+            fileRecents = InstanceInquiries.get_files_by_teacher(self.information[0]['name'])
+
+            # Iterar sobre la lista de archivos recientes y actualizar los QPushButton y QLabel correspondientes
+            for i, file_info in enumerate(fileRecents):
+                # Obtener la extensión del archivo
+                file_extension = file_info[2].lower()
+
+                # Cargar el icono correspondiente según la extensión del archivo
+                icon_path = f"../Resources/{file_extension}.png"
+                pixmap = QPixmap(icon_path).scaled(32, 32)  # Escalar el icono a 48x48
+                icon = QIcon(pixmap)
+                button_icon = getattr(self, f"bf{i + 1}")  # Obtener el QPushButton correspondiente
+                button_icon.setIcon(icon)
+                button_icon.setIconSize(pixmap.size())
+
+                # Actualizar el QLabel correspondiente con el nombre del archivo
+                label_name = getattr(self, f"lf{i + 1}")  # Obtener el QLabel correspondiente
+                label_name.setText(file_info[1])
+                label_name.setAlignment(Qt.AlignCenter)  # Alinear el nombre al centro
+                label_name.setStyleSheet("background-color: transparent;")  # Establecer fondo transparente
+
+                # Calcular el tamaño del archivo en KB, MB, GB o TB
+                file_size = file_info[3]
+                kb_size = file_size / 1024
+                mb_size = kb_size / 1024
+                gb_size = mb_size / 1024
+                tb_size = gb_size / 1024
+                if tb_size >= 1:
+                    size_str = f"{tb_size:.2f} TB"
+                elif gb_size >= 1:
+                    size_str = f"{gb_size:.2f} GB"
+                elif mb_size >= 1:
+                    size_str = f"{mb_size:.2f} MB"
+                elif kb_size >= 1:
+                    size_str = f"{kb_size:.2f} KB"
+                else:
+                    size_str = f"{file_size} bytes"
+
+                # Actualizar el QLabel correspondiente con el tamaño del archivo
+                label_size = getattr(self, f"lz{i + 1}")  # Obtener el QLabel correspondiente
+                label_size.setText(f"{size_str}")
+                #label_size.setAlignment(Qt.AlignCenter)  # Alinear el tamaño al centro
+                label_size.setStyleSheet("background-color: transparent;")  # Establecer fondo transparente
+
+                # Limitar a 4 archivos para evitar exceso de elementos en el ScrollArea
+                if i >= 3:
+                    break
+
+        except Exception as ex:
+            print(f"Error {ex}")
 
     def loadMessages(self, messages):
         try:
@@ -457,39 +606,50 @@ class AdminController(QMainWindow, MethodsWindow):
         self.indexButton = 0
         self.dataTable = None
 
-    def __showFrame(self, frame):
-        """
-        Muestra el marco especificado y oculta los demás.
 
-        Parameters:
-        - frame: El marco que se desea mostrar.
 
-        Returns:
-        - None
+    def loadUserEvidence(self):
+        try:
+            self.userEvidences.setColumnCount(3)  # Establecer el número de columnas
+            self.userEvidences.setHorizontalHeaderLabels(["Semestre", "Usuario", "Puntaje"])
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+            unscored_evidences = InstanceInquiries.get_unscored_evidences()
 
-        Description:
-        Este método muestra el marco especificado y oculta los demás marcos en la ventana principal.
-        Recorre todos los marcos disponibles y los eleva si coinciden con el marco especificado;
-        de lo contrario, los baja para ocultarlos.
-        """
-        frames = [self.framePanel, self.frameMessage, self.frameStudents, self.frameReports_2]
-        for f in frames:
-            if f == frame:
-                f.raise_()
-            else:
-                f.lower()
+            # Verificar si se obtuvieron datos
+            if unscored_evidences:
+                # Verificar si self.selected_item no es nulo
+                if self.selected_item is not None:
+                    # Filtrar las evidencias por semestre
+                    unscored_evidences = [evidence for evidence in unscored_evidences if
+                                          evidence[0] == int(self.selected_item)]
 
-    def __showFramePanel(self):
-        self.__showFrame(self.framePanel)
+                # Eliminar duplicados de la lista de evidencias (solo una entrada por usuario)
+                unique_evidences = {}
+                for evidence in unscored_evidences:
+                    idUser = evidence[1]
+                    if idUser not in unique_evidences:
+                        unique_evidences[idUser] = evidence
 
-    def __showFrameMessage(self):
-        self.__showFrame(self.frameMessage)
+                # Establecer el número de filas en función de la cantidad de datos obtenidos
+                self.userEvidences.setRowCount(len(unique_evidences))
 
-    def __showFrameStudents(self):
-        self.__showFrame(self.frameStudents)
+                # Iterar sobre los datos únicos y agregarlos a la tabla
+                for row, evidence in enumerate(unique_evidences.values()):
+                    semester = evidence[0]
+                    idUser = evidence[1]
+                    score = evidence[2]
 
-    def __showFrameReports(self):
-        self.__showFrame(self.frameReports_2)
+                    # Crear y establecer los elementos QTableWidgetItem
+                    self.userEvidences.setItem(row, 0, QTableWidgetItem(str(semester)))
+                    self.userEvidences.setItem(row, 1, QTableWidgetItem(idUser))
+                    self.userEvidences.setItem(row, 2, QTableWidgetItem(str(score)))
+
+                # Ajustar el tamaño de las columnas al contenido
+                self.userEvidences.resizeColumnsToContents()
+
+        except Exception as ex:
+            print(f"Error: {ex}")
 
     def __closeSesion(self):
         try:
@@ -541,6 +701,144 @@ class AdminController(QMainWindow, MethodsWindow):
 
 
 
+    def __fillComboSemester(self):
+        # Datos para llenar el ComboBox
+        semesters = ["1er", "2do", "3er", "4rto", "5to", "6xto", "8vo", "9no"]
+
+        # Limpiar el ComboBox antes de llenarlo
+        self.semester.clear()
+
+        # Agregar los datos al ComboBox
+        self.semester.addItems(semesters)
+
+
+
+    def __fillComboScores(self):
+        # Datos para llenar el ComboBox
+        scores = ["Reprobados", "Aprobados", "Excelencia", "Regulares"]
+
+        # Limpiar el ComboBox antes de llenarlo
+        self.score.clear()
+
+        # Agregar los datos al ComboBox
+        self.score.addItems(scores)
+
+
+
+    def __fillComboViews(self):
+        # Datos para llenar el ComboBox
+        views = ["Estudiantes regulares", "Estudiantes reprobados", "Estudiantes reinscriptos"]
+
+        # Limpiar el ComboBox antes de llenarlo
+        self.views.clear()
+
+        # Agregar los datos al ComboBox
+        self.views.addItems(views)
+
+    def handle_combo_box_selection(self):
+        try:
+            from DB.Requests import Inquiries
+            InstanceInquiries = Inquiries()
+
+            # Obtener el ComboBox que emitió la señal
+            sender = self.sender()
+            selected_item = sender.currentText()
+
+            # Verificar si el ComboBox que emitió la señal
+            if sender == self.semester:
+                self.moduleSemester(InstanceInquiries, selected_item)
+            elif sender == self.score:
+                self.moduleScore(InstanceInquiries, selected_item)
+            elif sender == self.views:
+                self.moduleViews(InstanceInquiries, selected_item)
+
+        except Exception as ex:
+            print(f"Error at handle_combo_box_selection {ex}")
+
+
+    def moduleSemester(self, InstanceInquiries, selected_item):
+        try:
+            self.tableUsers.clearContents()  # Elimina el contenido de las celdas
+            self.tableUsers.setRowCount(0)  # Establece el número de filas en 0
+
+            # Mapeo de nombres de semestres a números enteros
+            semester_mapping = {
+                "1er": 1,
+                "2do": 2,
+                "3er": 3,
+                "4rto": 4,
+                "5to": 5,
+                "6xto": 6,
+                "8vo": 8,
+                "9no": 9
+            }
+            column_headers = ["ID Usuario", "Contraseña", "Nombre", "Apellido", "No. Control", "ID Rango",
+                              "Semestre", "Regular", "Puntaje"]
+
+            # Obtener el número de semestre correspondiente al nombre del semestre seleccionado
+            semester_number = semester_mapping.get(selected_item)
+
+            # Si no se encontró un número de semestre correspondiente, imprimir un mensaje de error
+            if semester_number is None:
+                MessageBox.input_error_msgbox("ERROR", "El tipo de dato no es el correcto")
+                return
+
+            # Obtener los usuarios del semestre seleccionado y ordenarlos por semestre
+            valueAll = InstanceInquiries.get_users_by_semester_order(semester_number)
+
+            self._fillTable(valueAll, self.tableUsers, column_headers, 9)
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def moduleScore(self, InstanceInquiries, selected_item):
+        try:
+            self.tableUsers.clearContents()  # Elimina el contenido de las celdas
+            self.tableUsers.setRowCount(0)  # Establece el número de filas en 0
+
+            if selected_item == "Reprovados":
+                column_headers = ["ID Usuario", "Nombre", "Apellido", "N. Control", "ID Rango", "Semestre", "Estado"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantes_reprobados")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 6)
+            elif selected_item == "Aprobados":
+                column_headers = ["ID Usuario", "Nombre", "Apellido", "N. Control", "ID Rango", "Semestre", "Estado"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantes_aprobados")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 8)
+            elif selected_item == "Excelencia":
+                column_headers = ["ID Usuario", "Nombre", "Apellido", "N. Control", "ID Rango", "Semestre", "Puntaje"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantes_con_alto_score")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 8)
+            elif selected_item == "Regulares":
+                column_headers = ["ID Usuario", "Nombre", "Apellido", "N. Control", "ID Rango", "Semestre", "Regular"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantesregulares")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 8)
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+
+    def moduleViews(self, InstanceInquiries, selected_item):
+        try:
+            self.tableUsers.clearContents()  # Elimina el contenido de las celdas
+            self.tableUsers.setRowCount(0)  # Establece el número de filas en 0
+
+            if selected_item == "Estudiantes regulares":
+                column_headers = ["ID Usuario", "Contraseña", "Nombre", "Apellido", "N. Control", "ID Rango",
+                                  "Semestre", "Regular"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantesregulares")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 8)
+            elif selected_item == "Estudiantes reprobados":
+                column_headers = ["ID Usuario", "Contraseña", "Nombre", "Apellido", "N. Control", "ID Rango",
+                                  "Semestre", "Regular"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM estudiantesregulares")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 8)
+            elif selected_item == "Estudiantes reinscriptos":
+                column_headers = ["ID", "Usuario", "Nombre", "Apellido", "Semestre", "Fecha",
+                                  "Estado"]
+                valueAll = InstanceInquiries.execute_sql_script("SELECT * FROM view_reinscripcion")
+                self._fillTable(valueAll, self.tableUsers, column_headers, 7)
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+
     def __updateScrollUsers(self):
         """Actualiza la tabla de usuarios."""
         try:
@@ -558,6 +856,7 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error al actualizar la tabla de usuarios: {ex}")
+
 
 
     def __updateScrollTeachers(self):
@@ -834,7 +1133,6 @@ class AdminController(QMainWindow, MethodsWindow):
                     row_data[header_item.text()] = item.text()
             self.dataTable = row_data
             self.setInformationLabel()
-            print(self.dataTable)
             table.keyPressEvent = lambda event: self.onKeyPress(event, table)
         except Exception as ex:
             print(f"Error al manejar clic en celda: {ex}")
@@ -1219,6 +1517,7 @@ class AdminController(QMainWindow, MethodsWindow):
     def onComboBoxIndexChanged(self, index):
         # Obtener el texto del elemento seleccionado
         self.selected_item = self.comboBoxSemester.currentText()
+        self.loadUserEvidence()
 
     def onComboBoxIndexChanged2(self, index):
         self.select_subject = self.subjects.currentText()
@@ -1309,7 +1608,7 @@ class Canvas_grafica2(FigureCanvas):
             colores_rgb = [(int(col[1:3], 16) / 255, int(col[3:5], 16) / 255, int(col[5:7], 16) / 255) for col in
                            colores_hex]
 
-            plt.title("Tipos de trabajos", color='#51517f', size=12, family="Segoe UI")
+            plt.title("Desempeño alumnos", color='#51517f', size=12, family="Segoe UI")
 
             self.patches, texts, autotexts = self.ax.pie(tamaño, explode=explotar, labels=nombres, colors=colores_rgb,
                                                          autopct='%1.0f%%', pctdistance=0.6, shadow=True, startangle=90,

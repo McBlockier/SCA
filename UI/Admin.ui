@@ -3941,10 +3941,10 @@ border-radius:10px;
       <widget class="QPushButton" name="pushButton_16">
        <property name="geometry">
         <rect>
-         <x>970</x>
-         <y>40</y>
-         <width>251</width>
-         <height>271</height>
+         <x>1000</x>
+         <y>20</y>
+         <width>201</width>
+         <height>221</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -3960,7 +3960,7 @@ border:none;</string>
        </property>
        <property name="iconSize">
         <size>
-         <width>256</width>
+         <width>220</width>
          <height>356</height>
         </size>
        </property>
@@ -4380,12 +4380,12 @@ border-radius:10px;
         </size>
        </property>
       </widget>
-      <widget class="QScrollArea" name="scrollArea_4">
+      <widget class="QScrollArea" name="scrollFiles">
        <property name="geometry">
         <rect>
          <x>50</x>
          <y>450</y>
-         <width>331</width>
+         <width>371</width>
          <height>381</height>
         </rect>
        </property>
@@ -4402,11 +4402,11 @@ background-color:transparent;
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>331</width>
+          <width>371</width>
           <height>381</height>
          </rect>
         </property>
-        <widget class="QPushButton" name="pushButton_40">
+        <widget class="QPushButton" name="bf1">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -4438,7 +4438,7 @@ border-radius:10px;
           </size>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_41">
+        <widget class="QPushButton" name="bf2">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -4470,7 +4470,7 @@ border-radius:10px;
           </size>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_42">
+        <widget class="QPushButton" name="bf3">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -4502,7 +4502,7 @@ border-radius:10px;
           </size>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_43">
+        <widget class="QPushButton" name="bf4">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -4534,7 +4534,7 @@ border-radius:10px;
           </size>
          </property>
         </widget>
-        <widget class="QLabel" name="label_65">
+        <widget class="QLabel" name="lf1">
          <property name="geometry">
           <rect>
            <x>70</x>
@@ -4562,12 +4562,12 @@ color:#1d2840;
           <string>Family.png</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_66">
+        <widget class="QLabel" name="lz1">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>290</x>
            <y>20</y>
-           <width>61</width>
+           <width>81</width>
            <height>21</height>
           </rect>
          </property>
@@ -4590,12 +4590,12 @@ color:#1d2840;
           <string>2MB</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_67">
+        <widget class="QLabel" name="lz2">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>290</x>
            <y>110</y>
-           <width>61</width>
+           <width>81</width>
            <height>21</height>
           </rect>
          </property>
@@ -4618,12 +4618,12 @@ color:#1d2840;
           <string>2MB</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_68">
+        <widget class="QLabel" name="lz3">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>290</x>
            <y>200</y>
-           <width>61</width>
+           <width>81</width>
            <height>21</height>
           </rect>
          </property>
@@ -4646,12 +4646,12 @@ color:#1d2840;
           <string>2MB</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_69">
+        <widget class="QLabel" name="lz4">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>290</x>
            <y>290</y>
-           <width>61</width>
+           <width>81</width>
            <height>21</height>
           </rect>
          </property>
@@ -4674,7 +4674,7 @@ color:#1d2840;
           <string>2MB</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_70">
+        <widget class="QLabel" name="lf2">
          <property name="geometry">
           <rect>
            <x>70</x>
@@ -4702,7 +4702,7 @@ color:#1d2840;
           <string>Rubrica tema 2.docx</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_71">
+        <widget class="QLabel" name="lf3">
          <property name="geometry">
           <rect>
            <x>70</x>
@@ -4730,7 +4730,7 @@ color:#1d2840;
           <string>Estadistica.xlsx</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_72">
+        <widget class="QLabel" name="lf4">
          <property name="geometry">
           <rect>
            <x>70</x>
@@ -5629,6 +5629,432 @@ color:black;
         <string>Tema</string>
        </property>
       </widget>
+      <widget class="QFrame" name="frame_21">
+       <property name="geometry">
+        <rect>
+         <x>950</x>
+         <y>330</y>
+         <width>261</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame{
+background-color:#f7f6f9;
+border-radius:10px;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QPushButton" name="buttonCali">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>61</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background-color:transparent;
+border:none;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/clasificacion.png</normaloff>../Resources/clasificacion.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>45</width>
+          <height>35</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_65">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>10</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+background-color:transparent;
+color:#fdbc44;
+
+}</string>
+        </property>
+        <property name="text">
+         <string>Calificar evidencias</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QFrame" name="frameCali">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>340</y>
+         <width>821</width>
+         <height>501</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame{
+background-color:#f7f6f9;
+border-radius:10px;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QFrame" name="frame_12">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>100</y>
+          <width>771</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame{
+background-color:#fefeff;
+border-radius:10px;
+
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+       <widget class="QFrame" name="frame_22">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>230</y>
+          <width>771</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame{
+background-color:#fefeff;
+border-radius:10px;
+
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+       <widget class="QFrame" name="frame_23">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>360</y>
+          <width>771</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame{
+background-color:#fefeff;
+border-radius:10px;
+
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="backSemester">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>31</y>
+          <width>32</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Anterior semestre</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+background-color:transparent;
+border:none;
+border-radius:10px;
+
+}
+
+QPushButton:Hover{
+
+background-color:transparent;
+border:1px solid black;
+border-radius:10px;
+
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/left.png</normaloff>../Resources/left.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="nextSemester">
+        <property name="geometry">
+         <rect>
+          <x>770</x>
+          <y>31</y>
+          <width>32</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Siguiente semestre</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+background-color:transparent;
+border:none;
+border-radius:10px;
+
+}
+
+QPushButton:Hover{
+
+background-color:transparent;
+border:1px solid black;
+border-radius:10px;
+
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/flecha-pequena-derecha.png</normaloff>../Resources/flecha-pequena-derecha.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>25</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_80">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>30</y>
+          <width>181</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+        </property>
+        <property name="text">
+         <string>Anterior semestre</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_81">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>30</y>
+          <width>161</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+background-color:transparent;
+color:black;
+
+}</string>
+        </property>
+        <property name="text">
+         <string>Siguiente semestre</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="viewSemester">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>30</y>
+          <width>32</width>
+          <height>32</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+background-color:transparent;
+border:none;
+border-radius:10px;
+
+
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/0-color.png</normaloff>../Resources/0-color.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QFrame" name="frame_24">
+       <property name="geometry">
+        <rect>
+         <x>870</x>
+         <y>390</y>
+         <width>361</width>
+         <height>451</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QTableWidget" name="userEvidences">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>21</y>
+          <width>351</width>
+          <height>411</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="backR">
+       <property name="geometry">
+        <rect>
+         <x>900</x>
+         <y>340</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Regresar</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+
+background-color:transparent;
+border:none;
+border-radius:10px;
+
+}
+
+QPushButton:Hover{
+
+background-color:transparent;
+border:1px solid black;
+border-radius:10px;
+
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Resources/left.png</normaloff>../Resources/left.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+      </widget>
      </widget>
      <widget class="QFrame" name="frameStudents">
       <property name="geometry">
@@ -5661,10 +6087,15 @@ border-radius:10px;
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">QFrame{
-background-color:#302f41;
-border-radius:10px;
-}</string>
+        <string notr="true">QFrame {
+    background-color: #302f41; /* Color original */
+    border-radius: 10px;
+}
+
+QFrame:hover {
+    background-color: #464451; /* Color con hover ligeramente más claro */
+}
+</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -5681,13 +6112,218 @@ border-radius:10px;
           <height>101</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame{
+background-color:transparent;
+
+}
+
+</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <widget class="QComboBox" name="semester">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Filtrar por semestre</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* Estilo del menú desplegable */
+QComboBox QAbstractItemView {
+    border: none; /* Elimina el borde del menú desplegable */
+    background-color: white; /* Color de fondo */
+    padding: 5px; /* Espacio interno */
+    selection-background-color: #7a6efb; /* Color de fondo al seleccionar un elemento */
+}
+</string>
+         </property>
+         <property name="currentText">
+          <string extracomment="Semestre"/>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="score">
+         <property name="geometry">
+          <rect>
+           <x>280</x>
+           <y>60</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Filtrar por calificación</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* Estilo del menú desplegable */
+QComboBox QAbstractItemView {
+    border: none; /* Elimina el borde del menú desplegable */
+    background-color: white; /* Color de fondo */
+    padding: 5px; /* Espacio interno */
+    selection-background-color: #7a6efb; /* Color de fondo al seleccionar un elemento */
+}
+</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="views">
+         <property name="geometry">
+          <rect>
+           <x>550</x>
+           <y>60</y>
+           <width>231</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* Estilo del menú desplegable */
+QComboBox QAbstractItemView {
+    border: none; /* Elimina el borde del menú desplegable */
+    background-color: white; /* Color de fondo */
+    padding: 5px; /* Espacio interno */
+    selection-background-color: #7a6efb; /* Color de fondo al seleccionar un elemento */
+}
+</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbUserStudent_2">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>30</y>
+           <width>111</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background-color:transparent;
+color:#e8dbf9;
+}</string>
+         </property>
+         <property name="text">
+          <string>Semestre</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbUserStudent_4">
+         <property name="geometry">
+          <rect>
+           <x>280</x>
+           <y>30</y>
+           <width>111</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background-color:transparent;
+color:#e8dbf9;
+}</string>
+         </property>
+         <property name="text">
+          <string>Calificación</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbUserStudent_5">
+         <property name="geometry">
+          <rect>
+           <x>550</x>
+           <y>30</y>
+           <width>111</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background-color:transparent;
+color:#e8dbf9;
+}</string>
+         </property>
+         <property name="text">
+          <string>Vistas</string>
+         </property>
+        </widget>
        </widget>
+       <widget class="QLabel" name="lbUserStudent_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>14</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+background-color:transparent;
+color:#e8dbf9;
+}</string>
+        </property>
+        <property name="text">
+         <string>Filtros</string>
+        </property>
+       </widget>
+       <zorder>lbUserStudent_3</zorder>
+       <zorder>frameSAdmin</zorder>
       </widget>
       <widget class="QFrame" name="frame_19">
        <property name="geometry">
@@ -6078,7 +6714,7 @@ color:#e8dbf9;
         <rect>
          <x>30</x>
          <y>20</y>
-         <width>161</width>
+         <width>351</width>
          <height>31</height>
         </rect>
        </property>
@@ -6091,7 +6727,7 @@ color:#e8dbf9;
         </font>
        </property>
        <property name="text">
-        <string>Estudiantes</string>
+        <string>Personal (Docentes y Alumnos)</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_3">
@@ -6128,7 +6764,7 @@ background-color:transparent;
         <rect>
          <x>50</x>
          <y>550</y>
-         <width>551</width>
+         <width>661</width>
          <height>281</height>
         </rect>
        </property>
@@ -6176,9 +6812,9 @@ background-color:transparent;
       <widget class="QTableWidget" name="tableTeacher">
        <property name="geometry">
         <rect>
-         <x>635</x>
+         <x>775</x>
          <y>550</y>
-         <width>571</width>
+         <width>431</width>
          <height>281</height>
         </rect>
        </property>
@@ -6227,7 +6863,7 @@ background-color:transparent;
       <widget class="QPushButton" name="buttonCreateUsers">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>680</x>
          <y>500</y>
          <width>32</width>
          <height>32</height>
@@ -6260,7 +6896,7 @@ border-radius:10px;
       <widget class="QPushButton" name="buttonDeleteUser">
        <property name="geometry">
         <rect>
-         <x>490</x>
+         <x>610</x>
          <y>500</y>
          <width>32</width>
          <height>32</height>
@@ -6380,7 +7016,7 @@ border-radius:10px;
       <widget class="QLabel" name="label_89">
        <property name="geometry">
         <rect>
-         <x>650</x>
+         <x>770</x>
          <y>510</y>
          <width>161</width>
          <height>31</height>
@@ -6399,10 +7035,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
-     <zorder>frameStudents</zorder>
      <zorder>frameMessage</zorder>
      <zorder>framePanel</zorder>
      <zorder>frameReports_2</zorder>
+     <zorder>frameStudents</zorder>
     </widget>
    </widget>
   </widget>

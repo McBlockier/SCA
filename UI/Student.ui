@@ -111,40 +111,6 @@ border-radius: 10px;
         <string>Actividad de Cursos</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="buttonAdd">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>40</y>
-         <width>51</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="toolTip">
-        <string>Solicitar curso</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-                background-color: #0068ff;
-                border-radius: 10px;
-                border: none;
-                color: white;
-                padding: 10px 20px;
-            }
-
-QPushButton:hover {
-                background-color: #0055cc;
-                box-shadow: 0px 0px 5px 3px #abcaff;
-            }</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../Resources/mas.png</normaloff>../Resources/mas.png</iconset>
-       </property>
-      </widget>
       <widget class="QLabel" name="labelDate">
        <property name="geometry">
         <rect>
@@ -308,7 +274,7 @@ QFrame:hover {
            <pixmap>../Resources/7.png</pixmap>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="materia2">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -510,7 +476,7 @@ QFrame:hover::before {
            <pixmap>../Resources/9.png</pixmap>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_11">
+         <widget class="QPushButton" name="materia3">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -695,7 +661,7 @@ QFrame:hover {
            <pixmap>../Resources/9.png</pixmap>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="materia1">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -994,7 +960,7 @@ QFrame:hover {
             <pixmap>../Resources/5.png</pixmap>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_13">
+          <widget class="QPushButton" name="materia4">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -1186,7 +1152,7 @@ QFrame:hover {
            <pixmap>../Resources/8.png</pixmap>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_14">
+         <widget class="QPushButton" name="materia5">
           <property name="geometry">
            <rect>
             <x>10</x>

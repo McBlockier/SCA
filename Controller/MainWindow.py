@@ -44,6 +44,12 @@ class WindowADM(QMainWindow, MethodsWindow):
 
         # Conectar el botón de perfil a la función _showProfileUI
         self.buttonProfile.clicked.connect(self._showProfileUI)
+        #conecta al boton de las materias
+        self.materia1.clicked.connect(self._showMateriasUI)
+        self.materia2.clicked.connect(self._showMateriasUI)
+        self.materia3.clicked.connect(self._showMateriasUI)
+        self.materia4.clicked.connect(self._showMateriasUI)
+        self.materia5.clicked.connect(self._showMateriasUI)
 
         # Conectar el botón de configuraciones a la función _showSettingsUI
         self.buttonSettings.clicked.connect(self._showSettingsUI)
@@ -302,6 +308,15 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error {ex}")
 
+    def _showMateriasUI(self):
+        try:
+            self.materia_window = Materias(self, self.information)
+            self.materia_window.show()
+            self.setEnabled(False)
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
     def _closeSesion(self):
         from Controller.Login import ControllerLogin
         InstanceLogin = ControllerLogin()
@@ -391,7 +406,7 @@ class Perfil(QMainWindow, MethodsWindow):
         self.buttonExit.clicked.connect(self._closeWindow)
         self.buttonMinimize.setVisible(False)
 
-
+        self.usuario.setText(self.information[0]['idUser'])
         self.num.setText(str(self.information[0]['nControl']))
         self.nombre.setText(self.information[0]['name'])
         self.apellido.setText(self.information[0]['lastName'])
@@ -408,7 +423,40 @@ class Perfil(QMainWindow, MethodsWindow):
         self.hide()
         self.close()
 
+class Materias(QMainWindow, MethodsWindow):
+    def __init__(self, windowMain, information):
+        super().__init__()
+        loadUi('../UI/materias.ui', self)
 
+        self.information = information
+
+        self.previous_window = windowMain #Tomamos la ventana anterior para manipular
+
+        self.initializeComponents()
+        self.initializeVariables()
+
+
+    def initializeComponents(self):
+        self.InstanceWindow = RoundedWindow(self)
+        self.InstanceWindow.startRound(1035, 749)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+        self.buttonExit.clicked.connect(self._closeWindow)
+        self.buttonMinimize.setVisible(False)
+
+    def initializeVariables(self):
+
+        pass
+
+    def _closeWindow(self):
+        self.previous_window.setEnabled(True)
+        self.hide()
+        self.close()
 
 
 

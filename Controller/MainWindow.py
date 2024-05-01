@@ -3,8 +3,11 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow
 from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5.QtGui import QMovie, QIcon
 from PyQt5.uic import loadUi
+from PyQt5.uic.properties import QtWidgets
+
 from Controller.Implements import RoundedWindow, MotionFrame, MethodsWindow
 from Controller.Message import MessageBox
+from DB.Requests import ConnectionDB
 
 class WindowADM(QMainWindow, MethodsWindow):
     def __init__(self, information):
@@ -50,6 +53,13 @@ class WindowADM(QMainWindow, MethodsWindow):
         self.materia3.clicked.connect(self._showMateriasUI)
         self.materia4.clicked.connect(self._showMateriasUI)
         self.materia5.clicked.connect(self._showMateriasUI)
+
+
+        #concecta al boton de mensajes alumnos
+        self.mensajesAl.clicked.connect(self._showMensajesAl)
+
+
+
 
         # Conectar el botón de configuraciones a la función _showSettingsUI
         self.buttonSettings.clicked.connect(self._showSettingsUI)
@@ -257,6 +267,7 @@ class WindowADM(QMainWindow, MethodsWindow):
         except Exception as e:
             print(f"Error al subir archivos Extra: {e}")
 
+
     def _upload_acad(self):
         try:
             selected_files = self._upload_file()
@@ -312,6 +323,15 @@ class WindowADM(QMainWindow, MethodsWindow):
         try:
             self.materia_window = Materias(self, self.information)
             self.materia_window.show()
+            self.setEnabled(False)
+
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def _showMensajesAl(self):
+        try:
+            self.mensajeAl_window = mensajesAl(self, self.information)
+            self.mensajeAl_window.show()
             self.setEnabled(False)
 
         except Exception as ex:
@@ -428,6 +448,7 @@ class Materias(QMainWindow, MethodsWindow):
         super().__init__()
         loadUi('../UI/materias.ui', self)
 
+
         self.information = information
 
         self.previous_window = windowMain #Tomamos la ventana anterior para manipular
@@ -438,7 +459,7 @@ class Materias(QMainWindow, MethodsWindow):
 
     def initializeComponents(self):
         self.InstanceWindow = RoundedWindow(self)
-        self.InstanceWindow.startRound(1035, 749)
+        self.InstanceWindow.startRound(1171, 884)
         InstanceMotion = MotionFrame(self)
 
         # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
@@ -449,15 +470,128 @@ class Materias(QMainWindow, MethodsWindow):
         self.buttonExit.clicked.connect(self._closeWindow)
         self.buttonMinimize.setVisible(False)
 
-    def initializeVariables(self):
+        #para los botones subir
+        self.subir1_3.clicked.connect(lambda: self._subir('subir1'))
+        self.subir2_3.clicked.connect(lambda: self._subir('subir2'))
+        self.subir3_3.clicked.connect(lambda: self._subir('subir3'))
+        #para los temas atras y adelante
+        self.backUni.clicked.connect(lambda: self.contadorMaterias('atras'))
+        self.nextUni.clicked.connect(lambda: self.contadorMaterias('siguiente'))
 
-        pass
+    def _subir(self):
+        try:
+            selected_files = self._upload_file()
+            if selected_files:
+                print("Archivos seleccionados:", selected_files)
+                self.archivos.extend(selected_files)  # Agregamos los archivos seleccionados a la lista existente
+        except Exception as e:
+            print("Error al subir archivos:", e)
+        except Exception as e:
+            print(f"Error al subir archivo evidencia: {e}")
+
+    def contadorMaterias(self, typeButton):
+        if typeButton == "siguiente" and self.contadorUni == 7:
+            MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 7 temas")
+        elif typeButton == "atras" and self.contadorUni == 0:
+            MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 temas")
+        else:
+            self.contadorUni += 1 if typeButton == "siguiente" else -1
+            self.icono()
+
+    def icono(self):
+        # Obtener la ruta del archivo de ícono basado en el valor de counterSemester
+        icon_path = f"../Resources/{self.contadorUni}-color.png"
+
+        # Validar el valor de contadorUnidades y ajustar la ruta del ícono si es necesario
+        if self.contadorUni < 0:
+            self.contadorUni = 0
+        elif self.contadorUni > 7:
+            self.contadorUni = 7
+      # Crear un objeto QIcon con la ruta del archivo de ícono
+            icon = QIcon(icon_path)
+
+      # Establecer el ícono en el botón viewSemester
+            self.verUni.setIcon(icon)
+
+    def _upload_file(self):
+        try:
+            # Abrir un cuadro de diálogo para seleccionar un archivo
+            file_dialog = QFileDialog(self)
+            file_dialog.setWindowTitle('Seleccionar archivo a subir')
+            file_dialog.setFileMode(QFileDialog.ExistingFiles)
+            file_dialog.setNameFilter("Archivos de imagen (*.png *.jpg);;Archivos PDF (*.pdf)")
+
+            # Ejecutar el cuadro de diálogo
+            if file_dialog.exec_():
+                selected_files = file_dialog.selectedFiles()
+                return selected_files
+        except Exception as e:
+            print(f"Error al abrir el cuadro de diálogo: {e}")
 
     def _closeWindow(self):
         self.previous_window.setEnabled(True)
         self.hide()
         self.close()
 
+
+
+
+
+class mensajesAl(QMainWindow):
+    def __init__(self, windowMain, information):
+        super().__init__()
+        loadUi('../UI/mensajesAlumno.ui', self)
+
+        self.information = information
+        self.previous_window = windowMain  # Tomamos la ventana anterior para manipular
+
+        self.initializeComponents()
+
+    def initializeComponents(self):
+        self.InstanceWindow = RoundedWindow(self)
+        self.InstanceWindow.startRound(800, 600)
+        InstanceMotion = MotionFrame(self)
+
+        # Conectar los eventos del mouse de la ventana a los métodos correspondientes de la instancia de MotionFrame
+        self.mousePressEvent = InstanceMotion.mousePressEvent
+        self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
+        self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
+
+        self.buttonExit.clicked.connect(self._closeWindow)
+        self.buttonMinimize.setVisible(False)
+        self.Guardar.clicked.connect(self.guardarMensaje)
+        self.Historial.clicked.connect(self.verMensajes)
+
+
+    def guardarMensaje(self):
+        from DB.Requests import Inquiries
+        from Controller.Message import MessageBox
+
+        ola = Inquiries()
+        mensaje = self.mensaje.toPlainText()
+
+        # Verificar si el mensaje está vacío
+        if not mensaje:
+            MessageBox.warning_msgbox("ADVERTENCIA", "El mensaje está vacío")
+            return
+
+        try:
+            ola.insertMessage(self.information[0]['idUser'], mensaje)
+            MessageBox.correct_msgbox("ÉXITO", "Mensaje enviado correctamente")
+            self.mensaje.clear()
+
+        except Exception as e:
+            MessageBox.correct_msgbox("ERROR", f"Ha ocurrido un error al enviar el mensaje: {str(e)}")
+
+
+
+    def verMensajes(self):
+     pass
+
+    def _closeWindow(self):
+        self.previous_window.setEnabled(True)
+        self.hide()
+        self.close()
 
 
 """

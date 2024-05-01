@@ -1311,7 +1311,7 @@ border-radius:15px;</string>
         <normaloff>../Resources/left2.png</normaloff>../Resources/left2.png</iconset>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="mensajesAl">
       <property name="geometry">
        <rect>
         <x>550</x>
@@ -2164,7 +2164,7 @@ QProgressBar::chunk {
      <zorder>frameActivity</zorder>
      <zorder>label_15</zorder>
      <zorder>pushButton</zorder>
-     <zorder>pushButton_2</zorder>
+     <zorder>mensajesAl</zorder>
      <zorder>setProfile_2</zorder>
      <zorder>label_16</zorder>
      <zorder>label_17</zorder>

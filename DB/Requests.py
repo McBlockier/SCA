@@ -612,17 +612,16 @@ class Inquiries:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
 
-                # Obtener las evidencias no calificadas (score NULL o 0) y agruparlas por usuario
+                # Obtener todas las evidencias agrupadas por usuario
                 cursor.execute(
-                    "SELECT MAX(semester) AS semester, idUser, MAX(score) AS score FROM evidences_student WHERE score IS NULL OR score = 0 GROUP BY idUser"
+                    "SELECT MAX(semester) AS semester, idUser, MAX(score) AS score FROM evidences_student GROUP BY idUser"
                 )
-                unscored_evidences = cursor.fetchall()
+                all_evidences = cursor.fetchall()
 
-                return unscored_evidences
+                return all_evidences
         except Exception as ex:
             print(f"Error getting unscored evidences: {ex}")
             return None  # Retornar None en caso de error
-
 
     def insert_to_evidences(self, name, file, type, forUser, semester, subject, teacher, issue):
         try:
@@ -749,7 +748,6 @@ class Inquiries:
             print(f"Error {ex}")
             return None
 
-
     def execute_sql_script(self, sql_script):
         try:
             # Lista para almacenar los resultados
@@ -769,20 +767,3 @@ class Inquiries:
             print(f"Error executing SQL script: {ex}")
 
         return results
-
-
-"""
-    def method(self, dataTable):
-        try:
-            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
-                cursor = db.connection.cursor()
-                    pass
-
-        except Exception as ex:
-            print(f"Error {ex}")
-
-
-"""
-
-
-

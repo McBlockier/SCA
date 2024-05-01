@@ -49,6 +49,8 @@ import mplcursors
 import random
 import locale
 import os
+import re
+import shutil
 from PyQt5.uic import loadUi
 from datetime import timedelta
 from Controller.Message import MessageBox #Clase responsable de mostrar mensajes gráficos
@@ -70,6 +72,8 @@ class AdminController(QMainWindow, MethodsWindow):
         self.select_subject = None
         self.select_t = None
         self.counterSemester = 0
+        self.files_dict = {} #Diccionario para guardar los archivos de evidencias por su nombre
+        self.getNames = [] #Arreglo para los nombres
 
         self.information = information
 
@@ -188,8 +192,12 @@ class AdminController(QMainWindow, MethodsWindow):
         # Detectar click en las tablas
         self.tableUsers.cellClicked.connect(lambda row, col:
                                             self.on_cell_clicked(row, self.tableUsers))  # Tabla de alumnos
+
         self.tableTeacher.cellClicked.connect(lambda row, col:
                                               self.on_cell_clicked(row, self.tableTeacher))  # Tabla de docentes
+
+        self.userEvidences.cellClicked.connect(lambda row, col:
+                                              self.on_cell_clicked(row, self.userEvidences)) #Tabla de evidencias
 
         #Botones de crear nueva fila en cada tabla
         self.buttonCreateUsers.clicked.connect(lambda: self.createRow(self.tableUsers))#Crear en estudiantes
@@ -222,6 +230,8 @@ class AdminController(QMainWindow, MethodsWindow):
         #Botones de enviar respuesta
         self.buttonSendSms1.clicked.connect(lambda: self.reply("reply1"))
         self.buttonSendSms2.clicked.connect(lambda: self.reply("reply2"))
+        self.buttonDelete.clicked.connect(lambda: self.delete_messages("delete1"))
+        self.buttonDelete2.clicked.connect(lambda: self.delete_messages("delete2"))
 
         # Conectar la señal currentIndexChanged de cada ComboBox a la función correspondiente
         self.semester.currentIndexChanged.connect(self.handle_combo_box_selection)
@@ -229,15 +239,25 @@ class AdminController(QMainWindow, MethodsWindow):
         self.views.currentIndexChanged.connect(self.handle_combo_box_selection)
 
 
+        #Botones de la vista, calificar evidencias
+        self.btnEvidences.clicked.connect(self.__buttonEvidences)
+        self.d1.clicked.connect(lambda: self.download_evidence("down1"))
+        self.d2.clicked.connect(lambda: self.download_evidence("down2"))
+        self.d3.clicked.connect(lambda: self.download_evidence("down3"))
+
+
     def hideComponents(self):
         if self.information[0]['rankId'] == 3:
+
             self.buttonStudents.setEnabled(False)
             self.buttonCali.setEnabled(True)
             self.comboBoxSemester.setEnabled(True)
             self.comboBoxGroup.setEnabled(True)
             self.comboT.setEnabled(True)
             self.subjects.setEnabled(True)
+
         if self.information[0]['rankId'] == 1:
+
             self.buttonStudents.setEnabled(True)
             self.buttonCali.setEnabled(False)
             self.comboBoxSemester.setEnabled(False)
@@ -245,15 +265,129 @@ class AdminController(QMainWindow, MethodsWindow):
             self.comboT.setEnabled(False)
             self.subjects.setEnabled(False)
 
+    def download_evidence(self, typeButton):
+        try:
+            from Controller.Message import MessageBox
+            if self.dataTable:
+                if self.files_dict:
+                    if typeButton in ["down1", "down2", "down3"]:
+                        file_index = int(
+                            typeButton[-1]) - 1  # Convertir el último dígito del tipo de botón en un índice (0, 1, 2)
+                        file_key = list(self.files_dict.keys())[file_index]  # Obtener la clave correspondiente al índice
+                        file_path = self.files_dict.get(file_key)
+                        if file_path:
+                            # Abrir un cuadro de diálogo para que el usuario seleccione la carpeta de destino
+                            save_folder = QFileDialog.getExistingDirectory(self, "Seleccionar carpeta de destino", "/")
+                            if save_folder:
+                                # Copiar el archivo a la carpeta seleccionada
+                                shutil.copy(file_path, save_folder)
+                                MessageBox.information_msgbox("INFORMACIÓN", "El archivo ha sido guardado con éxito.")
+                            else:
+                                MessageBox.information_msgbox("INFORMACIÓN", "No se seleccionó ninguna carpeta de destino.")
+                        else:
+                            MessageBox.information_msgbox("INFORMACIÓN", "No hay archivo asociado")
+                    else:
+                        MessageBox.information_msgbox("INFORMACIÓN", "Tipo de botón no válido.")
+                else:
+                    MessageBox.input_error_msgbox("ERROR", "No hay archivos para guardar")
+            else:
+                MessageBox.information_msgbox("INFORMACIÓN", "Seleccione algún usuario para cargar sus evidencias")
+        except Exception as ex:
+            print(f"Error {ex}")
+
+    def __buttonEvidences(self):
+        try:
+            from DB.Requests import Inquiries
+            from Controller.Message import MessageBox
+            InstanceInquiries = Inquiries()
+
+            scores = [self.c1.value(), self.c2.value(), self.c3.value()]  # Lista de puntajes
+
+            # Preguntamos si está de acuerdo con aplicar los cambios
+            if MessageBox.question_msgbox("PREGUNTA", "¿Está de acuerdo con aplicar los cambios?"):
+                if self.dataTable and self.getNames:
+                    for i, score in enumerate(scores):
+                        if score is not None and i < len(self.getNames):
+                            sql_query = f"""
+                                CALL actualizar_score_evidencia(
+                                    '{self.getNames[i]}',
+                                    '{self.dataTable['Usuario']}',
+                                    {score},
+                                    @p_success
+                                );
+                                SELECT @p_success;
+                            """
+                            value = InstanceInquiries.execute_sql_script(sql_query)
+                            if value:
+                                MessageBox.correct_msgbox("ÉXITO", "Los cambios se han aplicado con éxito")
+                            else:
+                                MessageBox.input_error_msgbox("ERROR", "Los cambios no se han aplicado")
+
+                else:
+                    MessageBox.warning_msgbox("ADVERTENCIA", "No hay evidencias cargadas, seleccione el usuario")
+
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+    def remove_html_tags(self, text):
+        clean = re.compile('<.*?>')
+        return re.sub(clean, '', text)
+
+
+    def delete_messages(self, typeButton):
+        try:
+            from DB.Requests import Inquiries
+            from Controller.Message import MessageBox
+            InstanceInquiries = Inquiries()
+
+            if typeButton in ['delete1', 'delete2']:
+                userSms = self.userSms.text() if typeButton == 'delete1' else self.userSms2.text()
+                labelSms = self.remove_html_tags(self.label_sms.text()) if typeButton == 'delete1' else (
+                    self.remove_html_tags(self.label_sms2.text()))
+
+                if MessageBox.question_msgbox("PREGUNTA", "¿Está seguro(a) de hacer esta acción?"):
+                    sql = f"CALL DeleteMessage('{userSms}', '{labelSms}', @success)"
+                    InstanceInquiries.execute_sql_script(sql)
+
+                    result = InstanceInquiries.execute_sql_script("SELECT @success")
+                    success = result[0]
+
+                    # Verificar si el mensaje fue eliminado correctamente
+                    if success:
+                        MessageBox.correct_msgbox("ÉXITO", "El mensaje ha sido eliminado correctamente.")
+                    else:
+                        MessageBox.correct_msgbox("ERROR", "No se encontro o no se puede eliminar el mensaje")
+
+                    self.load_information("Null", "Null")
+
+        except ImportError:
+            print("No se pudo importar el módulo.")
+        except Exception as ex:
+            print(f"Error: {ex}")
+
+
 
     def increment_counterSemester(self, typeButton):
-        if typeButton == "increment" and self.counterSemester == 6:
-            MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 6 unidades")
-        elif typeButton == "decrement" and self.counterSemester == 0:
-            MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 unidades")
+        if typeButton == "increment":
+            if self.counterSemester == 6:
+                MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 6 unidades")
+            else:
+                self.counterSemester += 1
+        elif typeButton == "decrement":
+            if self.counterSemester == 0:
+                MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 unidades")
+            else:
+                self.counterSemester -= 1 #Quitamos 1 para que el contador se mantenga en 6 y no pase de 6
+
+        if self.dataTable and 'Usuario' in self.dataTable:
+            self.load_evidences_by_user() #Actualizamos constantemente las evidencias
         else:
-            self.counterSemester += 1 if typeButton == "increment" else -1
-            self.setIconSemester()
+            MessageBox.information_msgbox("INFORMACIÓN", "Seleccione algún usuario de la tabla para ver las evidencias")
+            self.counterSemester = 0 #Regresamos a 0 el contador
+
+        self.setIconSemester()
+
+
 
     def setIconSemester(self):
         # Obtener la ruta del archivo de ícono basado en el valor de counterSemester
@@ -268,8 +402,10 @@ class AdminController(QMainWindow, MethodsWindow):
         # Crear un objeto QIcon con la ruta del archivo de ícono
         icon = QIcon(icon_path)
 
+
         # Establecer el ícono en el botón viewSemester
         self.viewSemester.setIcon(icon)
+
 
     def __showFrame(self, frame):
         """
@@ -398,6 +534,8 @@ class AdminController(QMainWindow, MethodsWindow):
 
         except Exception as ex:
             print(f"Error {ex}")
+
+
 
     def loadMessages(self, messages):
         try:
@@ -1154,9 +1292,67 @@ class AdminController(QMainWindow, MethodsWindow):
                     row_data[header_item.text()] = item.text()
             self.dataTable = row_data
             self.setInformationLabel()
+            self.load_evidences_by_user()
             table.keyPressEvent = lambda event: self.onKeyPress(event, table)
         except Exception as ex:
             print(f"Error al manejar clic en celda: {ex}")
+
+
+#Método para actualizar /O cargar las evidencias por usuario
+    def load_evidences_by_user(self):
+        try:
+            if 'Usuario' in self.dataTable:
+                from DB.Requests import Inquiries
+                InstanceInquiries = Inquiries()
+
+                idUser = self.dataTable['Usuario']  # Obtenemos el usuario
+                issue = int(self.counterSemester)  # Obtenemos el tema
+                semester = int(self.dataTable['Semestre'])  # Obtenemos el semestre
+
+                # Limpiar los QSpinBox
+                for i in range(1, 4):
+                    c_widget = getattr(self, f"c{i}")
+                    c_widget.setValue(0)
+
+                # valeAll almacena todos los resultados que retorne la consulta en la BD
+                valueAll = InstanceInquiries.execute_sql_script(f"""
+                    SELECT name, file, score, issue
+                    FROM evidences_student
+                    WHERE semester = {semester} AND idUser = '{idUser}' AND issue = {issue}
+                """)
+
+                if valueAll:
+                    self.files_dict = {}  # Diccionario para almacenar los archivos por nombre
+
+                    # Iterar sobre los resultados obtenidos de la consulta SQL
+                    for i, (name, file, score, issue) in enumerate(valueAll):
+                        # Construir el nuevo nombre con el valor de counterSemester y el número de le
+                        new_name = f"{self.counterSemester}.{i + 1} {name}" if name else "Evidencia no entregada"
+                        self.getNames.append(name)
+
+                        # Actualizar el QLabel correspondiente con el nuevo nombre
+                        le_widget = getattr(self, f"le{i + 1}")
+                        le_widget.setText(new_name)
+
+                        # Almacenar el archivo en el diccionario usando el nuevo nombre como clave
+                        self.files_dict[new_name] = file if name else None
+
+                        # Actualizar el QSpinBox correspondiente con el score
+                        c_widget = getattr(self, f"c{i + 1}")
+                        c_widget.setValue(score)
+
+                    # Limpiar los QSpinBox restantes
+                    for i in range(len(valueAll) + 1, 4):
+                        c_widget = getattr(self, f"c{i}")
+                        c_widget.clear()
+
+                else:
+                    # Si valueAll está vacío, configurar todos los QLabel como "Evidencia no entregada"
+                    for i in range(1, 4):
+                        getattr(self, f"le{i}").setText("Evidencia no entregada")
+
+        except Exception as ex:
+            print(f"Error al manejar load_evidences_by_user: {ex}")
 
 
     def setInformationLabel(self):
@@ -1536,9 +1732,15 @@ class AdminController(QMainWindow, MethodsWindow):
             print(f"Error eventFilter: {ex}")
 
     def onComboBoxIndexChanged(self, index):
-        # Obtener el texto del elemento seleccionado
-        self.selected_item = self.comboBoxSemester.currentText()
-        self.loadUserEvidence()
+        try:
+            # Obtener el texto del elemento seleccionado
+            self.selected_item = self.comboBoxSemester.currentText()
+            self.loadUserEvidence()
+            if self.dataTable is not None:
+                if 'Usuario' in self.dataTable:
+                    self.load_evidences_by_user()
+        except Exception as ex:
+            print(f"Error onComboBoxIndexChanged: {ex}")
 
     def onComboBoxIndexChanged2(self, index):
         self.select_subject = self.subjects.currentText()

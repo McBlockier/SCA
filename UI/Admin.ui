@@ -670,7 +670,7 @@ background-color:none;
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="lbProfile">
        <property name="geometry">
         <rect>
          <x>1030</x>
@@ -2023,7 +2023,7 @@ QFrame:hover {
       <zorder>frame_5</zorder>
       <zorder>frame_4</zorder>
       <zorder>frame_8</zorder>
-      <zorder>label_2</zorder>
+      <zorder>lbProfile</zorder>
       <zorder>frame_9</zorder>
       <zorder>pushButton_14</zorder>
       <zorder>frame_10</zorder>
@@ -7053,8 +7053,46 @@ color:#e8dbf9;
          <string>Filtros</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="pushButton_18">
+        <property name="geometry">
+         <rect>
+          <x>980</x>
+          <y>147</y>
+          <width>151</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #0068ff,
+                                 stop:1 #0068ff);
+    border-radius: 10px;
+color:white;
+}
+
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                 stop:0 #4287f5,
+                                 stop:1 #0068ff);
+color:white;
+border-radius: 10px
+}
+</string>
+        </property>
+        <property name="text">
+         <string>Asignar materias</string>
+        </property>
+       </widget>
        <zorder>lbUserStudent_3</zorder>
        <zorder>frameSAdmin</zorder>
+       <zorder>pushButton_18</zorder>
       </widget>
       <widget class="QFrame" name="frame_19">
        <property name="geometry">
@@ -7272,6 +7310,99 @@ color:#e8dbf9;
          <string>Semestre: 7mo</string>
         </property>
        </widget>
+       <widget class="QLineEdit" name="search_student">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>130</y>
+          <width>321</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit{
+background-color:#d3d2d2;
+border-radius:10px;
+border:none;
+color:#302f41;
+}</string>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>   Buscar estudiante</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnSearch_student">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>130</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/search.png</normaloff>../Resources/search.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="backTable">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/deshacer.png</normaloff>../Resources/deshacer.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
       </widget>
       <widget class="QFrame" name="frame_20">
        <property name="geometry">
@@ -7437,6 +7568,99 @@ color:#e8dbf9;
         </property>
         <property name="text">
          <string>N. Control: 21070012</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="search_teacher">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>130</y>
+          <width>321</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit{
+background-color:#d3d2d2;
+border-radius:10px;
+border:none;
+color:#302f41;
+}</string>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>   Buscar docente</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnSearch_teacher">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>130</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/search.png</normaloff>../Resources/search.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="backTable2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Resources/deshacer.png</normaloff>../Resources/deshacer.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </widget>
@@ -7766,10 +7990,10 @@ border-radius:10px;
        </property>
       </widget>
      </widget>
-     <zorder>frameStudents</zorder>
      <zorder>frameMessage</zorder>
      <zorder>framePanel</zorder>
      <zorder>frameReports_2</zorder>
+     <zorder>frameStudents</zorder>
     </widget>
    </widget>
   </widget>

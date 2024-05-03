@@ -106,6 +106,9 @@ class AdminController(QMainWindow, MethodsWindow):
         self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
         self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
 
+
+        self.lbProfile.setText(self.information[0]['name'] + " " + self.information[0]['lastName'])
+
         # Clases para el dibujado gráfico
         self.grafica1 = Canvas_grafica2()
         self.grafica_dos.addWidget(self.grafica1)
@@ -245,6 +248,11 @@ class AdminController(QMainWindow, MethodsWindow):
         self.d2.clicked.connect(lambda: self.download_evidence("down2"))
         self.d3.clicked.connect(lambda: self.download_evidence("down3"))
 
+        self.btnSearch_student.clicked.connect(lambda: self.search_info_by_user("student"))
+        self.btnSearch_teacher.clicked.connect(lambda: self.search_info_by_user("teacher"))
+        self.backTable.clicked.connect(self.__updateScrollUsers)
+        self.backTable2.clicked.connect(self.__updateScrollTeachers)
+
 
     def hideComponents(self):
         if self.information[0]['rankId'] == 3:
@@ -255,6 +263,7 @@ class AdminController(QMainWindow, MethodsWindow):
             self.comboBoxGroup.setEnabled(True)
             self.comboT.setEnabled(True)
             self.subjects.setEnabled(True)
+            self.buttonMessage.setEnabled(True)
 
         if self.information[0]['rankId'] == 1:
 
@@ -264,6 +273,45 @@ class AdminController(QMainWindow, MethodsWindow):
             self.comboBoxGroup.setEnabled(False)
             self.comboT.setEnabled(False)
             self.subjects.setEnabled(False)
+            self.buttonMessage.setEnabled(False)
+
+    def search_info_by_user(self, typeButton):
+        try:
+            from DB.Requests import Inquiries
+            from Controller.Message import MessageBox
+            InstanceInquiries = Inquiries()
+
+            data_to_search = ""
+
+            if typeButton == "student":
+                column_headers = ["ID Usuario", "Contraseña", "Nombre", "Apellido", "No. Control", "ID Rango",
+                                  "Semestre", "Regular", "Puntaje"]
+                data_to_search = self.search_student.text()
+
+
+                if data_to_search:
+                    valueAll = InstanceInquiries.search_info_by_student(data_to_search)
+                    self._fillTable(valueAll, self.tableUsers, column_headers, 9)
+                    self.search_student.setText("")
+                else:
+                    MessageBox.warning_msgbox("ADVERTENCIA", "Por favor ingresa datos para buscar.")
+
+            elif typeButton == "teacher":
+
+                teacher_column_headers = ["ID Profesor", "Nombre", "Matrícula"]
+                data_to_search = self.search_teacher.text()
+
+                if data_to_search:
+                    valueAll = InstanceInquiries.get_teachers_by_search_term(data_to_search)
+                    self._fillTable(valueAll, self.tableTeacher, teacher_column_headers, 3)
+                    self.search_teacher.setText("")
+                else:
+                    MessageBox.warning_msgbox("ADVERTENCIA", "Por favor ingresa datos para buscar.")
+
+        except Exception as ex:
+            print(f"Se produjo un error en la base de datos {ex}")
+
+
 
     def download_evidence(self, typeButton):
         try:
@@ -294,6 +342,8 @@ class AdminController(QMainWindow, MethodsWindow):
                 MessageBox.information_msgbox("INFORMACIÓN", "Seleccione algún usuario para cargar sus evidencias")
         except Exception as ex:
             print(f"Error {ex}")
+
+
 
     def __buttonEvidences(self):
         try:

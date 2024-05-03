@@ -19,9 +19,9 @@ class Inquiries:
         """
         Constructor de la clase.
         """
-        self.host = "localhost"
+        self.host = "127.0.0.1"
         self.user = "root"
-        self.password = "1234"
+        self.password = "root"
         self.database = "sca_database"
 
 
@@ -748,7 +748,7 @@ class Inquiries:
             print(f"Error {ex}")
             return None
 
-    def execute_sql_script(self, sql_script):
+    def execute_sql_script(self, sql_script, params=None):
         try:
             # Lista para almacenar los resultados
             results = []
@@ -757,8 +757,15 @@ class Inquiries:
             with ConnectionDB(self.host, self.user, self.password, self.database) as db:
                 cursor = db.connection.cursor()
 
-                # Ejecutar el script SQL
-                cursor.execute(sql_script)
+                # Convertir parámetros si son una cadena
+                if isinstance(params, str):
+                    params = [params]
+
+                # Ejecutar el script SQL con parámetros opcionales
+                if params is not None:
+                    cursor.execute(sql_script, params)
+                else:
+                    cursor.execute(sql_script)
 
                 # Obtener los resultados
                 results = cursor.fetchall()
@@ -767,3 +774,74 @@ class Inquiries:
             print(f"Error executing SQL script: {ex}")
 
         return results
+
+    def search_info_by_student(self, search_term):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Verificar si el término de búsqueda no está vacío
+                if search_term is not None and search_term != '':
+                    # Construir la consulta SQL dinámica
+                    query = (
+                        "SELECT * FROM user WHERE "
+                        "idUser LIKE CONCAT('%', %s, '%') OR "
+                        "password LIKE CONCAT('%', %s, '%') OR "
+                        "name LIKE CONCAT('%', %s, '%') OR "
+                        "lastName LIKE CONCAT('%', %s, '%') OR "
+                        "CAST(nControl AS CHAR) LIKE CONCAT('%', %s, '%') OR "
+                        "CAST(rankId AS CHAR) LIKE CONCAT('%', %s, '%') OR "
+                        "CAST(semester AS CHAR) LIKE CONCAT('%', %s, '%') OR "
+                        "regular LIKE CONCAT('%', %s, '%') OR "
+                        "CAST(score AS CHAR) LIKE CONCAT('%', %s, '%')"
+                    )
+
+                    # Ejecutar la consulta SQL
+                    cursor.execute(query, (
+                    search_term,) * 9)  # Se repite search_term 9 veces para cubrir todos los placeholders
+
+                    # Obtener los resultados de la consulta
+                    users = cursor.fetchall()
+
+                    return users
+                else:
+                    # Si el término de búsqueda está vacío, no hacer nada o devolver un conjunto de resultados vacío
+                    return 'No hay término de búsqueda especificado'
+        except Exception as ex:
+            print(f"Error {ex}")
+            return None
+
+    def get_teachers_by_search_term(self, search_term):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+
+                # Verificar si el término de búsqueda no está vacío
+                if search_term is not None and search_term != '':
+                    # Construir la consulta SQL dinámica
+                    query = (
+                        "SELECT * FROM teachers WHERE "
+                        "teacher_id LIKE CONCAT('%', %s, '%') OR "
+                        "name LIKE CONCAT('%', %s, '%') OR "
+                        "enrollment LIKE CONCAT('%', %s, '%')"
+                    )
+
+                    # Ejecutar la consulta SQL
+                    cursor.execute(query, (
+                    search_term,) * 3)  # Se repite search_term 3 veces para cubrir todos los placeholders
+
+                    # Obtener los resultados de la consulta
+                    teachers = cursor.fetchall()
+
+                    return teachers
+                else:
+                    # Si el término de búsqueda está vacío, no hacer nada o devolver un conjunto de resultados vacío
+                    return 'No hay término de búsqueda especificado'
+        except Exception as ex:
+            print(f"Error {ex}")
+            return None
+
+
+
+
+

@@ -324,7 +324,17 @@ class ControllerLogin(QMainWindow, MethodsWindow):
     def __services(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
     def __aboutUs(self):
-        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
+        """
+        Muestra la ventana de acerca de nostros.
+        """
+        try:
+            from Controller.about import ControllerAbout
+            about = ControllerAbout()
+            about.show()
+            self.hide()
+            self.close()
+        except Exception as ex:
+            print(f"Error al mostrar la inofrmacion acerca de nosotros -> {ex}")
     def __home(self):
         self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
 

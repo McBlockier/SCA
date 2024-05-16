@@ -447,7 +447,7 @@ class Materias(QMainWindow, MethodsWindow):
     def __init__(self, windowMain, information):
         super().__init__()
         loadUi('../UI/materias.ui', self)
-
+        self.contadorUni = 0
 
         self.information = information
 
@@ -467,51 +467,100 @@ class Materias(QMainWindow, MethodsWindow):
         self.mouseMoveEvent = InstanceMotion.mouseMoveEvent
         self.mouseReleaseEvent = InstanceMotion.mouseReleaseEvent
 
+        self.temasXUni()
+
         self.buttonExit.clicked.connect(self._closeWindow)
         self.buttonMinimize.setVisible(False)
 
         #para los botones subir
-        self.subir1_3.clicked.connect(lambda: self._subir('subir1'))
-        self.subir2_3.clicked.connect(lambda: self._subir('subir2'))
-        self.subir3_3.clicked.connect(lambda: self._subir('subir3'))
+        self.subir1_3.clicked.connect(lambda: self._subir('subir1_3'))
+        self.subir2_3.clicked.connect(lambda: self._subir('subir2_3'))
+        self.subir3_3.clicked.connect(lambda: self._subir('subir3_3'))
+
         #para los temas atras y adelante
         self.backUni.clicked.connect(lambda: self.contadorMaterias('atras'))
         self.nextUni.clicked.connect(lambda: self.contadorMaterias('siguiente'))
 
-    def _subir(self):
+    def _subir(self, button_name):
         try:
             selected_files = self._upload_file()
             if selected_files:
                 print("Archivos seleccionados:", selected_files)
-                self.archivos.extend(selected_files)  # Agregamos los archivos seleccionados a la lista existente
+                # Agregamos los archivos seleccionados a una lista específica según el botón presionado
+                if button_name == 'subir1_3':
+                    self.subir1_3(self._subir_a_db)
+                elif button_name == 'subir2_3':
+                    self.archivos_subir2_3(self._subir_a_db)
+                elif button_name == 'subir3_3':
+                    self.archivos_subir3_3(self._subir_a_db)
         except Exception as e:
             print("Error al subir archivos:", e)
+
+    def _subir_a_db(self):
+        try:
+            from DB.Requests import Inquiries
+            Isntacia= Inquiries()
+
+            Isntacia.insert_to_evidences()
+
+            print("Subiendo archivos a la base de datos...")
         except Exception as e:
-            print(f"Error al subir archivo evidencia: {e}")
+            print("Error al subir archivos a la base de datos:", e)
 
     def contadorMaterias(self, typeButton):
-        if typeButton == "siguiente" and self.contadorUni == 7:
-            MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 7 temas")
-        elif typeButton == "atras" and self.contadorUni == 0:
-            MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 temas")
-        else:
-            self.contadorUni += 1 if typeButton == "siguiente" else -1
-            self.icono()
+        try:
+            if typeButton == "siguiente" and self.contadorUni == 7:
+                MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 7 temas")
+            elif typeButton == "atras" and self.contadorUni == 0:
+                MessageBox.information_msgbox("INFORMACIÓN", "No pueden haber menos de 0 temas")
+            elif typeButton == "siguiente" and self.contadorUni == 6:
+                MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 6 temas")
+            elif typeButton == "siguiente" and self.contadorUni == 5:
+                MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 5 temas")
+            elif typeButton == "siguiente" and self.contadorUni == 4:
+                MessageBox.information_msgbox("INFORMACIÓN", "Solo existen 4 temas")
+            else:
+                self.contadorUni += 1 if typeButton == "siguiente" else -1
+                self.icono()
+                self.temasXUni()
+
+        except Exception as e:
+
+            MessageBox.warning_msgbox("ERROR", f"Error en contadorMaterias: {str(e)}")
 
     def icono(self):
-        # Obtener la ruta del archivo de ícono basado en el valor de counterSemester
-        icon_path = f"../Resources/{self.contadorUni}-color.png"
+        try:
+            # Obtener la ruta del archivo de ícono basado en el valor de contador Unidades
+            icon_path = f"../Resources/{self.contadorUni}-color.png"
 
-        # Validar el valor de contadorUnidades y ajustar la ruta del ícono si es necesario
-        if self.contadorUni < 0:
-            self.contadorUni = 0
-        elif self.contadorUni > 7:
-            self.contadorUni = 7
-      # Crear un objeto QIcon con la ruta del archivo de ícono
+            # Validar el valor de contadorUnidades y ajustar la ruta del ícono si es necesario
+            if self.contadorUni < 0:
+                self.contadorUni = 0
+            elif self.contadorUni > 7:
+                self.contadorUni = 7
+
+
+            # Crear un objeto QIcon con la ruta del archivo de ícono
             icon = QIcon(icon_path)
 
-      # Establecer el ícono en el botón viewSemester
+            # Establecer el ícono en el botón verUnidad
             self.verUni.setIcon(icon)
+        except Exception as e:
+            MessageBox.warning_msgbox("ERROR", f"Error en icono: {str(e)}")
+
+    def temasXUni(self):
+        try:
+            from DB.Requests import Inquiries
+            Instancia = Inquiries()
+
+            value = Instancia.Usertemas(self.previous_window.setUserName.text())
+            print(value)
+            
+
+
+        except Exception as e:
+            MessageBox.warning_msgbox("ERROR", f"Error en temas: {str(e)}")
+
 
     def _upload_file(self):
         try:

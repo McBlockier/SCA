@@ -1,3 +1,5 @@
+import mysql
+
 from DB.Connection import ConnectionDB
 from datetime import datetime
 from datetime import timedelta
@@ -19,9 +21,9 @@ class Inquiries:
         """
         Constructor de la clase.
         """
-        self.host = "127.0.0.1"
+        self.host = "localhost"
         self.user = "root"
-        self.password = "root"
+        self.password = "1234"
         self.database = "sca_database"
 
 
@@ -774,6 +776,18 @@ class Inquiries:
             print(f"Error executing SQL script: {ex}")
 
         return results
+
+    def Usertemas(self, in_idUser):
+        try:
+            with ConnectionDB(self.host, self.user, self.password, self.database) as db:
+                cursor = db.connection.cursor()
+                cursor.callproc('GetUserTopics', (in_idUser,))
+                users = cursor.fetchall()
+                return users
+
+        except Exception as e:
+            print(f"Error {e}")
+            return None
 
     def search_info_by_student(self, search_term):
         try:

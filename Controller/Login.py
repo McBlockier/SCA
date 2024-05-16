@@ -322,7 +322,17 @@ class ControllerLogin(QMainWindow, MethodsWindow):
 
     #Botones complementarios(servicios, acerca de nosotros y inicio)
     def __services(self):
-        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
+        """
+        Muestra la ventana de servicios.
+        """
+        try:
+            from Controller.servicios import ControllerSer
+            serv = ControllerSer()
+            serv.show()
+            self.hide()
+            self.close()
+        except Exception as ex:
+            print(f"Error al mostrar los  servicios -> {ex}")
     def __aboutUs(self):
         """
         Muestra la ventana de acerca de nostros.
@@ -336,7 +346,17 @@ class ControllerLogin(QMainWindow, MethodsWindow):
         except Exception as ex:
             print(f"Error al mostrar la inofrmacion acerca de nosotros -> {ex}")
     def __home(self):
-        self.message.information_msgbox("INFORMACIÓN", "No disponible por el momento")
+        """
+        Muestra la ventana de inicio.
+        """
+        try:
+            from Controller.inicio import ControllerInin
+            inin = ControllerInin()
+            inin.show()
+            self.hide()
+            self.close()
+        except Exception as ex:
+            print(f"Error al mostrar el inicio -> {ex}")
 
 
         # Función para cerrar la ventana
